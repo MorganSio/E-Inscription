@@ -1,0 +1,333 @@
+{% extends 'base.html.twig' %}
+{% block title %}Inscription - Étape {{ flow.currentStepNumber }} - E-Inscription{% endblock %}
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Indicateur de progression -->
+        <div class="step-indicator mb-4">
+            {% for stepLabel in flow.stepLabels %}
+                <div class="step {{ loop.index < flow.currentStepNumber ? 'completed' : (loop.index == flow.currentStepNumber ? 'active' : '') }}">
+                    {{ loop.index }}
+                </div>
+            {% endfor %}
+        </div>
+        <!-- Barre de progression -->
+        <div class="progress mb-4">
+            <div class="progress-bar" role="progressbar" 
+                 style="width: {{ (flow.currentStepNumber / flow.stepCount * 100)|round }}%">
+                {{ (flow.currentStepNumber / flow.stepCount * 100)|round }}%
+            </div>
+        </div>
+        <!-- Formulaire principal -->
+        <div class="card shadow">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="fas fa-{{ flow.currentStepNumber == 1 ? 'user' : (flow.currentStepNumber == 2 or flow.currentStepNumber == 3 ? 'users' : (flow.currentStepNumber == 4 ? 'school' : 'file-alt')) }}"></i>
+                    Étape {{ flow.currentStepNumber }} : {{ flow.currentStepLabel }}
+                </h4>
+            </div>
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                
+                {% if flow.currentStepNumber == 1 %}
+                    <!-- Étape 1: Informations de l'élève -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_row(form.nom) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_row(form.prenom) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_row(form.dateNaissance) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_row(form.lieuNaissance) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {% if form.sexe is defined %}
+                                {{ form_row(form.sexe) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.adresse) }}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_row(form.codePostal) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_row(form.ville) }}
+                        </div>
+                    </div>
+
+                {% elseif flow.currentStepNumber == 2 %}
+                    <!-- Étape 2: Informations du responsable légal 1 -->
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        Veuillez renseigner les informations du premier responsable légal de l'élève.
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {% if form.responsable1Nom is defined %}
+                                {{ form_row(form.responsable1Nom) }}
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {% if form.responsable1Prenom is defined %}
+                                {{ form_row(form.responsable1Prenom) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {% if form.responsable1Lien is defined %}
+                                {{ form_row(form.responsable1Lien) }}
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {% if form.responsable1Telephone is defined %}
+                                {{ form_row(form.responsable1Telephone) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        {% if form.responsable1Email is defined %}
+                            {{ form_row(form.responsable1Email) }}
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {% if form.responsable1Adresse is defined %}
+                            {{ form_row(form.responsable1Adresse) }}
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {% if form.responsable1CodePostal is defined %}
+                                {{ form_row(form.responsable1CodePostal) }}
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {% if form.responsable1Ville is defined %}
+                                {{ form_row(form.responsable1Ville) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        {% if form.responsable1Profession is defined %}
+                            {{ form_row(form.responsable1Profession) }}
+                        {% endif %}
+                    </div>
+
+                {% elseif flow.currentStepNumber == 3 %}
+                    <!-- Étape 3: Informations du responsable légal 2 (optionnel) -->
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        Renseignez les informations du second responsable légal si applicable.
+                    </div>
+                    {% if form.aDeuxiemeResponsable is defined %}
+                        <div class="mb-3">
+                            {{ form_row(form.aDeuxiemeResponsable) }}
+                        </div>
+                        <div id="responsable2-fields" style="display: {{ form.aDeuxiemeResponsable.vars.checked ? 'block' : 'none' }}">
+                    {% else %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Champ "Deuxième responsable" non configuré dans le formulaire.
+                        </div>
+                        <div id="responsable2-fields" style="display: none;">
+                    {% endif %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {% if form.responsable2Nom is defined %}
+                                    {{ form_row(form.responsable2Nom) }}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {% if form.responsable2Prenom is defined %}
+                                    {{ form_row(form.responsable2Prenom) }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {% if form.responsable2Lien is defined %}
+                                    {{ form_row(form.responsable2Lien) }}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {% if form.responsable2Telephone is defined %}
+                                    {{ form_row(form.responsable2Telephone) }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            {% if form.responsable2Email is defined %}
+                                {{ form_row(form.responsable2Email) }}
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {% if form.responsable2Adresse is defined %}
+                                {{ form_row(form.responsable2Adresse) }}
+                            {% endif %}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {% if form.responsable2CodePostal is defined %}
+                                    {{ form_row(form.responsable2CodePostal) }}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {% if form.responsable2Ville is defined %}
+                                    {{ form_row(form.responsable2Ville) }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            {% if form.responsable2Profession is defined %}
+                                {{ form_row(form.responsable2Profession) }}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                {% elseif flow.currentStepNumber == 4 %}
+                    <!-- Étape 4: Informations scolaires -->
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        Renseignez les informations concernant la scolarité de l'élève.
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_row(form.niveauSouhaite) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_row(form.classeSpecialite) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_row(form.etablissementPrecedent) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_row(form.anneeEtablissementPrecedent) }}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.moyenneGeneralePrecedente) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.languesEtudiees) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.optionsChoisies) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.besoinsSpecifiques) }}
+                    </div>
+
+                {% elseif flow.currentStepNumber == 5 %}
+                    <!-- Étape 5: Documents et validation -->
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Veuillez joindre les documents requis et valider votre inscription.
+                    </div>
+                    
+                    <h5 class="mb-3">Documents à fournir :</h5>
+                    <div class="mb-3">
+                        {{ form_row(form.certificatScolarite) }}
+                        <small class="form-text text-muted">Certificat de scolarité de l'établissement précédent</small>
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.bulletinsScolaires) }}
+                        <small class="form-text text-muted">Bulletins des 2 derniers trimestres</small>
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.copieIdEleve) }}
+                        <small class="form-text text-muted">Copie de la pièce d'identité de l'élève</small>
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.copieIdResponsable) }}
+                        <small class="form-text text-muted">Copie de la pièce d'identité du responsable légal</small>
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.justificatifDomicile) }}
+                        <small class="form-text text-muted">Justificatif de domicile récent</small>
+                    </div>
+
+                    <hr class="my-4">
+                    
+                    <h5 class="mb-3">Validation de l'inscription :</h5>
+                    <div class="mb-3">
+                        {{ form_row(form.accepteReglement) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.autoriseDroitImage) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.accepteConditionsGenerales) }}
+                    </div>
+
+                {% endif %}
+
+                <!-- Boutons de navigation -->
+                <div class="d-flex justify-content-between mt-4">
+                    {% if flow.currentStepNumber > 1 %}
+                        <button type="submit" name="flow_transition" value="back" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Étape précédente
+                        </button>
+                    {% else %}
+                        <div></div>
+                    {% endif %}
+
+                    {% if flow.currentStepNumber < flow.stepCount %}
+                        <button type="submit" name="flow_transition" value="next" class="btn btn-primary">
+                            Étape suivante <i class="fas fa-arrow-right"></i>
+                        </button>
+                    {% else %}
+                        <button type="submit" name="flow_transition" value="finish" class="btn btn-success">
+                            <i class="fas fa-check"></i> Finaliser l'inscription
+                        </button>
+                    {% endif %}
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        <!-- Aide et contact -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h6 class="card-title">
+                    <i class="fas fa-question-circle"></i> Besoin d'aide ?
+                </h6>
+                <p class="card-text">
+                    Si vous rencontrez des difficultés lors de votre inscription, 
+                    vous pouvez nous contacter au <strong>01 23 45 67 89</strong> 
+                    ou par email à <strong>inscription@etablissement.fr</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Script pour afficher/masquer les champs du second responsable
+document.addEventListener('DOMContentLoaded', function() {
+    {% if form.aDeuxiemeResponsable is defined %}
+        const checkbox = document.querySelector('#{{ form.aDeuxiemeResponsable.vars.id }}');
+        const fieldsContainer = document.getElementById('responsable2-fields');
+        
+        if (checkbox && fieldsContainer) {
+            checkbox.addEventListener('change', function() {
+                fieldsContainer.style.display = this.checked ? 'block' : 'none';
+            });
+        }
+    {% endif %}
+});
+</script>
+{% endblock %}

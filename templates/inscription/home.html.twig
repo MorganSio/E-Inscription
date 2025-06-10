@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - E-Inscription{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        <div class="text-center mb-5">
+            <h1 class="display-4 mb-4">
+                <i class="fas fa-graduation-cap text-primary"></i>
+                Bienvenue sur E-Inscription
+            </h1>
+            <p class="lead text-muted">
+                Plateforme d'inscription en ligne pour le Lycée Fulbert
+            </p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-user-plus fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Nouvelle inscription</h5>
+                        <p class="card-text">
+                            Vous êtes un nouvel élève ? Créez votre compte et complétez votre dossier d'inscription.
+                        </p>
+                        <a href="{{ path('app_login') }}" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Se connecter / S'inscrire
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-edit fa-3x text-success"></i>
+                        </div>
+                        <h5 class="card-title">Compléter mon dossier</h5>
+                        <p class="card-text">
+                            Vous avez déjà un compte ? Connectez-vous pour compléter ou modifier votre dossier.
+                        </p>
+                        <a href="{{ path('app_login') }}" class="btn btn-success">
+                            <i class="fas fa-arrow-right"></i>
+                            Accéder à mon dossier
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle"></i>
+                            Informations importantes
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-clock text-warning"></i> Processus d'inscription</h6>
+                                <ol class="small">
+                                    <li>Connexion avec vos identifiants</li>
+                                    <li>Saisie des informations personnelles</li>
+                                    <li>Renseignement des représentants légaux</li>
+                                    <li>Informations sur la scolarité précédente</li>
+                                    <li>Validation des documents à fournir</li>
+                                </ol>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-file-alt text-info"></i> Documents requis</h6>
+                                <ul class="small">
+                                    <li>Certificat de scolarité</li>
+                                    <li>Photo d'identité récente</li>
+                                    <li>Bulletins scolaires précédents</li>
+                                    <li>Attestation d'assurance scolaire</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <strong>Important :</strong> Vous pouvez sauvegarder votre progression à tout moment et reprendre votre inscription ultérieurement.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <p class="text-muted">
+                <i class="fas fa-question-circle"></i>
+                Besoin d'aide ? Contactez le secrétariat au <strong>02 XX XX XX XX</strong>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

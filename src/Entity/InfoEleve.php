@@ -6,6 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use App\Entity\RepresentantLegal;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\InfoEleveRepository;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: InfoEleveRepository::class)]
 class InfoEleve

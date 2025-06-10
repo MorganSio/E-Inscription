@@ -1,0 +1,189 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord - E-Inscription{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-tachometer-alt"></i> Tableau de bord</h1>
+            <span class="badge bg-{{ inscription.isComplete ? 'success' : 'warning' }} fs-6">
+                {{ inscription.isComplete ? 'Dossier complet' : 'Dossier incomplet' }}
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card dashboard-card shadow-sm mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-user"></i> Informations personnelles</h5>
+            </div>
+            <div class="card-body">
+                {% if inscription.nom and inscription.prenom %}
+                    <p><strong>Nom :</strong> {{ inscription.nom }} {{ inscription.prenom }}</p>
+                    {% if inscription.dateNaissance %}
+                        <p><strong>Date de naissance :</strong> {{ inscription.dateNaissance|date('d/m/Y') }}</p>
+                    {% endif %}
+                    {% if inscription.adresse %}
+                        <p><strong>Adresse :</strong> {{ inscription.adresse }}, {{ inscription.codePostal }} {{ inscription.ville }}</p>
+                    {% endif %}
+                    {% if inscription.telephone %}
+                        <p><strong>Téléphone :</strong> {{ inscription.telephone }}</p>
+                    {% endif %}
+                {% else %}
+                    <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Informations personnelles non renseignées</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card dashboard-card shadow-sm mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-users"></i> Représentants légaux</h5>
+            </div>
+            <div class="card-body">
+                {% if inscription.repLegal1Nom %}
+                    <div class="mb-3">
+                        <h6>Représentant légal 1</h6>
+                        <p><strong>{{ inscription.repLegal1Nom }} {{ inscription.repLegal1Prenom }}</strong> ({{ inscription.repLegal1Lien }})</p>
+                        <p>Email: {{ inscription.repLegal1Email }} | Tél: {{ inscription.repLegal1Telephone }}</p>
+                    </div>
+                {% endif %}
+                
+                {% if inscription.repLegal2Nom %}
+                    <div>
+                        <h6>Représentant légal 2</h6>
+                        <p><strong>{{ inscription.repLegal2Nom }} {{ inscription.repLegal2Prenom }}</strong> ({{ inscription.repLegal2Lien }})</p>
+                        <p>Email: {{ inscription.repLegal2Email }} | Tél: {{ inscription.repLegal2Telephone }}</p>
+                    </div>
+                {% endif %}
+
+                {% if not inscription.repLegal1Nom %}
+                    <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Informations des représentants légaux non renseignées</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card dashboard-card shadow-sm mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-school"></i> Scolarité précédente</h5>
+            </div>
+            <div class="card-body">
+                {% if inscription.etablissementPrecedent %}
+                    <p><strong>Établissement :</strong> {{ inscription.etablissementPrecedent }}</p>
+                    <p><strong>Classe :</strong> {{ inscription.classePrecedente }}</p>
+                    <p><strong>Année scolaire :</strong> {{ inscription.anneeScolairePrecedente }}</p>
+                {% else %}
+                    <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Informations de scolarité non renseignées</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card dashboard-card shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-file-alt"></i> Documents à fournir</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" disabled {{ inscription.documentsCertificat ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                Certificat de scolarité
+                                {% if inscription.documentsCertificat %}
+                                    <i class="fas fa-check text-success"></i>
+                                {% endif %}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" disabled {{ inscription.documentsPhoto ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                Photo d'identité
+                                {% if inscription.documentsPhoto %}
+                                    <i class="fas fa-check text-success"></i>
+                                {% endif %}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" disabled {{ inscription.documentsBulletins ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                Bulletins scolaires
+                                {% if inscription.documentsBulletins %}
+                                    <i class="fas fa-check text-success"></i>
+                                {% endif %}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" disabled {{ inscription.documentsAssurance ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                Attestation d'assurance
+                                {% if inscription.documentsAssurance %}
+                                    <i class="fas fa-check text-success"></i>
+                                {% endif %}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-tasks"></i> Actions rapides</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ path('app_inscription_form') }}" class="btn btn-primary">
+                        <i class="fas fa-edit"></i>
+                        {{ inscription.isComplete ? 'Modifier mon dossier' : 'Compléter mon dossier' }}
+                    </a>
+                    
+                    {% if inscription.isComplete %}
+                        <button class="btn btn-success" disabled>
+                            <i class="fas fa-check"></i>
+                            Dossier validé
+                        </button>
+                    {% endif %}
+                    
+                    <a href="{{ path('app_inscription_reset') }}" class="btn btn-outline-warning" 
+                       onclick="return confirm('Êtes-vous sûr de vouloir recommencer votre inscription ?')">
+                        <i class="fas fa-redo"></i>
+                        Recommencer
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-info-circle"></i> Informations</h5>
+            </div>
+            <div class="card-body">
+                <p class="small">
+                    <strong>Compte créé le :</strong><br>
+                    {{ inscription.createdAt|date('d/m/Y à H:i') }}
+                </p>
+                
+                {% if inscription.updatedAt %}
+                    <p class="small">
+                        <strong>Dernière modification :</strong><br>
+                        {{ inscription.updatedAt|date('d/m/Y à H:i') }}
+                    </p>
+                {% endif %}
+
+                <hr>
+                
+                <div class="alert alert-info small">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Conseil :</strong> Vous pouvez sauvegarder votre progression à chaque étape et reprendre plus tard.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

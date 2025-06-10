@@ -135,11 +135,68 @@
     </head>
     
     <body>
-        {{ include('index/header.html.twig') }}
+        {# {{ include('index/header.html.twig') }} #}
         {{ include('index/theme.html.twig') }}
         {# {{ include('index/fil.html.twig')}} #}
-        {% block body %}
-        {% endblock %}
+        {# {% block body %}
+        {% endblock %} #}
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="{{ path('app_home') }}">
+                    <i class="fas fa-graduation-cap"></i>
+                    E-Inscription
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        {% if app.user %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_inscription_dashboard') }}">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    Tableau de bord
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user"></i>
+                                    {{ app.user.email }}
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        Déconnexion
+                                    </a></li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_login') }}">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    Connexion
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container mt-4">
+            {% for type, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ type == 'error' ? 'danger' : type }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {% block body %}{% endblock %}
+        </main>
         {{ include('index/footer.html.twig') }}
 
         <!-- Script en version es6 module et nomodule pour les navigateurs le ne supportant pas -->
