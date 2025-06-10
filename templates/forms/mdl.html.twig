@@ -1,127 +1,79 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Adhésion à la MDL{% endblock %}
+{% block title %}Adhésion à la MDL
+{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
 
-    <main role="main" id="content">
-        <!-- Un seul formulaire global -->
-        <form method="post" action="{{ path('fiche-mdl') }}">
-            <!-- Section 1 -->
-            <article id="mdlFirst">
-                <div class="fr-container fr-container--fluid fr-mb-md-14v">
-                    <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--center">
-                        <div class="fr-col-12 fr-col-md-10 fr-col-lg-8">
-                            <div class="fr-container fr-background-alt--grey fr-px-md-0 fr-pt-10v fr-pt-md-14v fr-pb-6v fr-pb-md-10v">
-                                <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--center">
-                                    <div class="fr-col-12 fr-col-md-10 fr-col-lg-9">
-                                        <h1 class="fr-h1">Adhésion à la MDL</h1>
-                                        <fieldset id="mdlFirstForm">
-                                            <legend class="fr-fieldset__legend fr-text--regular">
-                                                <h3>Qu'est-ce que la MDL ?</h3>
-                                            </legend>
-                                            <p><strong>La MDL de Fulbert</strong></p>
-                                            <p>La Maison Des Lycéens (MDL) du lycée Fulbert à Chartres est un espace dynamique et collaboratif géré par et pour les élèves.</p>
-                                            <p>Elle a pour but de favoriser le développement culturel et associatif au sein de l'établissement.</p> 
-                                            <ul>
-                                                <li>Objectifs : Responsabiliser les élèves, promouvoir la diversité culturelle et créer des espaces d'expression.</li>
-                                                <li>Activités : Organisation d'événements culturels, sportifs et humanitaires.</li>
-                                                <li>Engagement des élèves et soutien de l'administration.</li>
-                                            </ul>
-                                            <p>En résumé, la MDL offre des opportunités d'engagement et de développement personnel. <strong>Et ça ne vous coûte que 10€ à l'année.</strong></p>
-                                            
-                                            <legend class="fr-fieldset__legend fr-text--regular">
-                                                <h2>Voulez-vous adhérer à la MDL ?</h2>
-                                            </legend>
-                                            <div class="fr-fieldset__element">
-                                                <div class="fr-radio-group fr-radio-rich">
-                                                    <input value="true" type="radio" id="acceptYes" name="accepter" required>
-                                                    <label class="fr-label" for="acceptYes">Oui, j'accepte</label>
-                                                </div>
-                                            </div>
-                                            <div class="fr-fieldset__element">
-                                                <div class="fr-radio-group fr-radio-rich">
-                                                    <input value="false" type="radio" id="acceptNo" name="accepter" required>
-                                                    <label class="fr-label" for="acceptNo">Non, je refuse</label>
-                                                </div>
-                                            </div>
-                                            <div class="fr-form-group">
-                                                <!-- Bouton pour passer à la section suivante -->
-                                                <button type="button" class="fr-btn" id="validateFirst">Valider</button>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
+{% for flash_error in app.flashes('verify_email_error') %}
+	<div class="fr-alert fr-alert--error" role="alert">{{ flash_error }}</div>
+{% endfor %}
 
-            <!-- Section 2 -->
-            <article id="mdlSecond">
-                <div class="fr-container fr-container--fluid fr-mb-md-14v">
-                    <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--center">
-                        <div class="fr-col-12 fr-col-md-10 fr-col-lg-8">
-                            <div class="fr-container fr-background-alt--grey fr-px-md-0 fr-pt-10v fr-pt-md-14v fr-pb-6v fr-pb-md-10v">
-                                <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--center">
-                                    <div class="fr-col-12 fr-col-md-10 fr-col-lg-9">
-                                        <h1 class="fr-h2">Adhésion à la MDL</h1>
-                                        <fieldset id="mdlSecondForm">
-                                            <!-- Paiement -->
-                                            <fieldset class="fr-fieldset" id="radio-rich-payment">
-                                                <legend class="fr-fieldset__legend--regular fr-fieldset__legend">
-                                                    Mode de paiement
-                                                </legend>
-                                                <p>10€ à l'ordre de la MDL, paiement de préférence par chèque.</p>
-                                                <div class="fr-fieldset__element">
-                                                    <div class="fr-radio-group fr-radio-rich">
-                                                        <input value="chèque" type="radio" id="radio-rich-payment-1" name="payment_method" required>
-                                                        <label class="fr-label" for="radio-rich-payment-1">Chèque</label>
-                                                    </div>
-                                                </div>
-                                                <div class="fr-fieldset__element">
-                                                    <div class="fr-radio-group fr-radio-rich">
-                                                        <input value="espèces" type="radio" id="radio-rich-payment-2" name="payment_method" required>
-                                                        <label class="fr-label" for="radio-rich-payment-2">Espèces</label>
-                                                    </div>
-                                                </div>
-                                            </fieldset>
+<main role="main" id="content">
+	<div class="fr-container fr-container--fluid fr-mb-md-14v">
+		<div class="fr-grid-row fr-grid-row--gutters fr-grid-row--center">
+			<div class="fr-col-12 fr-col-md-10 fr-col-lg-8">
+				<div class="fr-container fr-background-alt--grey fr-px-md-0 fr-pt-10v fr-pt-md-14v fr-pb-6v fr-pb-md-10v">
+					<div class="fr-grid-row fr-grid-row--gutters fr-grid-row--center">
+						<div class="fr-col-12 fr-col-md-10 fr-col-lg-9">
+							<h1 class="fr-h1">Adhésion à la MDL</h1>
+							<p>
+								<strong>La MDL de Fulbert</strong>
+							</p>
+							<p>La Maison Des Lycéens (MDL) du lycée Fulbert à Chartres est un espace dynamique et collaboratif géré par et pour les élèves.</p>
+							<p>Elle a pour but de favoriser le développement culturel et associatif au sein de l'établissement.</p>
+							<ul>
+								<li>Objectifs : Responsabiliser les élèves, promouvoir la diversité culturelle et créer des espaces d'expression.</li>
+								<li>Activités : Organisation d'événements culturels, sportifs et humanitaires.</li>
+								<li>Engagement des élèves et soutien de l'administration.</li>
+							</ul>
+							<p>En résumé, la MDL offre des opportunités d'engagement et de développement personnel.
+								<strong>Et ça ne vous coûte que 10€ à l'année.</strong>
+							</p>
 
-                                            <!-- Droit à l'image -->
-                                            <fieldset class="fr-fieldset" id="radio-rich-image">
-                                                <legend class="fr-fieldset__legend--regular fr-fieldset__legend">
-                                                    Autorisation droit à l'image
-                                                </legend>
-                                                <div class="fr-fieldset__element">
-                                                    <div class="fr-radio-group fr-radio-rich">
-                                                        <input value="true" type="radio" id="radio-rich-image-1" name="image_rights" required>
-                                                        <label class="fr-label" for="radio-rich-image-1">Autorise</label>
-                                                    </div>
-                                                </div>
-                                                <div class="fr-fieldset__element">
-                                                    <div class="fr-radio-group fr-radio-rich">
-                                                        <input value="false" type="radio" id="radio-rich-image-2" name="image_rights" required>
-                                                        <label class="fr-label" for="radio-rich-image-2">N'autorise pas</label>
-                                                    </div>
-                                                </div>
-                                            </fieldset>
+							{{ form_start(form, {'attr': {'class': 'fr-form'}}) }}
+							<fieldset class="fr-fieldset fr-mb-6v">
+								<legend class="fr-fieldset__legend fr-text--regular">
+									<h2>Voulez-vous adhérer à la MDL ?</h2>
+								</legend>
+								{{ form_row(form.accepted, {
+                                        'row_attr': {'class': 'fr-fieldset__element'},
+                                        'label_attr': {'class': 'fr-label'}
+                                    }) }}
+							</fieldset>
 
-                                            <!-- Bouton Valider pour soumettre le formulaire complet -->
-                                            <div class="fr-form-group">
-                                                <button type="submit" class="fr-btn" id="validateSecondMdl">Valider</button>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-        </form>
-    </main>
+							<fieldset class="fr-fieldset fr-mb-6v">
+								<legend class="fr-fieldset__legend fr-text--regular">
+									Mode de paiement
+								</legend>
+								<p>10€ à l'ordre de la MDL, paiement de préférence par chèque.</p>
+								{{ form_row(form.paymentMethod, {
+                                        'row_attr': {'class': 'fr-fieldset__element'},
+                                        'label_attr': {'class': 'fr-label'}
+                                    }) }}
+							</fieldset>
+
+							<fieldset class="fr-fieldset fr-mb-6v">
+								<legend class="fr-fieldset__legend fr-text--regular">
+									Autorisation droit à l'image
+								</legend>
+								{{ form_row(form.imageRights, {
+                                        'row_attr': {'class': 'fr-fieldset__element'},
+                                        'label_attr': {'class': 'fr-label'}
+                                    }) }}
+							</fieldset>
+
+							<div class="fr-form-group">
+								<button type="submit" class="fr-btn">Valider</button>
+							</div>
+							{{ form_end(form) }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+
 {% endblock %}
