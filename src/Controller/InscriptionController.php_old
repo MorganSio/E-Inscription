@@ -1,0 +1,1206 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\User;
+use App\Entity\InfoEleve;
+use App\Entity\RepresentantLegal;
+use App\Entity\MedecinTraitant;
+use App\Entity\ResposableFinancier;
+use App\Entity\CentreSecuriteSociale;
+use App\Entity\Adhesion;
+use App\Entity\AssuranceScolaire;
+use App\Entity\ScolariteAnterieur;
+use App\Entity\Classe;
+use App\Repository\ClasseRepository;
+use App\Flow\InscriptionFlow;
+use App\Repository\InfoEleveRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+class InscriptionController extends AbstractController
+{
+    private $session;
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly InfoEleveRepository $infoEleveRepository,
+        private readonly ClasseRepository $classeRepository,
+        private readonly LoggerInterface $logger,
+        private readonly ValidatorInterface $validator,
+        RequestStack $requestStack
+    ) 
+    {        
+        $this->session = $requestStack->getSession();
+    }
+
+    #[Route('/', name: 'app_home')]
+    public function home(): Response
+    {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_inscription_dashboard');
+        }
+
+        return $this->render('inscription/home.html.twig');
+    }
+
+    #[Route('/inscription/dashboard', name: 'app_inscription_dashboard')]
+    #[IsGranted('ROLE_USER')]
+    public function dashboard(): Response
+    {
+        $user = $this->getUser();
+        $infoEleve = $this->infoEleveRepository->findOneBy(['user' => $user]);
+
+        $inscription = null;
+        $isComplete = false;
+
+        if ($infoEleve) {
+            $inscription = $this->convertEntityToArray($user, $infoEleve);
+            $this->prepareInscriptionData($infoEleve, $inscription);
+            $inscription['isComplete'] = $this->isInscriptionComplete($infoEleve);
+            $isComplete = $inscription['isComplete'];
+        }
+
+        return $this->render('inscription/dashboard.html.twig', [
+            'user' => $user,
+            'inscription' => $inscription,
+            'isComplete' => $isComplete,
+        ]);
+    }
+
+    private function prepareInscriptionData(InfoEleve $infoEleve, array &$data): void
+    {
+        $this->convertScolariteAnterieurToArray($infoEleve, $data);
+    }
+
+    // #[Route('/inscription/formulaire', name: 'app_inscription_form')]
+    // #[IsGranted('ROLE_USER')]
+    // public function inscriptionForm(Request $request, InscriptionFlow $flow): Response
+    // {
+    //     $user = $this->getUser();
+    //     $flow->bind($request);
+
+    //     // Charger les données existantes en base
+    //     $infoEleve = $this->infoEleveRepository->findOneBy(['user' => $user]);
+
+    //     if ($flow->hasDraft() && $flow->loadDraft()) {
+    //         // Le brouillon a été chargé avec succès
+    //     } elseif ($infoEleve) {
+    //         // Charger les données en base
+    //         $this->loadExistingDataIntoFlow($user, $flow);
+    //     } else {
+    //         // Initialiser un nouveau formulaire avec des données par défaut
+    //         $flow->setFormData([]);
+    //     }
+
+    //     $form = $flow->createForm();
+
+    //     if ($flow->isValid($form)) {
+    //         $flow->saveCurrentStepData($form);
+
+    //         // Sauvegarder le brouillon à chaque étape
+    //         $flow->saveDraft();
+
+    //         // Sauvegarder en base de données à chaque étape avec la logique d'EnregistrementEleveController
+    //         try {
+    //             $this->saveInscriptionDataStep($user, $flow);
+    //             $this->addFlash('info', 'Étape sauvegardée avec succès !');
+    //         } catch (\Exception $e) {
+    //             $this->logger->error('Erreur lors de la sauvegarde : ' . $e->getMessage());
+    //             $this->addFlash('error', 'Erreur lors de la sauvegarde. Veuillez réessayer.');
+    //         }
+
+    //         if ($flow->nextStep()) {
+    //             // Étape suivante
+    //             $form = $flow->createForm();
+    //         } else {
+    //             // Formulaire terminé - validation finale
+    //             return $this->handleFinalValidation($user, $flow);
+    //         }
+    //     }
+
+    //     return $this->render('inscription/form.html.twig', [
+    //         'form' => $form->createView(),
+    //         'flow' => $flow,
+    //         'user' => $user,
+    //         'debug_data' => $this->isDevelopmentMode() ? $flow->getFormData() : null
+    //     ]);
+    // }
+
+    /**
+     * Sauvegarde des données à chaque étape avec la logique d'EnregistrementEleveController
+     */
+    private function saveInscriptionDataStep(User $user, InscriptionFlow $flow): void
+    {
+        try {
+            $data = $flow->getFormData();
+            
+            // Récupérer ou créer InfoEleve
+            $infoEleve = $user->getInfoEleve();
+            if (!$infoEleve) {
+                $infoEleve = new InfoEleve($user);
+                $user->setInfoEleve($infoEleve);
+            }
+
+            // Utiliser la logique de mapping d'EnregistrementEleveController
+            $this->mapDataWithEnregistrementLogic($data, $user, $infoEleve);
+            
+            $this->entityManager->persist($infoEleve);
+            $this->entityManager->flush();
+
+        } catch (\Exception $e) {
+            $this->logger->error('Erreur lors de la sauvegarde de l\'inscription à l\'étape', [
+                'user_id' => $user->getId(),
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
+        }
+    }
+
+    /**
+     * Mapping des données avec la logique d'EnregistrementEleveController
+     */
+    private function mapDataWithEnregistrementLogic(array $data, User $user, InfoEleve $infoEleve): void
+    {
+        // Gestion des années scolaires antérieures
+        $this->handleScolariteAnterieure($data, $infoEleve);
+        
+        // Gestion des langues
+        $this->handleLangues($data, $infoEleve);
+        
+        // Gestion des informations de base de l'élève
+        $this->handleInfoEleveBasic($data, $infoEleve);
+        
+        // Gestion du transport
+        $this->handleTransport($data, $infoEleve);
+        
+        // Gestion du représentant légal
+        $this->handleRepresentantLegal($data, $user, $infoEleve);
+        
+        // Gestion de l'adhésion
+        $this->handleAdhesion($data, $infoEleve);
+        
+        // Gestion des autres entités
+        $this->handleOtherEntities($data, $infoEleve);
+    }
+
+    /**
+     * Gestion des années scolaires antérieures
+     */
+    private function handleScolariteAnterieure(array $data, InfoEleve $infoEleve): void
+    {
+        // Année scolaire 1
+        if ($infoEleve->getAnneScolaireUn() instanceof ScolariteAnterieur) {
+            $anneScolaireUn = $infoEleve->getAnneScolaireUn();
+        } else {
+            $anneScolaireUn = new ScolariteAnterieur();
+            $this->entityManager->persist($anneScolaireUn);
+            $infoEleve->setAnneScolaireUn($anneScolaireUn);
+        }
+
+        // Année scolaire 2
+        if ($infoEleve->getAnneScolaireDeux() instanceof ScolariteAnterieur) {
+            $anneScolaireDeux = $infoEleve->getAnneScolaireDeux();
+        } else {
+            $anneScolaireDeux = new ScolariteAnterieur();
+            $this->entityManager->persist($anneScolaireDeux);
+            $infoEleve->setAnneScolaireDeux($anneScolaireDeux);
+        }
+
+        // Mapping des données
+        $mappingScolarite = [
+            'annee-1' => [$anneScolaireUn, 'setAnneScolaire'],
+            'annee-2' => [$anneScolaireDeux, 'setAnneScolaire'],
+            'classe-1' => [$anneScolaireUn, 'setClasse'],
+            'classe-2' => [$anneScolaireDeux, 'setClasse'],
+            'etablissement-1' => [$anneScolaireUn, 'setEtablissement'],
+            'etablissement-2' => [$anneScolaireDeux, 'setEtablissement'],
+            'option-1' => [$anneScolaireUn, 'setOption'],
+            'option-2' => [$anneScolaireDeux, 'setOption'],
+            'etablissementPrecedent1' => [$anneScolaireUn, 'setEtablissement'],
+            'etablissementPrecedent2' => [$anneScolaireDeux, 'setEtablissement'],
+            'classePrecedente1' => [$anneScolaireUn, 'setClasse'],
+            'classePrecedente2' => [$anneScolaireDeux, 'setClasse'],
+            'anneeScolairePrecedente1' => [$anneScolaireUn, 'setAnneScolaire'],
+            'anneeScolairePrecedente2' => [$anneScolaireDeux, 'setAnneScolaire'],
+        ];
+
+        foreach ($mappingScolarite as $key => [$entity, $method]) {
+            if (isset($data[$key]) && $data[$key] !== "") {
+                $entity->$method($data[$key]);
+            }
+        }
+    }
+
+    /**
+     * Gestion des langues
+     */
+    private function handleLangues(array $data, InfoEleve $infoEleve): void
+    {
+        $anneScolaireUn = $infoEleve->getAnneScolaireUn();
+        $anneScolaireDeux = $infoEleve->getAnneScolaireDeux();
+
+        // Langues années antérieures
+        $langueMapping = [
+            'lv1-1' => [$anneScolaireUn, 'setLVUn'],
+            'lv1-2' => [$anneScolaireDeux, 'setLVUn'],
+            'lv2-1' => [$anneScolaireUn, 'setLVDeux'],
+            'lv2-2' => [$anneScolaireDeux, 'setLVDeux'],
+        ];
+
+        foreach ($langueMapping as $key => [$entity, $method]) {
+            if (isset($data[$key]) && $data[$key] !== "" && $entity) {
+                $entity->$method($data[$key]);
+            }
+        }
+
+        // Langues actuelles de l'élève
+        if (isset($data["student-lv1"]) && $data["student-lv1"] !== "") {
+            $infoEleve->setLVUn($data["student-lv1"]);
+        }
+        if (isset($data["student-lv2"]) && $data["student-lv2"] !== "") {
+            $infoEleve->setLVDeux($data["student-lv2"]);
+        }
+        if (isset($data["lvUn"]) && $data["lvUn"] !== "") {
+            $infoEleve->setLVUn($data["lvUn"]);
+        }
+        if (isset($data["lvDeux"]) && $data["lvDeux"] !== "") {
+            $infoEleve->setLVDeux($data["lvDeux"]);
+        }
+    }
+
+    /**
+     * Gestion des informations de base de l'élève
+     */
+    private function handleInfoEleveBasic(array $data, InfoEleve $infoEleve): void
+    {
+        // Mapping des champs simples
+        $basicMapping = [
+            'immatriculation' => 'setImmattriculationVeic',
+            'immatriculationVeic' => 'setImmattriculationVeic',
+            'last-certif' => 'setDernierDiplome',
+            'dernierDiplome' => 'setDernierDiplome',
+            'student-birth-city' => 'setCommuneNaissance',
+            'communeNaissance' => 'setCommuneNaissance',
+            'student-birth-dept' => 'setDepartement',
+            'departement' => 'setDepartement',
+            'student-mobile' => 'setNumeroMobile',
+            'numeroMobile' => 'setNumeroMobile',
+            'student-natio' => 'setNationalite',
+            'nationalite' => 'setNationalite',
+            'student-secu' => 'setNumSecuSocial',
+            'numSecuSocial' => 'setNumSecuSocial',
+            'promotion' => 'setPromotion',
+            'sexe' => 'setSexe',
+            'regime' => 'setRegime',
+            'observations' => 'setObservations',
+            'nomContacteUrgence' => 'setNomContacteUrgence',
+            'numeroContacteUrgence' => 'setNumeroContacteUrgence',
+        ];
+
+        foreach ($basicMapping as $key => $method) {
+            if (isset($data[$key]) && $data[$key] !== "") {
+                $infoEleve->$method($data[$key]);
+            }
+        }
+
+        // Gestion de la date de naissance
+        if (isset($data["student-birthdate"]) && $data["student-birthdate"] !== "") {
+            $infoEleve->setDateDeNaissance(\DateTime::createFromFormat("Y-m-d", $data["student-birthdate"]));
+        } elseif (isset($data["dateNaissance"]) && $data["dateNaissance"] !== "") {
+            if ($data["dateNaissance"] instanceof \DateTime) {
+                $infoEleve->setDateDeNaissance($data["dateNaissance"]);
+            } elseif (is_string($data["dateNaissance"])) {
+                try {
+                    $date = \DateTime::createFromFormat("Y-m-d", $data["dateNaissance"]) ?: new \DateTime($data["dateNaissance"]);
+                    $infoEleve->setDateDeNaissance($date);
+                } catch (\Exception $e) {
+                    $this->logger->warning('Date de naissance invalide : ' . $data["dateNaissance"]);
+                }
+            }
+        }
+
+        // Gestion de la classe
+        if (isset($data["student-class"]) && $data["student-class"] !== "") {
+            $classe = $this->classeRepository->findOneBy(['label' => $data["student-class"]]);
+            if ($classe) {
+                $infoEleve->setClasse($classe);
+            }
+        } elseif (isset($data["classe"]) && $data["classe"] !== "") {
+            $classe = $this->classeRepository->findOneBy(['label' => $data["classe"]]);
+            if ($classe) {
+                $infoEleve->setClasse($classe);
+            }
+        }
+
+        // Gestion du redoublement
+        if (isset($data["student-redoubling"]) && $data["student-redoubling"] !== "") {
+            $infoEleve->setRedoublant($data["student-redoubling"] === "oui");
+        } elseif (isset($data["redoublant"])) {
+            $value = $data["redoublant"];
+            $boolValue = ($value === "oui" || $value === true || $value === 1 || $value === "1");
+            $infoEleve->setRedoublant($boolValue);
+        }
+
+        // Gestion des autres champs booléens
+        $booleanFields = [
+            'cheque' => 'setCheque',
+            'droitImage' => 'setDroitImage',
+            'carteVitale' => 'setCarteVitale',
+            'photoIdentite' => 'setPhotoIdentite',
+            'attestationIdentite' => 'setAttestationIdentite',
+            'bourse' => 'setBourse',
+            'attestationJDC' => 'setAttestationJDC',
+            'attestationReusite' => 'setAttestationReusite'
+        ];
+
+        foreach ($booleanFields as $dataKey => $method) {
+            if (isset($data[$dataKey])) {
+                $value = $data[$dataKey];
+                $boolValue = ($value === "oui" || $value === true || $value === 1 || $value === "1");
+                $infoEleve->$method($boolValue);
+            }
+        }
+    }
+
+    /**
+     * Gestion du transport
+     */
+    private function handleTransport(array $data, InfoEleve $infoEleve): void
+    {
+        if (isset($data["student-has-transport"]) && $data["student-has-transport"] == "true") {
+            if (isset($data["student-transport"])) {
+                $infoEleve->setTransportScolaire($data["student-transport"]);
+            }
+
+            if (isset($data["immatriculation"]) && $data["student-transport"] == "voiture-transport") {
+                $infoEleve->setImmattriculationVeic($data["immatriculation"]);
+            }
+        } elseif (isset($data["transportScolaire"]) && $data["transportScolaire"] !== "") {
+            $infoEleve->setTransportScolaire($data["transportScolaire"]);
+        }
+    }
+
+    /**
+     * Gestion du représentant légal
+     */
+    private function handleRepresentantLegal(array $data, User $user, InfoEleve $infoEleve): void
+    {
+        // Gestion du représentant légal principal (logique d'EnregistrementEleveController)
+        if (isset($data['student-legal']) && $data['student-legal'] == "true") {
+            if ($infoEleve->getResponsableUn() instanceof RepresentantLegal) {
+                $representantUn = $infoEleve->getResponsableUn();
+            } else {
+                $representantUn = new RepresentantLegal();
+                $representantUn->setNom($user->getNom());
+                $representantUn->setPrenom($user->getPrenom());
+                $this->entityManager->persist($representantUn);
+                $infoEleve->setResponsableUn($representantUn);
+                $representantUn->setInfoEleve($infoEleve);
+            }
+
+            $mappingResp = [
+                'resp-codepostal' => 'setCodePostal',
+                'resp-email' => 'setCourriel',
+                'resp-commune' => 'setCommune',
+                'resp-adresse' => 'setAdresse',
+                'resp-phone' => 'setTelephonePerso',
+                'resp-phone-dom' => 'setTelephoneFixe',
+            ];
+
+            foreach ($mappingResp as $key => $method) {
+                if (isset($data[$key]) && $data[$key] !== "") {
+                    $representantUn->$method($data[$key]);
+                }
+            }
+
+            // Gestion communication
+            if (isset($data["resp-comm"]) && $data["resp-comm"] !== "") {
+                $representantUn->setComAddrAsso($data["resp-comm"] === "oui");
+            }
+        }
+
+        // Gestion des représentants légaux du flow
+        $this->mapRepresentantLegal($data, $infoEleve, 1);
+        $this->mapRepresentantLegal($data, $infoEleve, 2);
+    }
+
+    /**
+     * Gestion de l'adhésion
+     */
+    private function handleAdhesion(array $data, InfoEleve $infoEleve): void
+    {
+        if (isset($data['adhesionAccepted'])) {
+            $adhesion = $infoEleve->getAdhesion();
+            if (!$adhesion) {
+                $adhesion = new Adhesion();
+                $infoEleve->setAdhesion($adhesion);
+                $this->entityManager->persist($adhesion);
+            }
+            
+            $accepted = ($data['adhesionAccepted'] === "oui" || $data['adhesionAccepted'] === true || 
+                        $data['adhesionAccepted'] === 1 || $data['adhesionAccepted'] === "1");
+            $adhesion->setAccepted($accepted);
+
+            // Autres champs d'adhésion
+            if (isset($data['adhesionPaymentMethod'])) {
+                $adhesion->setPaymentMethod($data['adhesionPaymentMethod']);
+            }
+            if (isset($data['adhesionImageRights'])) {
+                $imageRights = ($data['adhesionImageRights'] === "oui" || $data['adhesionImageRights'] === true);
+                $adhesion->setImageRights($imageRights);
+            }
+        }
+    }
+
+    /**
+     * Gestion des autres entités
+     */
+    private function handleOtherEntities(array $data, InfoEleve $infoEleve): void
+    {
+        // Médecin traitant
+        if (isset($data['medecinTraitantNom']) && $data['medecinTraitantNom'] !== "") {
+            $medecin = $infoEleve->getMedecinTraitant();
+            if (!$medecin) {
+                $medecin = new MedecinTraitant();
+                $infoEleve->setMedecinTraitant($medecin);
+                $this->entityManager->persist($medecin);
+            }
+            
+            $medecin->setNom($data['medecinTraitantNom']);
+            if (isset($data['medecinTraitantTelephone'])) {
+                $medecin->setNumero($data['medecinTraitantTelephone']);
+            }
+            if (isset($data['medecinTraitantAdresse'])) {
+                $medecin->setAdresse($data['medecinTraitantAdresse']);
+            }
+        }
+
+        // Responsable financier
+        if (isset($data['responsableFinancierNom']) && $data['responsableFinancierNom'] !== "") {
+            $responsable = $infoEleve->getResponsableFinancier();
+            if (!$responsable) {
+                $responsable = new ResposableFinancier();
+                $infoEleve->setResponsableFinancier($responsable);
+                $this->entityManager->persist($responsable);
+            }
+            
+            $responsable->setNom($data['responsableFinancierNom']);
+            if (isset($data['responsableFinancierPrenom'])) {
+                $responsable->setPrenom($data['responsableFinancierPrenom']);
+            }
+            if (isset($data['responsableFinancierNomEmployeur'])) {
+                $responsable->setNomEmployeur($data['responsableFinancierNomEmployeur']);
+            }
+            if (isset($data['responsableFinancierAdresseEmployeur'])) {
+                $responsable->setAdresseEmployeur($data['responsableFinancierAdresseEmployeur']);
+            }
+        }
+
+        // Sécurité sociale
+        if (isset($data['secuSocialeNom']) && $data['secuSocialeNom'] !== "") {
+            $secuSociale = $infoEleve->getSecuSociale();
+            if (!$secuSociale) {
+                $secuSociale = new CentreSecuriteSociale();
+                $infoEleve->setSecuSociale($secuSociale);
+                $this->entityManager->persist($secuSociale);
+            }
+            
+            $secuSociale->setNom($data['secuSocialeNom']);
+            if (isset($data['secuSocialeAdresse'])) {
+                $secuSociale->setAddresse($data['secuSocialeAdresse']);
+            }
+        }
+
+        // Assureur
+        if (isset($data['assureurNom']) && $data['assureurNom'] !== "") {
+            $assureur = $infoEleve->getAssureur();
+            if (!$assureur) {
+                $assureur = new AssuranceScolaire();
+                $infoEleve->setAssureur($assureur);
+                $this->entityManager->persist($assureur);
+            }
+            
+            $assureur->setNom($data['assureurNom']);
+            if (isset($data['assureurAdresse'])) {
+                $assureur->setAddresse($data['assureurAdresse']);
+            }
+            if (isset($data['assureurNumeroAssurance'])) {
+                $assureur->setNumeroAssurance($data['assureurNumeroAssurance']);
+            }
+        }
+    }
+
+    /**
+     * Gestion de la validation finale avec messages d'erreur détaillés
+     */
+    private function handleFinalValidation(User $user, InscriptionFlow $flow): Response
+    {
+        try {
+            // 1. Validation des données du flow
+            $formData = $flow->getFormData();
+            
+            // DEBUG: Log des données pour diagnostic
+            $this->logger->info('DEBUG - Données pour validation finale:', [
+                'nom' => $formData['nom'] ?? 'MANQUANT',
+                'prenom' => $formData['prenom'] ?? 'MANQUANT', 
+                'dateNaissance' => isset($formData['dateNaissance']) ? 
+                    (is_object($formData['dateNaissance']) ? get_class($formData['dateNaissance']) : $formData['dateNaissance']) : 'MANQUANT',
+                'promotion' => $formData['promotion'] ?? 'MANQUANT',
+                'classe' => $formData['classe'] ?? 'MANQUANT',
+                'sexe' => $formData['sexe'] ?? 'MANQUANT',
+                'adhesionAccepted' => $formData['adhesionAccepted'] ?? 'MANQUANT',
+                'all_keys' => array_keys($formData)
+            ]);
+
+            // 2. Vérifications métier personnalisées
+            $validationErrors = $this->validateInscriptionData($formData);
+            
+            if (!empty($validationErrors)) {
+                foreach ($validationErrors as $error) {
+                    $this->addFlash('error', $error);
+                }
+                $this->logger->warning('Erreurs de validation métier', ['errors' => $validationErrors]);
+                return $this->render('inscription/form.html.twig', [
+                    'form' => $flow->createForm()->createView(),
+                    'flow' => $flow,
+                    'user' => $user,
+                    'validation_errors' => $validationErrors
+                ]);
+            }
+
+            // 3. Sauvegarde finale avec validation Doctrine
+            $this->saveInscriptionDataStep($user, $flow);
+            
+            // 4. Validation de l'entité avec le validator Symfony
+            $infoEleve = $this->infoEleveRepository->findOneBy(['user' => $user]);
+            if ($infoEleve) {
+                $violations = $this->validator->validate($infoEleve);
+                if (count($violations) > 0) {
+                    foreach ($violations as $violation) {
+                        $this->addFlash('error', 'Erreur de validation : ' . $violation->getMessage() . ' (champ: ' . $violation->getPropertyPath() . ')');
+                    }
+                    $this->logger->warning('Violations de contraintes Symfony', [
+                        'violations' => array_map(fn($v) => [
+                            'message' => $v->getMessage(),
+                            'property' => $v->getPropertyPath(),
+                            'value' => $v->getInvalidValue()
+                        ], iterator_to_array($violations))
+                    ]);
+                    return $this->render('inscription/form.html.twig', [
+                        'form' => $flow->createForm()->createView(),
+                        'flow' => $flow,
+                        'user' => $user
+                    ]);
+                }
+            }
+
+            // 5. Finalisation réussie
+            if ($flow->saveFormData()) {
+                // Nettoyer le brouillon
+                $flow->clearDraft();
+                
+                $this->addFlash('success', 'Votre inscription a été complétée avec succès !');
+                return $this->redirectToRoute('app_inscription_dashboard');
+            } else {
+                $this->addFlash('error', 'Erreur lors de la finalisation du flow. Données non sauvegardées.');
+                $this->logger->error('Erreur lors du saveFormData() du flow');
+            }
+
+        } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e) {
+            $this->addFlash('error', 'Cette inscription existe déjà ou contient des doublons.');
+            $this->logger->error('Violation de contrainte unique', ['exception' => $e->getMessage()]);
+        } catch (\Doctrine\DBAL\Exception\NotNullConstraintViolationException $e) {
+            $this->addFlash('error', 'Certains champs obligatoires sont manquants.');
+            $this->logger->error('Violation de contrainte NOT NULL', ['exception' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Erreur lors de la finalisation : ' . $e->getMessage());
+            $this->logger->error('Erreur lors de la finalisation de l\'inscription', [
+                'exception' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'data' => $flow->getFormData()
+            ]);
+        }
+
+        return $this->render('inscription/form.html.twig', [
+            'form' => $flow->createForm()->createView(),
+            'flow' => $flow,
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Validation métier personnalisée des données d'inscription
+     */
+    private function validateInscriptionData(array $data): array
+    {
+        $errors = [];
+
+        // Vérification des champs obligatoires de base
+        $requiredFields = [
+            'nom' => 'Le nom est obligatoire',
+            'prenom' => 'Le prénom est obligatoire',
+            'dateNaissance' => 'La date de naissance est obligatoire',
+            'promotion' => 'La promotion est obligatoire',
+            'classe' => 'La classe est obligatoire',
+            'sexe' => 'Le sexe est obligatoire'
+        ];
+
+        foreach ($requiredFields as $field => $message) {
+            if (empty($data[$field])) {
+                $errors[] = $message;
+            }
+        }
+
+        // Validation de la date de naissance
+        if (!empty($data['dateNaissance'])) {
+            if (is_string($data['dateNaissance'])) {
+                try {
+                    $date = new \DateTime($data['dateNaissance']);
+                    $now = new \DateTime();
+                    $age = $now->diff($date)->y;
+                    
+                    if ($age < 10 || $age > 25) {
+                        $errors[] = 'L\'âge de l\'élève doit être compris entre 10 et 25 ans';
+                    }
+                } catch (\Exception $e) {
+                    $errors[] = 'Format de date de naissance invalide';
+                }
+            }
+        }
+
+        // Validation de l'adhésion
+        if (!isset($data['adhesionAccepted']) || empty($data['adhesionAccepted'])) {
+            $errors[] = 'L\'acceptation de l\'adhésion est obligatoire';
+        }
+
+        // Validation du numéro de sécurité sociale si fourni
+        if (!empty($data['numSecuSocial'])) {
+            if (!preg_match('/^[12][0-9]{2}(0[1-9]|1[0-2])[0-9]{8}$/', $data['numSecuSocial'])) {
+                $errors[] = 'Le numéro de sécurité sociale n\'est pas valide';
+            }
+        }
+
+        // Validation email si fourni
+        if (!empty($data['resp-email'])) {
+            if (!filter_var($data['resp-email'], FILTER_VALIDATE_EMAIL)) {
+                $errors[] = 'L\'adresse email du responsable n\'est pas valide';
+            }
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Mapping des représentants légaux
+     */
+    private function mapRepresentantLegal(array $data, InfoEleve $infoEleve, int $numero): void
+    {
+        $prefix = $numero === 1 ? 'responsableUn' : 'responsableDeux';
+        
+        if (isset($data[$prefix . 'Nom']) && $data[$prefix . 'Nom'] !== "") {
+            $method = $numero === 1 ? 'getResponsableUn' : 'getResponsableDeux';
+            $setMethod = $numero === 1 ? 'setResponsableUn' : 'setResponsableDeux';
+            
+            $representant = $infoEleve->$method();
+            if (!$representant instanceof RepresentantLegal) {
+                $representant = new RepresentantLegal();
+                $this->entityManager->persist($representant);
+                $infoEleve->$setMethod($representant);
+                $representant->setInfoEleve($infoEleve);
+            }
+
+            // Mapping des champs du représentant
+            $mappingRepresentant = [
+                $prefix . 'Nom' => 'setNom',
+                $prefix . 'Prenom' => 'setPrenom',
+                $prefix . 'Adresse' => 'setAdresse',
+                $prefix . 'CodePostal' => 'setCodePostal',
+                $prefix . 'Commune' => 'setCommune',
+                $prefix . 'TelephoneFixe' => 'setTelephoneFixe',
+                $prefix . 'TelephonePerso' => 'setTelephonePerso',
+                $prefix . 'Courriel' => 'setCourriel',
+                $prefix . 'Profession' => 'setProfession',
+                $prefix . 'LieuTravail' => 'setLieuTravail',
+                $prefix . 'TelephoneTravail' => 'setTelephoneTravail'
+            ];
+
+            foreach ($mappingRepresentant as $key => $method) {
+                if (isset($data[$key]) && $data[$key] !== "") {
+                    $representant->$method($data[$key]);
+                }
+            }
+
+            // Gestion des champs booléens
+            if (isset($data[$prefix . 'ComAddrAsso'])) {
+                $value = $data[$prefix . 'ComAddrAsso'];
+                $boolValue = ($value === "oui" || $value === true || $value === 1 || $value === "1");
+                $representant->setComAddrAsso($boolValue);
+            }
+        }
+    }
+
+    /**
+     * Charger les données existantes dans le flow
+     */
+    private function loadExistingDataIntoFlow(User $user, InscriptionFlow $flow): void
+    {
+        $infoEleve = $this->infoEleveRepository->findOneBy(['user' => $user]);
+        if (!$infoEleve) {
+            return;
+        }
+
+        // Convertir les données de l'entité en tableau pour le flow
+        $data = $this->convertEntityToArray($user, $infoEleve);
+        $this->prepareInscriptionData($infoEleve, $data);
+        
+        $flow->setFormData($data);
+    }
+
+    /**
+     * Convertir les entités en tableau pour l'affichage
+     */
+    private function convertEntityToArray(User $user, InfoEleve $infoEleve): array
+    {
+        $data = [
+            // Données utilisateur
+            'nom' => $user->getNom(),
+            'prenom' => $user->getPrenom(),
+            'email' => $user->getEmail(),
+            
+            // Données InfoEleve
+            'dateNaissance' => $infoEleve->getDateDeNaissance(),
+            'communeNaissance' => $infoEleve->getCommuneNaissance(),
+            'departement' => $infoEleve->getDepartement(),
+            'nationalite' => $infoEleve->getNationalite(),
+            'numSecuSocial' => $infoEleve->getNumSecuSocial(),
+            'numeroMobile' => $infoEleve->getNumeroMobile(),
+            'sexe' => $infoEleve->getSexe(),
+            'redoublant' => $infoEleve->isRedoublant(),
+            'promotion' => $infoEleve->getPromotion(),
+            'regime' => $infoEleve->getRegime(),
+            'transportScolaire' => $infoEleve->getTransportScolaire(),
+            'immatriculationVeic' => $infoEleve->getImmattriculationVeic(),
+            'dernierDiplome' => $infoEleve->getDernierDiplome(),
+            'lvUn' => $infoEleve->getLVUn(),
+            'lvDeux' => $infoEleve->getLVDeux(),
+            'observations' => $infoEleve->getObservations(),
+            'nomContacteUrgence' => $infoEleve->getNomContacteUrgence(),
+            'numeroContacteUrgence' => $infoEleve->getNumeroContacteUrgence(),
+            
+            // Champs booléens
+            'cheque' => $infoEleve->isCheque(),
+            'droitImage' => $infoEleve->isDroitImage(),
+            'carteVitale' => $infoEleve->getCarteVitale(),
+            'photoIdentite' => $infoEleve->getPhotoIdentite(),
+            'attestationIdentite' => $infoEleve->getAttestationIdentite(),
+            'bourse' => $infoEleve->getBourse(),
+            'attestationJDC' => $infoEleve->getAttestationJDC(),
+            'attestationReusite' => $infoEleve->getAttestationReusite(),
+        ];
+
+        // Classe
+        if ($infoEleve->getClasse()) {
+            $data['classe'] = $infoEleve->getClasse()->getLabel();
+        }
+
+        // Représentants légaux
+        $this->addRepresentantToArray($data, $infoEleve->getResponsableUn(), 'responsableUn');
+        $this->addRepresentantToArray($data, $infoEleve->getResponsableDeux(), 'responsableDeux');
+
+        // Adhésion
+        if ($infoEleve->getAdhesion()) {
+            $adhesion = $infoEleve->getAdhesion();
+            $data['adhesionAccepted'] = $adhesion->isAccepted();
+            $data['adhesionPaymentMethod'] = $adhesion->getPaymentMethod();
+            $data['adhesionImageRights'] = $adhesion->getImageRights();
+        }
+
+        // Médecin traitant
+        if ($infoEleve->getMedecinTraitant()) {
+            $medecin = $infoEleve->getMedecinTraitant();
+            $data['medecinTraitantNom'] = $medecin->getNom();
+            $data['medecinTraitantTelephone'] = $medecin->getNumero();
+            $data['medecinTraitantAdresse'] = $medecin->getAdresse();
+        }
+
+        // Responsable financier
+        if ($infoEleve->getResponsableFinancier()) {
+            $resp = $infoEleve->getResponsableFinancier();
+            $data['responsableFinancierNom'] = $resp->getNom();
+            $data['responsableFinancierPrenom'] = $resp->getPrenom();
+            $data['responsableFinancierNomEmployeur'] = $resp->getNomEmployeur();
+            $data['responsableFinancierAdresseEmployeur'] = $resp->getAdresseEmployeur();
+        }
+
+        // Sécurité sociale
+        if ($infoEleve->getSecuSociale()) {
+            $secu = $infoEleve->getSecuSociale();
+            $data['secuSocialeNom'] = $secu->getNom();
+            $data['secuSocialeAdresse'] = $secu->getAddresse();
+        }
+
+        // Assureur
+        if ($infoEleve->getAssureur()) {
+            $assureur = $infoEleve->getAssureur();
+            $data['assureurNom'] = $assureur->getNom();
+            $data['assureurAdresse'] = $assureur->getAddresse();
+            $data['assureurNumeroAssurance'] = $assureur->getNumeroAssurance();
+        }
+
+        return $data;
+    }
+
+    /**
+     * Ajouter les données d'un représentant au tableau
+     */
+    private function addRepresentantToArray(array &$data, ?RepresentantLegal $representant, string $prefix): void
+    {
+        if ($representant) {
+            $data[$prefix . 'Nom'] = $representant->getNom();
+            $data[$prefix . 'Prenom'] = $representant->getPrenom();
+            $data[$prefix . 'Adresse'] = $representant->getAdresse();
+            $data[$prefix . 'CodePostal'] = $representant->getCodePostal();
+            $data[$prefix . 'Commune'] = $representant->getCommune();
+            $data[$prefix . 'TelephoneFixe'] = $representant->getTelephoneFixe();
+            $data[$prefix . 'TelephonePerso'] = $representant->getTelephonePerso();
+            $data[$prefix . 'Courriel'] = $representant->getCourriel();
+            $data[$prefix . 'Profession'] = $representant->getPoste();
+            $data[$prefix . 'LieuTravail'] = $representant->getAdresseEmployeur();
+            $data[$prefix . 'TelephoneTravail'] = $representant->getTelephonePro();
+            $data[$prefix . 'ComAddrAsso'] = $representant->getComAddrAsso();
+        }
+    }
+
+    /**
+     * Convertir les données de scolarité antérieure en tableau
+     */
+    private function convertScolariteAnterieurToArray(InfoEleve $infoEleve, array &$data): void
+    {
+        // Année scolaire 1
+        if ($infoEleve->getAnneScolaireUn()) {
+            $annee1 = $infoEleve->getAnneScolaireUn();
+            $data['anneeScolairePrecedente1'] = $annee1->getAnneScolaire();
+            $data['etablissementPrecedent1'] = $annee1->getEtablissement();
+            $data['classePrecedente1'] = $annee1->getClasse();
+            $data['option-1'] = $annee1->getOption();
+            $data['lv1-1'] = $annee1->getLVUn();
+            $data['lv2-1'] = $annee1->getLVDeux();
+        }
+
+        // Année scolaire 2
+        if ($infoEleve->getAnneScolaireDeux()) {
+            $annee2 = $infoEleve->getAnneScolaireDeux();
+            $data['anneeScolairePrecedente2'] = $annee2->getAnneScolaire();
+            $data['etablissementPrecedent2'] = $annee2->getEtablissement();
+            $data['classePrecedente2'] = $annee2->getClasse();
+            $data['option-2'] = $annee2->getOption();
+            $data['lv1-2'] = $annee2->getLVUn();
+            $data['lv2-2'] = $annee2->getLVDeux();
+        }
+    }
+
+    /**
+     * Vérifier si l'inscription est complète
+     */
+    private function isInscriptionComplete(InfoEleve $infoEleve): bool
+    {
+        // Vérifications de base
+        if (!$infoEleve->getDateDeNaissance() || 
+            !$infoEleve->getPromotion() || 
+            !$infoEleve->getClasse() ||
+            !$infoEleve->getSexe()) {
+            return false;
+        }
+
+        // Vérifier qu'au moins un représentant légal existe
+        if (!$infoEleve->getResponsableUn() && !$infoEleve->getResponsableDeux()) {
+            return false;
+        }
+
+        // Vérifier l'adhésion
+        if (!$infoEleve->getAdhesion() || !$infoEleve->getAdhesion()->isAccepted()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Vérifier si on est en mode développement
+     */
+    private function isDevelopmentMode(): bool
+    {
+        return $this->getParameter('kernel.environment') === 'dev';
+    }
+
+    /**
+     * Route pour réinitialiser le brouillon
+     */
+    #[Route('/inscription/reset-draft', name: 'app_inscription_reset_draft')]
+    #[IsGranted('ROLE_USER')]
+    public function resetDraft(InscriptionFlow $flow): Response
+    {
+        $flow->clearDraft();
+        $this->addFlash('info', 'Le brouillon a été supprimé.');
+        
+        return $this->redirectToRoute('app_inscription_form');
+    }
+
+    /**
+     * Route pour télécharger un récapitulatif PDF de l'inscription
+     */
+    #[Route('/inscription/pdf', name: 'app_inscription_pdf')]
+    #[IsGranted('ROLE_USER')]
+    public function generatePdf(): Response
+    {
+        $user = $this->getUser();
+        $infoEleve = $this->infoEleveRepository->findOneBy(['user' => $user]);
+
+        if (!$infoEleve) {
+            $this->addFlash('error', 'Aucune inscription trouvée.');
+            return $this->redirectToRoute('app_inscription_dashboard');
+        }
+
+        if (!$this->isInscriptionComplete($infoEleve)) {
+            $this->addFlash('error', 'L\'inscription doit être complétée avant de générer le PDF.');
+            return $this->redirectToRoute('app_inscription_dashboard');
+        }
+
+        $inscription = $this->convertEntityToArray($user, $infoEleve);
+        $this->prepareInscriptionData($infoEleve, $inscription);
+
+        // Générer le HTML pour le PDF
+        $html = $this->renderView('inscription/pdf.html.twig', [
+            'user' => $user,
+            'inscription' => $inscription,
+            'infoEleve' => $infoEleve
+        ]);
+
+        // Ici vous pourriez utiliser une bibliothèque comme DomPDF ou wkhtmltopdf
+        // Pour l'exemple, on retourne juste le HTML
+        return new Response($html, 200, [
+            'Content-Type' => 'text/html'
+        ]);
+    }
+
+    /**
+     * Route pour réinitialiser complètement le formulaire (brouillon + données en base)
+     */
+    #[Route('/inscription/reset-form', name: 'app_inscription_reset_form', methods: ['POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function resetForm(Request $request, InscriptionFlow $flow): Response
+    {
+        // Vérification CSRF
+        if (!$this->isCsrfTokenValid('reset_form', $request->request->get('_token'))) {
+            $this->addFlash('error', 'Token de sécurité invalide.');
+            return $this->redirectToRoute('app_inscription_dashboard');
+        }
+
+        $user = $this->getUser();
+        
+        try {
+            // Supprimer le brouillon
+            $flow->clearDraft();
+            
+            // Supprimer les données en base de données
+            $infoEleve = $this->infoEleveRepository->findOneBy(['user' => $user]);
+            if ($infoEleve) {
+                // Supprimer les entités liées
+                $this->deleteRelatedEntities($infoEleve);
+                
+                // Supprimer InfoEleve
+                $this->entityManager->remove($infoEleve);
+                $user->setInfoEleve(null);
+                
+                $this->entityManager->flush();
+            }
+            
+            $this->addFlash('success', 'Le formulaire d\'inscription a été complètement réinitialisé.');
+            
+        } catch (\Exception $e) {
+            $this->logger->error('Erreur lors de la réinitialisation du formulaire', [
+                'user_id' => $user->getId(),
+                'error' => $e->getMessage()
+            ]);
+            $this->addFlash('error', 'Erreur lors de la réinitialisation du formulaire.');
+        }
+        
+        return $this->redirectToRoute('app_inscription_dashboard');
+    }
+
+    /**
+     * Route pour modifier une inscription existante
+     */
+    #[Route('/inscription/modifier', name: 'app_inscription_edit')]
+    #[IsGranted('ROLE_USER')]
+    public function editInscription(Request $request, InscriptionFlow $flow): Response
+    {
+        $user = $this->getUser();
+        $infoEleve = $this->infoEleveRepository->findOneBy(['user' => $user]);
+
+        if (!$infoEleve) {
+            $this->addFlash('error', 'Aucune inscription à modifier.');
+            return $this->redirectToRoute('app_inscription_dashboard');
+        }
+
+        // Charger les données existantes dans le flow pour modification
+        $this->loadExistingDataIntoFlow($user, $flow);
+        
+        // Marquer en mode édition via la session
+        $this->session->set('inscription_edit_mode', true);
+        
+        $this->addFlash('info', 'Mode modification activé. Vous pouvez maintenant modifier votre inscription.');
+        
+        return $this->redirectToRoute('app_inscription_form');
+    }
+
+    // Also modify your inscriptionForm method to handle edit mode:
+    #[Route('/inscription/formulaire', name: 'app_inscription_form')]
+    #[IsGranted('ROLE_USER')]
+    public function inscriptionForm(Request $request, InscriptionFlow $flow): Response
+    {
+        $user = $this->getUser();
+        $flow->bind($request);
+        
+        // Check if in edit mode
+        $isEditMode = $this->session->get('inscription_edit_mode', false);
+
+        // Charger les données existantes en base
+        $infoEleve = $this->infoEleveRepository->findOneBy(['user' => $user]);
+
+        if ($flow->hasDraft() && $flow->loadDraft()) {
+            // Le brouillon a été chargé avec succès
+        } elseif ($infoEleve) {
+            // Charger les données en base
+            $this->loadExistingDataIntoFlow($user, $flow);
+        } else {
+            // Initialiser un nouveau formulaire avec des données par défaut
+            $flow->setFormData([]);
+        }
+
+        $form = $flow->createForm();
+
+        if ($flow->isValid($form)) {
+            $flow->saveCurrentStepData($form);
+
+            // Sauvegarder le brouillon à chaque étape
+            $flow->saveDraft();
+
+            // Sauvegarder en base de données à chaque étape avec la logique d'EnregistrementEleveController
+            try {
+                $this->saveInscriptionDataStep($user, $flow);
+                $this->addFlash('info', 'Étape sauvegardée avec succès !');
+            } catch (\Exception $e) {
+                $this->logger->error('Erreur lors de la sauvegarde : ' . $e->getMessage());
+                $this->addFlash('error', 'Erreur lors de la sauvegarde. Veuillez réessayer.');
+            }
+
+            if ($flow->nextStep()) {
+                // Étape suivante
+                $form = $flow->createForm();
+            } else {
+                // Formulaire terminé - validation finale
+                // Clear edit mode when finished
+                $this->session->remove('inscription_edit_mode');
+                return $this->handleFinalValidation($user, $flow);
+            }
+        }
+
+        return $this->render('inscription/form.html.twig', [
+            'form' => $form->createView(),
+            'flow' => $flow,
+            'user' => $user,
+            'isEditMode' => $isEditMode,
+            'debug_data' => $this->isDevelopmentMode() ? $flow->getFormData() : null
+        ]);
+    }
+
+    /**
+     * Supprimer les entités liées à InfoEleve
+     */
+    private function deleteRelatedEntities(InfoEleve $infoEleve): void
+    {
+        // Supprimer les représentants légaux
+        if ($infoEleve->getResponsableUn()) {
+            $this->entityManager->remove($infoEleve->getResponsableUn());
+        }
+        if ($infoEleve->getResponsableDeux()) {
+            $this->entityManager->remove($infoEleve->getResponsableDeux());
+        }
+
+        // Supprimer les années scolaires antérieures
+        if ($infoEleve->getAnneScolaireUn()) {
+            $this->entityManager->remove($infoEleve->getAnneScolaireUn());
+        }
+        if ($infoEleve->getAnneScolaireDeux()) {
+            $this->entityManager->remove($infoEleve->getAnneScolaireDeux());
+        }
+
+        // Supprimer l'adhésion
+        if ($infoEleve->getAdhesion()) {
+            $this->entityManager->remove($infoEleve->getAdhesion());
+        }
+
+        // Supprimer le médecin traitant
+        if ($infoEleve->getMedecinTraitant()) {
+            $this->entityManager->remove($infoEleve->getMedecinTraitant());
+        }
+
+        // Supprimer le responsable financier
+        if ($infoEleve->getResponsableFinancier()) {
+            $this->entityManager->remove($infoEleve->getResponsableFinancier());
+        }
+
+        // Supprimer la sécurité sociale
+        if ($infoEleve->getSecuSociale()) {
+            $this->entityManager->remove($infoEleve->getSecuSociale());
+        }
+
+        // Supprimer l'assureur
+        if ($infoEleve->getAssureur()) {
+            $this->entityManager->remove($infoEleve->getAssureur());
+        }
+    }
+
+    #[Route('/inscription/save', name: 'app_inscription_save', methods: ['POST'])]
+    public function saveInscription(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (!$data) {
+            return new JsonResponse(['success' => false, 'message' => 'Données invalides ou non récupérées'], 400);
+        }
+
+        try {
+            $user = $this->getUser ();
+            $infoEleve = $user->getInfoEleve();
+
+            // Mettez à jour les données de l'élève en fonction des données reçues
+            if (isset($data['nom'])) {
+                $infoEleve->setNom($data['nom']);
+            }
+            if (isset($data['prenom'])) {
+                $infoEleve->setPrenom($data['prenom']);
+            }
+            // Ajoutez d'autres champs ici...
+
+            $this->entityManager->persist($infoEleve);
+            $this->entityManager->flush();
+
+            return new JsonResponse(['success' => true, 'message' => 'Données enregistrées avec succès', 'nextStepUrl' => $this->generateUrl('app_inscription_form', ['step' => $nextStep])]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['success' => false, 'message' => 'Erreur : ' . $e->getMessage()], 500);
+        }
+    }
+}

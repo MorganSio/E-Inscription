@@ -22,8 +22,9 @@ class InfoEleve
     #[ORM\Column(nullable: true)]
     private ?string $promotion = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $classe = null;
+    #[ORM\ManyToOne(targetEntity: Classe::class, inversedBy: 'infoEleves')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Classe $classe = null;
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $nationalite = null;
@@ -137,7 +138,7 @@ class InfoEleve
     #[ORM\JoinColumn(nullable: true)]
     private ?AssuranceScolaire $assureur = null;
 
-    #[ORM\OneToOne]
+    #[ORM\OneToOne(inversedBy: 'infoEleve')]
     #[ORM\JoinColumn(nullable: true)]
     private User $user;
 
@@ -156,11 +157,9 @@ class InfoEleve
     {
         return $this->date_de_naissance;
     }
-
-    public function setDateDeNaissance(?\DateTimeInterface $date_de_naissance): static
+    public function setDateDeNaissance(?\DateTimeInterface $dateNaissance): self
     {
-        $this->date_de_naissance = $date_de_naissance;
-
+        $this->date_de_naissance = $dateNaissance;
         return $this;
     }
 
@@ -177,15 +176,13 @@ class InfoEleve
     }
 
 
-    public function getClasse(): ?string
+    public function getClasse(): ?Classe
     {
         return $this->classe;
     }
-
     public function setClasse(?Classe $classe): static
     {
         $this->classe = $classe;
-
         return $this;
     }
 
@@ -590,6 +587,12 @@ class InfoEleve
         return $this->user;
     }
 
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
+        return $this;
+    }
+
     public function switchResponsable()
     {
         $repLegaltemp = $this->getResponsableDeux();
@@ -597,4 +600,18 @@ class InfoEleve
         $this->setResponsableUn($repLegaltemp);
     }
 
+    #[ORM\OneToOne(targetEntity: Adhesion::class)]
+    private ?Adhesion $adhesion = null;
+
+    public function getAdhesion(): ?Adhesion
+    {
+        return $this->adhesion;
+    }
+
+    public function setAdhesion(?Adhesion $adhesion): static
+    {
+        $this->adhesion = $adhesion;
+
+        return $this;
+    }
 }

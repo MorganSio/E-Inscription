@@ -21,16 +21,38 @@
                 <h5 class="mb-0"><i class="fas fa-user"></i> Informations personnelles</h5>
             </div>
             <div class="card-body">
-                {% if inscription.nom and inscription.prenom %}
-                    <p><strong>Nom :</strong> {{ inscription.nom }} {{ inscription.prenom }}</p>
+                {% if inscription.nom is defined and inscription.prenom is defined %}                    <p><strong>Nom :</strong> {{ inscription.nom }} {{ inscription.prenom }}</p>
                     {% if inscription.dateNaissance %}
                         <p><strong>Date de naissance :</strong> {{ inscription.dateNaissance|date('d/m/Y') }}</p>
                     {% endif %}
-                    {% if inscription.adresse %}
-                        <p><strong>Adresse :</strong> {{ inscription.adresse }}, {{ inscription.codePostal }} {{ inscription.ville }}</p>
+                    {% if inscription.email %}
+                        <p><strong>Email :</strong> {{ inscription.email }}</p>
                     {% endif %}
-                    {% if inscription.telephone %}
-                        <p><strong>Téléphone :</strong> {{ inscription.telephone }}</p>
+                    {% if inscription.numeroMobile %}
+                        <p><strong>Téléphone mobile :</strong> {{ inscription.numeroMobile }}</p>
+                    {% endif %}
+                    {% if inscription.classe is defined %}
+                        <p><strong>Classe :</strong> {{ inscription.classe.label }}</p>
+                    {% else %}
+                        <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Classe non renseignée</p>
+                    {% endif %}
+                    {% if inscription.promotion %}
+                        <p><strong>Promotion :</strong> {{ inscription.promotion }}</p>
+                    {% endif %}
+                    {% if inscription.nationalite %}
+                        <p><strong>Nationalité :</strong> {{ inscription.nationalite }}</p>
+                    {% endif %}
+                    {% if inscription.departement %}
+                        <p><strong>Département :</strong> {{ inscription.departement }}</p>
+                    {% endif %}
+                    {% if inscription.communeNaissance %}
+                        <p><strong>Commune de naissance :</strong> {{ inscription.communeNaissance }}</p>
+                    {% endif %}
+                    {% if inscription.sexe %}
+                        <p><strong>Sexe :</strong> {{ inscription.sexe }}</p>
+                    {% endif %}
+                    {% if inscription.regime %}
+                        <p><strong>Régime :</strong> {{ inscription.regime }}</p>
                     {% endif %}
                 {% else %}
                     <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Informations personnelles non renseignées</p>
@@ -43,23 +65,79 @@
                 <h5 class="mb-0"><i class="fas fa-users"></i> Représentants légaux</h5>
             </div>
             <div class="card-body">
-                {% if inscription.repLegal1Nom %}
+                {% if inscription.representantLegal1Nom is defined %}
                     <div class="mb-3">
                         <h6>Représentant légal 1</h6>
-                        <p><strong>{{ inscription.repLegal1Nom }} {{ inscription.repLegal1Prenom }}</strong> ({{ inscription.repLegal1Lien }})</p>
-                        <p>Email: {{ inscription.repLegal1Email }} | Tél: {{ inscription.repLegal1Telephone }}</p>
+                        <p><strong>{{ inscription.representantLegal1Nom }} {{ inscription.representantLegal1Prenom }}</strong></p>
+                        {% if inscription.representantLegal1Email %}
+                            <p><strong>Email:</strong> {{ inscription.representantLegal1Email }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal1Telephone %}
+                            <p><strong>Tél. personnel:</strong> {{ inscription.representantLegal1Telephone }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal1TelephoneFixe %}
+                            <p><strong>Tél. fixe:</strong> {{ inscription.representantLegal1TelephoneFixe }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal1TelephonePro %}
+                            <p><strong>Tél. professionnel:</strong> {{ inscription.representantLegal1TelephonePro }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal1Adresse %}
+                            <p><strong>Adresse:</strong> {{ inscription.representantLegal1Adresse }}, {{ inscription.representantLegal1CodePostal }} {{ inscription.representantLegal1Commune }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal1LienEleve %}
+                            <p><strong>Lien avec l'élève:</strong> {{ inscription.representantLegal1LienEleve }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal1Poste %}
+                            <p><strong>Poste:</strong> {{ inscription.representantLegal1Poste }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal1NomEmployeur %}
+                            <p><strong>Employeur:</strong> {{ inscription.representantLegal1NomEmployeur }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal1AdresseEmployeur %}
+                            <p><strong>Adresse employeur:</strong> {{ inscription.representantLegal1AdresseEmployeur }}</p>
+                        {% endif %}
                     </div>
+                {% else %}
+                    <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Représentant légal 1 non renseigné</p>
                 {% endif %}
                 
-                {% if inscription.repLegal2Nom %}
+                {% if inscription.representantLegal2Nom is defined %}
                     <div>
                         <h6>Représentant légal 2</h6>
-                        <p><strong>{{ inscription.repLegal2Nom }} {{ inscription.repLegal2Prenom }}</strong> ({{ inscription.repLegal2Lien }})</p>
-                        <p>Email: {{ inscription.repLegal2Email }} | Tél: {{ inscription.repLegal2Telephone }}</p>
+                        <p><strong>{{ inscription.representantLegal2Nom }} {{ inscription.representantLegal2Prenom }}</strong></p>
+                        {% if inscription.representantLegal2Email %}
+                            <p><strong>Email:</strong> {{ inscription.representantLegal2Email }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal2Telephone %}
+                            <p><strong>Tél. personnel:</strong> {{ inscription.representantLegal2Telephone }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal2TelephoneFixe %}
+                            <p><strong>Tél. fixe:</strong> {{ inscription.representantLegal2TelephoneFixe }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal2TelephonePro %}
+                            <p><strong>Tél. professionnel:</strong> {{ inscription.representantLegal2TelephonePro }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal2Adresse %}
+                            <p><strong>Adresse:</strong> {{ inscription.representantLegal2Adresse }}, {{ inscription.representantLegal2CodePostal }} {{ inscription.representantLegal2Commune }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal2LienEleve %}
+                            <p><strong>Lien avec l'élève:</strong> {{ inscription.representantLegal2LienEleve }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal2Poste %}
+                            <p><strong>Poste:</strong> {{ inscription.representantLegal2Poste }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal2NomEmployeur %}
+                            <p><strong>Employeur:</strong> {{ inscription.representantLegal2NomEmployeur }}</p>
+                        {% endif %}
+                        {% if inscription.representantLegal2AdresseEmployeur %}
+                            <p><strong>Adresse employeur:</strong> {{ inscription.representantLegal2AdresseEmployeur }}</p>
+                        {% endif %}
                     </div>
+                {% else %}
+                    <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Représentant légal 2 non renseigné</p>
                 {% endif %}
 
-                {% if not inscription.repLegal1Nom %}
+                {% if not inscription.representantLegal1Nom is defined %}
                     <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Informations des représentants légaux non renseignées</p>
                 {% endif %}
             </div>
@@ -70,17 +148,119 @@
                 <h5 class="mb-0"><i class="fas fa-school"></i> Scolarité précédente</h5>
             </div>
             <div class="card-body">
-                {% if inscription.etablissementPrecedent %}
-                    <p><strong>Établissement :</strong> {{ inscription.etablissementPrecedent }}</p>
-                    <p><strong>Classe :</strong> {{ inscription.classePrecedente }}</p>
-                    <p><strong>Année scolaire :</strong> {{ inscription.anneeScolairePrecedente }}</p>
+                {% if inscription.etablissementPrecedent1 is defined %}
+                    <div class="mb-3">
+                        <h6>Année scolaire précédente 1</h6>
+                        <p><strong>Établissement :</strong> {{ inscription.etablissementPrecedent1 }}</p>
+                        <p><strong>Classe :</strong> {{ inscription.classePrecedente1 }}</p>
+                        <p><strong>Année scolaire :</strong> {{ inscription.anneeScolairePrecedente1 }}</p>
+                    </div>
                 {% else %}
+                    <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Aucune scolarité précédente renseignée</p>
+                {% endif %}
+                
+                {% if inscription.etablissementPrecedent2 is defined %}
+                    <div class="mb-3">
+                        <h6>Année scolaire précédente 2</h6>
+                        <p><strong>Établissement :</strong> {{ inscription.etablissementPrecedent2 }}</p>
+                        <p><strong>Classe :</strong> {{ inscription.classePrecedente2 }}</p>
+                        <p><strong>Année scolaire :</strong> {{ inscription.anneeScolairePrecedente2 }}</p>
+                    </div>
+                {% endif %}
+
+                {% if not inscription.etablissementPrecedent1 is defined %}
                     <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Informations de scolarité non renseignées</p>
                 {% endif %}
             </div>
         </div>
 
-        <div class="card dashboard-card shadow-sm">
+        <div class="card dashboard-card shadow-sm mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-stethoscope"></i> Informations médicales</h5>
+            </div>
+            <div class="card-body">
+                {% if inscription.medecinTraitantNom is defined %}
+                    <div class="mb-3">
+                        <h6>Médecin traitant</h6>
+                        <p><strong>Nom :</strong> {{ inscription.medecinTraitantNom }}</p>
+                        {% if inscription.medecinTraitantTelephone %}
+                            <p><strong>Téléphone :</strong> {{ inscription.medecinTraitantTelephone }}</p>
+                        {% endif %}
+                        {% if inscription.medecinTraitantAdresse %}
+                            <p><strong>Adresse :</strong> {{ inscription.medecinTraitantAdresse }}</p>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p class="text-muted "><i class="fas fa-exclamation-circle"></i> Médecin traitant non renseigné</p>
+                {% endif %}
+                
+                {% if inscription.dernierRappelAntitetanique is defined %}
+                    <p><strong>Dernier rappel antitétanique :</strong> {{ inscription.dernierRappelAntitetanique|date('d/m/Y') }}</p>
+                {% else %}
+                    <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Dernier rappel antitétanique non renseigné</p>
+                {% endif %}
+                
+                {% if inscription.numSecuSocial is defined %}
+                    <p><strong>Numéro de sécurité sociale :</strong> {{ inscription.numSecuSocial }}</p>
+                {% else %}
+                    <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Numéro de sécurité sociale non renseigné</p>
+                {% endif %}
+                
+                {% if inscription.secuSocialeNom is defined %}
+                    <div class="mb-3">
+                        <h6>Sécurité sociale</h6>
+                        <p><strong>Nom :</strong> {{ inscription.secuSocialeNom }}</p>
+                        {% if inscription.secuSocialeAdresse %}
+                            <p><strong>Adresse :</strong> {{ inscription.secuSocialeAdresse }}</p>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Sécurité sociale non renseignée</p>
+                {% endif %}
+                
+                {% if inscription.assureurNom is defined %}
+                    <div>
+                        <h6>Assureur</h6>
+                        <p><strong>Nom :</strong> {{ inscription.assureurNom }}</p>
+                        {% if inscription.assureurNumeroAssurance %}
+                            <p><strong>Numéro d'assurance :</strong> {{ inscription.assureurNumeroAssurance }}</p>
+                        {% endif %}
+                        {% if inscription.assureurAdresse %}
+                            <p><strong>Adresse :</strong> {{ inscription.assureurAdresse }}</p>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Assureur non renseigné</p>
+                {% endif %}
+                
+                {% if inscription.medecinTraitantNom is not defined and inscription.secuSocialeNom is not defined and inscription.assureurNom is not defined %}
+                    <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Informations médicales non renseignées</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card dashboard-card shadow-sm mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-euro-sign"></i> Informations financières</h5>
+            </div>
+            <div class="card-body">
+                {% if inscription.responsableFinancierNom is defined %}
+                    <p><strong>Responsable financier :</strong> {{ inscription.responsableFinancierNom }} {{ inscription.responsableFinancierPrenom }}</p>
+                    {% if inscription.responsableFinancierRIB %}
+                        <p><strong>RIB fourni :</strong> <i class="fas fa-check text-success"></i></p>
+                    {% endif %}
+                    {% if inscription.responsableFinancierNomEmployeur %}
+                        <p><strong>Employeur :</strong> {{ inscription.responsableFinancierNomEmployeur }}</p>
+                    {% endif %}
+                    {% if inscription.responsableFinancierAdresseEmployeur %}
+                        <p><strong>Adresse employeur :</strong> {{ inscription.responsableFinancierAdresseEmployeur }}</p>
+                    {% endif %}
+                {% else %}
+                    <p class="text-muted"><i class="fas fa-exclamation-circle"></i> Informations financières non renseignées</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card dashboard-card shadow-sm mb-4">
             <div class="card-header">
                 <h5 class="mb-0"><i class="fas fa-file-alt"></i> Documents à fournir</h5>
             </div>
@@ -88,19 +268,28 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" disabled {{ inscription.documentsCertificat ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" disabled {{ inscription.carteVitale is defined and inscription.carteVitale ? 'checked' : '' }}>
                             <label class="form-check-label">
-                                Certificat de scolarité
-                                {% if inscription.documentsCertificat %}
+                                Carte Vitale
+                                {% if inscription.carteVitale is defined and inscription.carteVitale %}
                                     <i class="fas fa-check text-success"></i>
                                 {% endif %}
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" disabled {{ inscription.documentsPhoto ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" disabled {{ inscription.photoIdentite is defined and inscription.photoIdentite ? 'checked' : '' }}>
                             <label class="form-check-label">
                                 Photo d'identité
-                                {% if inscription.documentsPhoto %}
+                                {% if inscription.photoIdentite is defined and inscription.photoIdentite %}
+                                    <i class="fas fa-check text-success"></i>
+                                {% endif %}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" disabled {{ inscription.attestationIdentite is defined and inscription.attestationIdentite ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                Attestation d'identité
+                                {% if inscription.attestationIdentite is defined and inscription.attestationIdentite %}
                                     <i class="fas fa-check text-success"></i>
                                 {% endif %}
                             </label>
@@ -108,19 +297,28 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" disabled {{ inscription.documentsBulletins ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" disabled {{ inscription.bourse is defined and inscription.bourse ? 'checked' : '' }}>
                             <label class="form-check-label">
-                                Bulletins scolaires
-                                {% if inscription.documentsBulletins %}
+                                Bourse
+                                {% if inscription.bourse is defined and inscription.bourse %}
                                     <i class="fas fa-check text-success"></i>
                                 {% endif %}
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" disabled {{ inscription.documentsAssurance ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" disabled {{ inscription.attestationJDC is defined and inscription.attestationJDC ? 'checked' : '' }}>
                             <label class="form-check-label">
-                                Attestation d'assurance
-                                {% if inscription.documentsAssurance %}
+                                Attestation JDC
+                                {% if inscription.attestationJDC is defined and inscription.attestationJDC %}
+                                    <i class="fas fa-check text-success"></i>
+                                {% endif %}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" disabled {{ inscription.attestationReusite is defined and inscription.attestationReusite ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                Attestation de réussite
+                                {% if inscription.attestationReusite is defined and inscription.attestationReusite %}
                                     <i class="fas fa-check text-success"></i>
                                 {% endif %}
                             </label>
@@ -138,24 +336,75 @@
             </div>
             <div class="card-body">
                 <div class="d-grid gap-2">
-                    <a href="{{ path('app_inscription_form') }}" class="btn btn-primary">
-                        <i class="fas fa-edit"></i>
-                        {{ inscription.isComplete ? 'Modifier mon dossier' : 'Compléter mon dossier' }}
-                    </a>
-                    
-                    {% if inscription.isComplete %}
-                        <button class="btn btn-success" disabled>
-                            <i class="fas fa-check"></i>
-                            Dossier validé
-                        </button>
+                    {# Bouton de modification #}
+                    {% if inscription %}
+                        <a href="{{ path('app_inscription_edit') }}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i>
+                            Modifier mon inscription
+                        </a>
                     {% endif %}
                     
-                    <a href="{{ path('app_inscription_reset') }}" class="btn btn-outline-warning" 
-                       onclick="return confirm('Êtes-vous sûr de vouloir recommencer votre inscription ?')">
-                        <i class="fas fa-redo"></i>
-                        Recommencer
-                    </a>
+                    {# Bouton de reset avec confirmation #}
+                    <form method="POST" action="{{ path('app_inscription_reset_form') }}" onsubmit="return confirm('Êtes-vous sûr ? Cette action supprimera définitivement votre inscription.')">
+                        <input type="hidden" name="_token" value="{{ csrf_token('reset_form') }}">
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="fas fa-redo"></i>
+                            Réinitialiser complètement
+                        </button>
+                    </form>
                 </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-info-circle"></i> Informations complémentaires</h5>
+            </div>
+            <div class="card-body">
+                {% if inscription.nomContacteUrgence is defined %}
+                    <p><strong>Contact d'urgence :</strong><br>
+                    {{ inscription.nomContacteUrgence }}<br>
+                    {{ inscription.numeroContacteUrgence }}</p>
+                {% endif %}
+                
+                {% if inscription.transportScolaire is defined %}
+                    <p><strong>Transport scolaire :</strong> {{ inscription.transportScolaire }}</p>
+                {% endif %}
+                
+                {% if inscription.lvUn is defined %}
+                    <p><strong>LV1 :</strong> {{ inscription.lvUn }}</p>
+                {% endif %}
+                
+                {% if inscription.lvDeux is defined %}
+                    <p><strong>LV2 :</strong> {{ inscription.lvDeux }}</p>
+                {% endif %}
+                
+                {% if inscription.dernierDiplome is defined %}
+                    <p><strong>Dernier diplôme :</strong> {{ inscription.dernierDiplome }}</p>
+                {% endif %}
+                
+                {% if inscription.immatriculationVeic is defined %}
+                    <p><strong>Immatriculation véhicule :</strong> {{ inscription.immatriculationVeic }}</p>
+                {% endif %}
+                
+                <div class="mt-3">
+                    {% if inscription.cheque is defined %}
+                        <span class="badge bg-success">Chèque accepté</span>
+                    {% endif %}
+                    {% if inscription.droitImage is defined %}
+                        <span class="badge bg-info">Droit à l'image accepté</span>
+                    {% endif %}
+                    {% if inscription.redoublant is defined %}
+                        <span class="badge bg-warning">Redoublant</span>
+                    {% endif %}
+                </div>
+                
+                {% if inscription.observations is defined %}
+                    <div class="mt-3">
+                        <strong>Observations :</strong>
+                        <p class="small">{{ inscription.observations }}</p>
+                    </div>
+                {% endif %}
             </div>
         </div>
 
@@ -164,20 +413,6 @@
                 <h5 class="mb-0"><i class="fas fa-info-circle"></i> Informations</h5>
             </div>
             <div class="card-body">
-                <p class="small">
-                    <strong>Compte créé le :</strong><br>
-                    {{ inscription.createdAt|date('d/m/Y à H:i') }}
-                </p>
-                
-                {% if inscription.updatedAt %}
-                    <p class="small">
-                        <strong>Dernière modification :</strong><br>
-                        {{ inscription.updatedAt|date('d/m/Y à H:i') }}
-                    </p>
-                {% endif %}
-
-                <hr>
-                
                 <div class="alert alert-info small">
                     <i class="fas fa-lightbulb"></i>
                     <strong>Conseil :</strong> Vous pouvez sauvegarder votre progression à chaque étape et reprendre plus tard.

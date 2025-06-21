@@ -135,11 +135,10 @@
     </head>
     
     <body>
-        {# {{ include('index/header.html.twig') }} #}
+        {{ include('index/header.html.twig') }}
         {{ include('index/theme.html.twig') }}
         {# {{ include('index/fil.html.twig')}} #}
-        {# {% block body %}
-        {% endblock %} #}
+        
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
                 <a class="navbar-brand" href="{{ path('app_home') }}">
@@ -197,6 +196,7 @@
 
             {% block body %}{% endblock %}
         </main>
+        
         {{ include('index/footer.html.twig') }}
 
         <!-- Script en version es6 module et nomodule pour les navigateurs le ne supportant pas -->
