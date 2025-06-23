@@ -118,10 +118,14 @@ class InscriptionType extends AbstractType
                 ]
             ])
             ->add('dateNaissance', DateType::class, [
+                'label' => 'Date de naissance *',
                 'widget' => 'single_text',
-                'html5' => true, 
-                // 'format' => 'dd-MM-yyyy',
+                'html5' => true,
                 'required' => true,
+                'attr' => ['class' => 'fr-input'],
+                'constraints' => [
+                    new NotBlank(['message' => 'La date de naissance est obligatoire'])
+                ]
             ])
             ->add('sexe', ChoiceType::class, [
                 'label' => 'Sexe *',
@@ -152,6 +156,11 @@ class InscriptionType extends AbstractType
                     new NotBlank(['message' => 'La commune de naissance est obligatoire']),
                     new Length(['max' => 100])
                 ]
+            ])
+            ->add('numSecuSocial', TextType::class, [
+                'label' => 'Numéro de sécurité sociale',
+                'required' => false,
+                'attr' => ['class' => 'fr-input', 'placeholder' => '123456789012345']
             ]);
     }
 
@@ -160,11 +169,16 @@ class InscriptionType extends AbstractType
         $builder
             ->add('numeroMobile', TelType::class, [
                 'label' => 'Numéro de mobile *',
-                'attr' => ['class' => 'fr-input', 'placeholder' => '06 12 34 56 78'],
+                'attr' => ['class' => 'fr-input', 'placeholder' => '0612345678'],
                 'constraints' => [
                     new NotBlank(['message' => 'Le numéro de mobile est obligatoire']),
                     new Regex(['pattern' => '/^(?:\+33|0)[1-9](?:[0-9]{8})$/', 'message' => 'Le numéro de téléphone n\'est pas valide'])
                 ]
+            ])
+            ->add('accepterSms', CheckboxType::class, [
+                'label' => 'J\'accepte de recevoir des SMS',
+                'required' => false,
+                'attr' => ['class' => 'fr-checkbox']
             ])
             ->add('nomContacteUrgence', TextType::class, [
                 'label' => 'Nom du contact d\'urgence *',
@@ -176,7 +190,7 @@ class InscriptionType extends AbstractType
             ])
             ->add('numeroContacteUrgence', TelType::class, [
                 'label' => 'Numéro du contact d\'urgence *',
-                'attr' => ['class' => 'fr-input', 'placeholder' => '06 12 34 56 78'],
+                'attr' => ['class' => 'fr-input', 'placeholder' => '0612345678'],
                 'constraints' => [
                     new NotBlank(['message' => 'Le numéro du contact d\'urgence est obligatoire']),
                     new Regex(['pattern' => '/^(?:\+33|0)[1-9](?:[0-9]{8})$/', 'message' => 'Le numéro de téléphone n\'est pas valide'])
@@ -189,7 +203,7 @@ class InscriptionType extends AbstractType
         $builder
             ->add('classe', EntityType::class, [
                 'class' => Classe::class,
-                'choice_label' => 'label', // This should match the property in Classe
+                'choice_label' => 'label',
                 'label' => 'Classe demandée *',
                 'placeholder' => 'Sélectionnez une classe',
                 'attr' => ['class' => 'fr-select'],
@@ -211,6 +225,11 @@ class InscriptionType extends AbstractType
                 'attr' => ['class' => 'fr-select'],
                 'constraints' => [new NotBlank(['message' => 'Le régime scolaire est obligatoire'])]
             ])
+            ->add('redoublant', CheckboxType::class, [
+                'label' => 'L\'élève redouble cette classe',
+                'required' => false,
+                'attr' => ['class' => 'fr-checkbox']
+            ])
             ->add('lvUn', TextType::class, [
                 'label' => 'Langue vivante 1 *',
                 'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: Anglais, Espagnol, Allemand...'],
@@ -225,30 +244,25 @@ class InscriptionType extends AbstractType
                 'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: Allemand, Italien...'],
                 'constraints' => [new Length(['max' => 50])]
             ])
-            ->add('redoublant', CheckboxType::class, [
-                'label' => 'L\'élève redouble cette classe',
-                'required' => false,
-                'attr' => ['class' => 'fr-checkbox']
-            ])
             ->add('dernierDiplome', TextType::class, [
                 'label' => 'Dernier diplôme obtenu',
                 'required' => false,
                 'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: Brevet, CAP...']
             ])
-            ->add('transportScolaire', CheckboxType::class, [
+            ->add('transportScolaire', ChoiceType::class, [
                 'label' => 'Transport scolaire',
+                'choices' => [
+                    'Oui' => true,
+                    'Non' => false,
+                ],
+                'expanded' => true, // pour des radio buttons
                 'required' => false,
-                'attr' => ['class' => 'fr-checkbox']
+                'attr' => ['class' => 'fr-radio-group']
             ])
             ->add('immatriculationVeic', TextType::class, [
                 'label' => 'Immatriculation du véhicule',
                 'required' => false,
                 'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: AB-123-CD']
-            ])
-            ->add('numSecuSocial', TextType::class, [
-                'label' => 'Numéro de sécurité sociale',
-                'required' => false,
-                'attr' => ['class' => 'fr-input', 'placeholder' => '1 23 45 67 890 123 45']
             ]);
     }
 
@@ -271,8 +285,8 @@ class InscriptionType extends AbstractType
                     new Length(['max' => 100])
                 ]
             ])
-            ->add('representantLegal1Email', EmailType::class, [
-                'label' => 'Email',
+            ->add('representantLegal1Courriel', EmailType::class, [
+                'label' => 'Courriel',
                 'required' => false,
                 'attr' => ['class' => 'fr-input', 'placeholder' => 'email@exemple.fr'],
                 'constraints' => [new Email(['message' => 'L\'adresse e-mail n\'est pas valide'])]
@@ -280,7 +294,7 @@ class InscriptionType extends AbstractType
             ->add('representantLegal1Telephone', TelType::class, [
                 'label' => 'Téléphone mobile',
                 'required' => false,
-                'attr' => ['class' => 'fr-input', 'placeholder' => '06 12 34 56 78'],
+                'attr' => ['class' => 'fr-input', 'placeholder' => '0612345678'],
                 'constraints' => [
                     new Regex(['pattern' => '/^(?:\+33|0)[1-9](?:[0-9]{8})$/', 'message' => 'Le numéro de téléphone n\'est pas valide'])
                 ]
@@ -288,7 +302,7 @@ class InscriptionType extends AbstractType
             ->add('representantLegal1TelephoneFixe', TelType::class, [
                 'label' => 'Téléphone fixe',
                 'required' => false,
-                'attr' => ['class' => 'fr-input', 'placeholder' => '01 23 45 67 89'],
+                'attr' => ['class' => 'fr-input', 'placeholder' => '0123456789'],
                 'constraints' => [
                     new Regex(['pattern' => '/^(?:\+33|0)[1-9](?:[0-9]{8})$/', 'message' => 'Le numéro de téléphone n\'est pas valide'])
                 ]
@@ -296,7 +310,7 @@ class InscriptionType extends AbstractType
             ->add('representantLegal1TelephonePro', TelType::class, [
                 'label' => 'Téléphone professionnel',
                 'required' => false,
-                'attr' => ['class' => 'fr-input', 'placeholder' => '01 23 45 67 89'],
+                'attr' => ['class' => 'fr-input', 'placeholder' => '0123456789'],
                 'constraints' => [
                     new Regex(['pattern' => '/^(?:\+33|0)[1-9](?:[0-9]{8})$/', 'message' => 'Le numéro de téléphone n\'est pas valide'])
                 ]
@@ -325,6 +339,11 @@ class InscriptionType extends AbstractType
                     new Length(['max' => 100])
                 ]
             ])
+            ->add('representantLegal1Poste', TextType::class, [
+                'label' => 'Poste/Profession',
+                'required' => false,
+                'attr' => ['class' => 'fr-input', 'placeholder' => 'Profession exercée']
+            ])
             ->add('representantLegal1LienEleve', ChoiceType::class, [
                 'label' => 'Lien avec l\'élève *',
                 'choices' => [
@@ -337,11 +356,6 @@ class InscriptionType extends AbstractType
                 'attr' => ['class' => 'fr-select'],
                 'constraints' => [new NotBlank(['message' => 'Le lien avec l\'élève est obligatoire'])]
             ])
-            ->add('representantLegal1Poste', TextType::class, [
-                'label' => 'Poste/Profession',
-                'required' => false,
-                'attr' => ['class' => 'fr-input', 'placeholder' => 'Profession exercée']
-            ])
             ->add('representantLegal1NomEmployeur', TextType::class, [
                 'label' => 'Nom de l\'employeur',
                 'required' => false,
@@ -351,6 +365,11 @@ class InscriptionType extends AbstractType
                 'label' => 'Adresse de l\'employeur',
                 'required' => false,
                 'attr' => ['class' => 'fr-input', 'rows' => 2, 'placeholder' => 'Adresse complète de l\'employeur']
+            ])
+            ->add('representantLegal1Sms', CheckboxType::class, [
+                'label' => 'Autoriser le représentant légal 1 à recevoir des sms',
+                'required' => false,
+                'attr' => ['class' => 'fr-checkbox']
             ]);
     }
 
@@ -367,8 +386,8 @@ class InscriptionType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'fr-input', 'placeholder' => 'Prénom']
             ])
-            ->add('representantLegal2Email', EmailType::class, [
-                'label' => 'Email',
+            ->add('representantLegal2Courriel', EmailType::class, [
+                'label' => 'Courriel',
                 'required' => false,
                 'attr' => ['class' => 'fr-input', 'placeholder' => 'email@exemple.fr'],
                 'constraints' => [new Email(['message' => 'L\'adresse e-mail n\'est pas valide'])]
@@ -415,6 +434,11 @@ class InscriptionType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: Paris']
             ])
+            ->add('representantLegal2Poste', TextType::class, [
+                'label' => 'Poste/Profession',
+                'required' => false,
+                'attr' => ['class' => 'fr-input', 'placeholder' => 'Profession exercée']
+            ])
             ->add('representantLegal2LienEleve', ChoiceType::class, [
                 'label' => 'Lien avec l\'élève',
                 'choices' => [
@@ -427,11 +451,6 @@ class InscriptionType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'fr-select']
             ])
-            ->add('representantLegal2Poste', TextType::class, [
-                'label' => 'Poste/Profession',
-                'required' => false,
-                'attr' => ['class' => 'fr-input', 'placeholder' => 'Profession exercée']
-            ])
             ->add('representantLegal2NomEmployeur', TextType::class, [
                 'label' => 'Nom de l\'employeur',
                 'required' => false,
@@ -441,6 +460,11 @@ class InscriptionType extends AbstractType
                 'label' => 'Adresse de l\'employeur',
                 'required' => false,
                 'attr' => ['class' => 'fr-input', 'rows' => 2, 'placeholder' => 'Adresse complète de l\'employeur']
+            ])
+            ->add('representantLegal2Sms', CheckboxType::class, [
+                'label' => 'Autoriser le représentant légal 2 à recevoir des sms',
+                'required' => false,
+                'attr' => ['class' => 'fr-checkbox']
             ]);
     }
 
@@ -471,6 +495,21 @@ class InscriptionType extends AbstractType
                     new Regex(['pattern' => '/^\d{4}-\d{4}$/', 'message' => 'L\'année scolaire doit être au format YYYY-YYYY (ex: 2023-2024)'])
                 ]
             ])
+            ->add('lvUnPrecedente1', TextType::class, [
+                'label' => 'Langue vivante 1 précédente',
+                'required' => false,
+                'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: Anglais, Espagnol...']
+            ])
+            ->add('lvDeuxPrecedente1', TextType::class, [
+                'label' => 'Langue vivante 2 précédente',
+                'required' => false,
+                'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: Allemand, Italien...']
+            ])
+            ->add('optionPrecedente1', TextType::class, [
+                'label' => 'Option précédente (année N-1)',
+                'required' => false,
+                'attr' => ['class' => 'fr-input', 'placeholder' => 'Maths, Sciences...'],
+            ])
             ->add('etablissementPrecedent2', TextType::class, [
                 'label' => 'Établissement précédent (année N-2)',
                 'required' => false,
@@ -488,6 +527,21 @@ class InscriptionType extends AbstractType
                 'constraints' => [
                     new Regex(['pattern' => '/^\d{4}-\d{4}$/', 'message' => 'L\'année scolaire doit être au format YYYY-YYYY (ex: 2022-2023)'])
                 ]
+            ])
+            ->add('lvUnPrecedente2', TextType::class, [
+                'label' => 'Langue vivante 1 précédente (année N-2)',
+                'required' => false,
+                'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: Anglais, Espagnol...']
+            ])
+            ->add('lvDeuxPrecedente2', TextType::class, [
+                'label' => 'Langue vivante 2 précédente (année N-2)',
+                'required' => false,
+                'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: Allemand, Italien...']
+            ])
+            ->add('optionPrecedente2', TextType::class, [
+                'label' => 'Option précédente (année N-2)',
+                'required' => false,
+                'attr' => ['class' => 'fr-input', 'placeholder' => 'Maths, Sciences...'],
             ]);
     }
 
@@ -497,8 +551,7 @@ class InscriptionType extends AbstractType
             ->add('medecinTraitantNom', TextType::class, [
                 'label' => 'Nom du médecin traitant',
                 'required' => false,
-                'attr' => ['class' => 'fr-input', 'placeholder' => 'Dr. Nom Prénom'],
-                'constraints' => [new Length(['max' => 100])]
+                'attr' => ['class' => 'fr-input', 'placeholder' => 'Dr. Martin Dupont']
             ])
             ->add('medecinTraitantTelephone', TelType::class, [
                 'label' => 'Téléphone du médecin traitant',
@@ -514,41 +567,41 @@ class InscriptionType extends AbstractType
                 'attr' => ['class' => 'fr-input', 'rows' => 2, 'placeholder' => 'Adresse complète du cabinet médical']
             ])
             ->add('dernierRappelAntitetanique', DateType::class, [
-                'label' => 'Date du dernier rappel antitétanique',
+                'label' => 'Dernier rappel antitétanique',
                 'widget' => 'single_text',
+                'html5' => true,
                 'required' => false,
                 'attr' => ['class' => 'fr-input']
             ])
             ->add('observations', TextareaType::class, [
-                'label' => 'Observations médicales particulières',
+                'label' => 'Observations médicales',
                 'required' => false,
-                'attr' => ['class' => 'fr-input', 'rows' => 4, 'placeholder' => 'Allergies, traitements en cours, problèmes de santé particuliers...'],
-                'constraints' => [new Length(['max' => 1000])]
+                'attr' => ['class' => 'fr-input', 'rows' => 3, 'placeholder' => 'Informations médicales importantes (allergies, traitements, etc.)']
             ])
             ->add('secuSocialeNom', TextType::class, [
-                'label' => 'Nom de l\'organisme de sécurité sociale',
+                'label' => 'Nom de la sécurité sociale',
                 'required' => false,
-                'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: CPAM de Paris']
+                'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: CPAM Paris']
             ])
             ->add('secuSocialeAdresse', TextareaType::class, [
-                'label' => 'Adresse de l\'organisme de sécurité sociale',
+                'label' => 'Adresse de la sécurité sociale',
                 'required' => false,
                 'attr' => ['class' => 'fr-input', 'rows' => 2, 'placeholder' => 'Adresse complète']
             ])
             ->add('assureurNom', TextType::class, [
                 'label' => 'Nom de l\'assureur',
                 'required' => false,
-                'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: MAIF, MACIF...']
-            ])
-            ->add('assureurAdresse', TextareaType::class, [
-                'label' => 'Adresse de l\'assureur',
-                'required' => false,
-                'attr' => ['class' => 'fr-input', 'rows' => 2, 'placeholder' => 'Adresse complète']
+                'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: MAIF, MAAF, etc.']
             ])
             ->add('assureurNumeroAssurance', TextType::class, [
                 'label' => 'Numéro d\'assurance',
                 'required' => false,
                 'attr' => ['class' => 'fr-input', 'placeholder' => 'Numéro de police d\'assurance']
+            ])
+            ->add('assureurAdresse', TextareaType::class, [
+                'label' => 'Adresse de l\'assureur',
+                'required' => false,
+                'attr' => ['class' => 'fr-input', 'rows' => 2, 'placeholder' => 'Adresse complète de l\'assureur']
             ]);
     }
 
@@ -582,139 +635,100 @@ class InscriptionType extends AbstractType
                 'attr' => ['class' => 'fr-input', 'rows' => 2, 'placeholder' => 'Adresse complète de l\'employeur']
             ]);
     }
-
-    private function buildStep9(FormBuilderInterface $builder): void
+    private function buildStep9(FormBuilderInterface $builder): void 
     {
         $builder
             ->add('carteVitale', FileType::class, [
-                'label' => 'Carte Vitale (recto-verso) *',
-                'attr' => ['class' => 'fr-upload'],
-                'data_class' => null, // Ajoutez cette ligne
-                'constraints' => [
-                    new NotBlank(['message' => 'La carte vitale est obligatoire']),
-                    new File([
-                        'maxSize' => '5M',
-                        'mimeTypes' => ['application/pdf', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'Veuillez télécharger un fichier PDF, JPEG ou PNG valide'
-                    ])
-                ]
+                'label' => 'Carte vitale (copie)',
+                'required' => false,
+                'mapped' => false, // Si vous gérez l'upload manuellement
+                'attr' => ['class' => 'fr-upload']
             ])
             ->add('photoIdentite', FileType::class, [
-                'label' => 'Photo d\'identité *',
-                'attr' => ['class' => 'fr-upload'],
-                'data_class' => null, // Ajoutez cette ligne
-                'constraints' => [
-                    new NotBlank(['message' => 'La photo d\'identité est obligatoire']),
-                    new File([
-                        'maxSize' => '2M',
-                        'mimeTypes' => ['image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'Veuillez télécharger une image JPEG ou PNG valide'
-                    ])
-                ]
-            ])
-            // Répétez pour tous les autres champs FileType...
-            ->add('bourse', FileType::class, [
-                'label' => 'Notification de bourse (si applicable)',
+                'label' => 'Photo d\'identité',
                 'required' => false,
-                'attr' => ['class' => 'fr-upload'],
-                'data_class' => null, // Ajoutez cette ligne
-                'constraints' => [
-                    new File([
-                        'maxSize' => '5M',
-                        'mimeTypes' => ['application/pdf', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'Veuillez télécharger un fichier PDF, JPEG ou PNG valide'
-                    ])
-                ]
-            ])
-            ->add('attestationJDC', FileType::class, [
-                'label' => 'Attestation JDC/JAPD *',
-                'attr' => ['class' => 'fr-upload'],
-                'data_class' => null, // Ajoutez cette ligne
-                'help' => 'Journée Défense et Citoyenneté ou Journée d\'Appel de Préparation à la Défense',
-                'constraints' => [
-                    new NotBlank(['message' => 'L\'attestation JDC/JAPD est obligatoire']),
-                    new File([
-                        'maxSize' => '5M',
-                        'mimeTypes' => ['application/pdf', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'Veuillez télécharger un fichier PDF, JPEG ou PNG valide'
-                    ])
-                ]
+                'mapped' => false,
+                'attr' => ['class' => 'fr-upload']
             ])
             ->add('attestationIdentite', FileType::class, [
-                'label' => 'Pièce d\'identité (CNI, passeport) *',
-                'attr' => ['class' => 'fr-upload'],
-                'data_class' => null, // Ajoutez cette ligne
-                'constraints' => [
-                    new NotBlank(['message' => 'La pièce d\'identité est obligatoire']),
-                    new File([
-                        'maxSize' => '5M',
-                        'mimeTypes' => ['application/pdf', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'Veuillez télécharger un fichier PDF, JPEG ou PNG valide'
-                    ])
-                ]
+                'label' => 'Attestation d\'identité',
+                'required' => false,
+                'mapped' => false,
+                'attr' => ['class' => 'fr-upload']
+            ])
+            ->add('bourse', FileType::class, [
+                'label' => 'Justificatif de bourse',
+                'required' => false,
+                'mapped' => false,
+                'attr' => ['class' => 'fr-upload']
+            ])
+            ->add('attestationJDC', FileType::class, [
+                'label' => 'Attestation JDC (Journée Défense et Citoyenneté)',
+                'required' => false,
+                'mapped' => false,
+                'attr' => ['class' => 'fr-upload']
             ])
             ->add('attestationReusite', FileType::class, [
-                'label' => 'Attestation de réussite/diplôme *',
-                'attr' => ['class' => 'fr-upload'],
-                'data_class' => null, // Ajoutez cette ligne
-                'help' => 'Dernier diplôme obtenu ou attestation de réussite',
-                'constraints' => [
-                    new NotBlank(['message' => 'L\'attestation de réussite est obligatoire']),
-                    new File([
-                        'maxSize' => '5M',
-                        'mimeTypes' => ['application/pdf', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'Veuillez télécharger un fichier PDF, JPEG ou PNG valide'
-                    ])
-                ]
+                'label' => 'Attestation de réussite',
+                'required' => false,
+                'mapped' => false,
+                'attr' => ['class' => 'fr-upload']
             ]);
     }
 
-    private function buildStep10(FormBuilderInterface $builder): void
+    private function buildStep10(FormBuilderInterface $builder): void 
     {
+        $data = $builder->getData() ?: [];
+        
         $builder
-            ->add('adhesionAccepted', CheckboxType::class, [
-                'label' => 'J\'accepte les conditions d\'adhésion à l\'établissement *',
-                'attr' => ['class' => 'fr-checkbox'],
-                'data' => false, // Valeur par défaut
-                'required' => false, // Important pour les checkboxes
-                'constraints' => [
-                    new NotBlank(['message' => 'Vous devez accepter les conditions d\'adhésion'])
-                ],
-                'help' => 'En cochant cette case, vous acceptez le règlement intérieur et les conditions générales de l\'établissement.'
-            ])
-            ->add('adhesionPaymentMethod', ChoiceType::class, [
-                'label' => 'Mode de paiement préféré *',
-                'choices' => [
-                    'Sélectionnez...' => null,
-                    'Virement bancaire' => 'virement',
-                    'Chèque' => 'cheque',
-                    'Espèces' => 'especes',
-                    'Prélèvement automatique' => 'prelevement'
-                ],
-                'attr' => ['class' => 'fr-select'],
-                'constraints' => [new NotBlank(['message' => 'Le mode de paiement est obligatoire'])]
-            ])
             ->add('cheque', CheckboxType::class, [
-                'label' => 'Autorisation de paiement par chèque',
+                'label' => 'Chèque de règlement',
                 'required' => false,
-                'attr' => ['class' => 'fr-checkbox']
-            ])
-            ->add('adhesionImageRights', ChoiceType::class, [
-                'label' => 'Droit à l\'image *',
-                'choices' => [
-                    'Sélectionnez...' => null,
-                    'J\'autorise l\'utilisation de l\'image de l\'élève' => 'autorise',
-                    'Je refuse l\'utilisation de l\'image de l\'élève' => 'refuse'
-                ],
-                'attr' => ['class' => 'fr-select'],
-                'constraints' => [new NotBlank(['message' => 'Vous devez préciser votre choix concernant le droit à l\'image'])],
-                'help' => 'Cette autorisation concerne l\'utilisation de photos/vidéos de l\'élève dans le cadre des activités de l\'établissement (site web, communication, etc.)'
+                'attr' => ['class' => 'fr-checkbox'],
+                'mapped' => false,
+                'data' => $data['cheque'] ?? false // Valeur par défaut
             ])
             ->add('droitImage', CheckboxType::class, [
-                'label' => 'J\'autorise l\'utilisation de l\'image de l\'élève',
+                'label' => 'Autorisation de droit à l\'image',
                 'required' => false,
                 'attr' => ['class' => 'fr-checkbox'],
-                'help' => 'Pour les publications de l\'établissement, site internet, réseaux sociaux, etc.'
+                'mapped' => false,
+                'data' => $data['droitImage'] ?? false
+            ])
+            ->add('adhesionAccepted', CheckboxType::class, [
+                'label' => 'J\'accepte les conditions d\'adhésion *',
+                'attr' => ['class' => 'fr-checkbox'],
+                'mapped' => false,
+                'data' => isset($data['adhesionAccepted']) ? 
+                        ($data['adhesionAccepted'] === 'oui' || $data['adhesionAccepted'] === true) : false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Vous devez accepter les conditions d\'adhésion'])
+                ]
+            ])
+            ->add('adhesionPaymentMethod', ChoiceType::class, [
+                'label' => 'Mode de paiement de l\'adhésion *',
+                'choices' => [
+                    'Sélectionnez...' => null,
+                    'Chèque' => 'cheque',
+                    'Virement bancaire' => 'virement',
+                    'Espèces' => 'especes',
+                    'Carte bancaire' => 'carte'
+                ],
+                'attr' => ['class' => 'fr-select'],
+                'mapped' => false,
+                'data' => $data['adhesionPaymentMethod'] ?? null,
+                'constraints' => [
+                    new NotBlank(['message' => 'Le mode de paiement est obligatoire'])
+                ]
+            ])
+            ->add('adhesionImageRights', CheckboxType::class, [
+                'label' => 'J\'accepte la cession des droits à l\'image *',
+                'attr' => ['class' => 'fr-checkbox'],
+                'mapped' => false,
+                'data' => $data['adhesionImageRights'] ?? false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Vous devez accepter la cession des droits à l\'image'])
+                ]
             ]);
     }
 

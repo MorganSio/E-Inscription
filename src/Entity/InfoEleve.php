@@ -88,8 +88,8 @@ class InfoEleve
     #[ORM\Column(length: 15, nullable: true)]
     private ?string $numSecuSocial= null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $transportScolaire = null;
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => false])]
+    private ?bool $transportScolaire = false;
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $LVUn = null;
@@ -103,6 +103,9 @@ class InfoEleve
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $regime = null;
 
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $sms_send = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
@@ -426,15 +429,14 @@ class InfoEleve
         return $this;
     }
 
-    public function getTransportScolaire()
+    public function getTransportScolaire() : ?bool
     {
         return $this->transportScolaire;
     }
 
-    public function setTransportScolaire($transportScolaire): static
+    public function setTransportScolaire(?bool $transportScolaire): self
     {
         $this->transportScolaire = $transportScolaire;
-
         return $this;
     }
 
@@ -611,6 +613,50 @@ class InfoEleve
     public function setAdhesion(?Adhesion $adhesion): static
     {
         $this->adhesion = $adhesion;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private bool $inscriptionComplete = false;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTime $dateInscription = null;
+
+    public function setInscriptionComplete(bool $inscriptionComplete): self
+    {
+        $this->inscriptionComplete = $inscriptionComplete;
+        return $this;
+    }
+
+    public function isInscriptionComplete(): bool
+    {
+        return $this->inscriptionComplete;
+    }
+
+    public function setDateInscription(?\DateTime $dateInscription): self
+    {
+        $this->dateInscription = $dateInscription;
+        return $this;
+    }
+
+    public function getDateInscription(): ?\DateTime
+    {
+        return $this->dateInscription;
+    }
+
+    public function getSmsSend(): ?bool
+    {
+        return $this->sms_send;
+    }
+
+    public function setSmsSend(?bool $sms_send): static
+    {
+        $this->sms_send = $sms_send;
 
         return $this;
     }

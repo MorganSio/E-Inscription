@@ -130,141 +130,102 @@ class InscriptionFlow extends FormFlow
             'prenom' => null,
             'email' => null,
             'dateNaissance' => null,
-            'date_de_naissance' => null,
             'sexe' => null,
             'nationalite' => null,
             'departement' => null,
-            'departement_naissance' => null,
-            'commune_naissance' => null,
             'communeNaissance' => null,
-            
+            'numSecuSocial' => null,
+
             // Étape 2 - Contact et urgence
-            'numero_mobile' => null,
             'numeroMobile' => null,
-            'nom_contacte_urgence' => null,
+            'telephoneFixe' => null,
+            'accepterSms' => false,
             'nomContacteUrgence' => null,
-            'numero_contacte_urgence' => null,
             'numeroContacteUrgence' => null,
-            
+
             // Étape 3 - Informations scolaires
             'classe' => null,
             'promotion' => null,
             'regime' => null,
-            'lv1' => null,
-            'lv_un' => null,
-            'lvUn' => null,
-            'lv2' => null,
-            'lv_deux' => null,
-            'lvDeux' => null,
             'redoublant' => false,
-            'dernier_diplome' => null,
+            'lvUn' => null,
+            'lvDeux' => null,
             'dernierDiplome' => null,
-            'transport_scolaire' => null,
             'transportScolaire' => null,
-            'immatriculation_veic' => null,
             'immatriculationVeic' => null,
-            'num_secu_social' => null,
-            'numSecuSocial' => null,
-            
+
             // Étape 4 - Représentant légal 1
-            'representant_legal_nom' => null,
             'representantLegal1Nom' => null,
             'representantLegal1Prenom' => null,
-            'representantLegal1Email' => null,
+            'representantLegal1Courriel' => null,
             'representantLegal1Telephone' => null,
             'representantLegal1TelephoneFixe' => null,
             'representantLegal1TelephonePro' => null,
             'representantLegal1Adresse' => null,
             'representantLegal1CodePostal' => null,
             'representantLegal1Commune' => null,
-            'representantLegal1LienEleve' => null,
             'representantLegal1Poste' => null,
+            'representantLegal1LienEleve' => null,
             'representantLegal1NomEmployeur' => null,
             'representantLegal1AdresseEmployeur' => null,
-            
+            'representantLegal1Sms' => false,
+
             // Étape 5 - Représentant légal 2
             'representantLegal2Nom' => null,
             'representantLegal2Prenom' => null,
-            'representantLegal2Email' => null,
+            'representantLegal2Courriel' => null,
             'representantLegal2Telephone' => null,
             'representantLegal2TelephoneFixe' => null,
             'representantLegal2TelephonePro' => null,
             'representantLegal2Adresse' => null,
             'representantLegal2CodePostal' => null,
             'representantLegal2Commune' => null,
-            'representantLegal2LienEleve' => null,
             'representantLegal2Poste' => null,
+            'representantLegal2LienEleve' => null,
             'representantLegal2NomEmployeur' => null,
             'representantLegal2AdresseEmployeur' => null,
-            
+            'representantLegal2Sms' => false,
+
             // Étape 6 - Scolarité antérieure
-            'etablissement_precedent1' => null,
             'etablissementPrecedent1' => null,
-            'classe_precedente1' => null,
             'classePrecedente1' => null,
-            'annee_scolaire_precedente1' => null,
             'anneeScolairePrecedente1' => null,
-            'etablissement_precedent2' => null,
             'etablissementPrecedent2' => null,
-            'classe_precedente2' => null,
             'classePrecedente2' => null,
-            'annee_scolaire_precedente2' => null,
             'anneeScolairePrecedente2' => null,
-            
+
             // Étape 7 - Informations médicales
-            'medecin_traitant_nom' => null,
             'medecinTraitantNom' => null,
             'medecinTraitantTelephone' => null,
             'medecinTraitantAdresse' => null,
-            'dernier_rappel_antitetanique' => null,
             'dernierRappelAntitetanique' => null,
             'observations' => null,
-            'secu_sociale_nom' => null,
             'secuSocialeNom' => null,
-            'secu_sociale_adresse' => null,
             'secuSocialeAdresse' => null,
-            'assureur_nom' => null,
             'assureurNom' => null,
-            'assureur_adresse' => null,
             'assureurAdresse' => null,
-            'assureur_numero_assurance' => null,
             'assureurNumeroAssurance' => null,
-            
+
             // Étape 8 - Responsable financier
-            'responsable_financier_nom' => null,
             'responsableFinancierNom' => null,
-            'responsable_financier_prenom' => null,
             'responsableFinancierPrenom' => null,
-            'responsable_financier_rib' => null,
-            'responsableFinancierRIB' => null,
-            'responsable_financier_nom_employeur' => null,
             'responsableFinancierNomEmployeur' => null,
-            'responsable_financier_adresse_employeur' => null,
             'responsableFinancierAdresseEmployeur' => null,
-            
+
             // Étape 9 - Documents
-            'carte_vitale' => null,
             'carteVitale' => null,
-            'photo_identite' => null,
             'photoIdentite' => null,
-            'bourse' => null,
-            'attestation_jdc' => null,
-            'attestationJDC' => null,
-            'attestation_identite' => null,
             'attestationIdentite' => null,
-            'attestation_reusite' => null,
+            'bourse' => null,
+            'attestationJDC' => null,
             'attestationReusite' => null,
-            
+
             // Étape 10 - Finalisation et adhésion
             'cheque' => false,
-            'droit_image' => false,
             'droitImage' => false,
-            'adhesion_accepted' => false,
             'adhesionAccepted' => false,
-            'adhesion_payment_method' => null,
             'adhesionPaymentMethod' => null,
-            'adhesion_image_rights' => null,
-            'adhesionImageRights' => null,
+            'adhesionImageRights' => false,
         ];
     }
 
@@ -283,7 +244,7 @@ class InscriptionFlow extends FormFlow
         if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $errors[] = 'L\'adresse email est obligatoire et doit être valide.';
         }
-        if (empty($data['dateNaissance']) && empty($data['date_de_naissance'])) {
+        if (empty($data['dateNaissance'])) {
             $errors[] = 'La date de naissance est obligatoire.';
         }
         if (empty($data['sexe'])) {
@@ -291,13 +252,13 @@ class InscriptionFlow extends FormFlow
         }
 
         // Validation étape 2 - Contact et urgence
-        if (empty($data['numeroMobile']) && empty($data['numero_mobile'])) {
+        if (empty($data['numeroMobile'])) {
             $errors[] = 'Le numéro de téléphone mobile est obligatoire.';
         }
-        if (empty($data['nomContacteUrgence']) && empty($data['nom_contacte_urgence'])) {
+        if (empty($data['nomContacteUrgence'])) {
             $errors[] = 'Le nom du contact d\'urgence est obligatoire.';
         }
-        if (empty($data['numeroContacteUrgence']) && empty($data['numero_contacte_urgence'])) {
+        if (empty($data['numeroContacteUrgence'])) {
             $errors[] = 'Le numéro du contact d\'urgence est obligatoire.';
         }
 
@@ -310,26 +271,26 @@ class InscriptionFlow extends FormFlow
         }
 
         // Validation étape 4 - Représentant légal 1
-        if (empty($data['representantLegal1Nom']) && empty($data['representant_legal_nom'])) {
+        if (empty($data['representantLegal1Nom'])) {
             $errors[] = 'Le nom du représentant légal est obligatoire.';
         }
         if (empty($data['representantLegal1Prenom'])) {
             $errors[] = 'Le prénom du représentant légal est obligatoire.';
         }
-        if (!empty($data['representantLegal1Email']) && !filter_var($data['representantLegal1Email'], FILTER_VALIDATE_EMAIL)) {
+        if (!empty($data['representantLegal1Courriel']) && !filter_var($data['representantLegal1Courriel'], FILTER_VALIDATE_EMAIL)) {
             $errors[] = 'L\'email du représentant légal n\'est pas valide.';
         }
 
         // Validation étape 8 - Responsable financier
-        if (empty($data['responsableFinancierNom']) && empty($data['responsable_financier_nom'])) {
+        if (empty($data['responsableFinancierNom'])) {
             $errors[] = 'Le nom du responsable financier est obligatoire.';
         }
-        if (empty($data['responsableFinancierPrenom']) && empty($data['responsable_financier_prenom'])) {
+        if (empty($data['responsableFinancierPrenom'])) {
             $errors[] = 'Le prénom du responsable financier est obligatoire.';
         }
 
         // Validation étape 10 - Adhésion
-        if (!($data['adhesionAccepted'] ?? $data['adhesion_accepted'] ?? false)) {
+        if (!($data['adhesionAccepted'] ?? false)) {
             $errors[] = 'L\'adhésion doit être acceptée pour finaliser l\'inscription.';
         }
 
@@ -345,99 +306,99 @@ class InscriptionFlow extends FormFlow
                 'nom' => $data['nom'] ?? '',
                 'prenom' => $data['prenom'] ?? '',
                 'email' => $data['email'] ?? '',
-                'date_de_naissance' => $data['dateNaissance'] ?? $data['date_de_naissance'] ?? null,
+                'date_de_naissance' => $data['dateNaissance'] ?? null,
                 'sexe' => $data['sexe'] ?? '',
                 'nationalite' => $data['nationalite'] ?? '',
-                'departement' => $data['departement'] ?? $data['departement_naissance'] ?? '',
-                'commune_naissance' => $data['communeNaissance'] ?? $data['commune_naissance'] ?? '',
+                'departement' => $data['departement'] ?? '',
+                'commune_naissance' => $data['communeNaissance'] ?? '',
+                'num_secu_social' => $data['numSecuSocial'] ?? '',
             ],
             'contact_urgence' => [
-                'numero_mobile' => $data['numeroMobile'] ?? $data['numero_mobile'] ?? '',
-                'nom_contacte_urgence' => $data['nomContacteUrgence'] ?? $data['nom_contacte_urgence'] ?? '',
-                'numero_contacte_urgence' => $data['numeroContacteUrgence'] ?? $data['numero_contacte_urgence'] ?? '',
+                'numero_mobile' => $data['numeroMobile'] ?? '',
+                'telephone_fixe' => $data['telephoneFixe'] ?? '',
+                'accepter_sms' => $data['accepterSms'] ?? false,
+                'nom_contacte_urgence' => $data['nomContacteUrgence'] ?? '',
+                'numero_contacte_urgence' => $data['numeroContacteUrgence'] ?? '',
             ],
             'scolarite' => [
                 'classe' => $data['classe'] ?? '',
                 'promotion' => $data['promotion'] ?? '',
                 'regime' => $data['regime'] ?? '',
-                'lv1' => $data['lvUn'] ?? $data['lv_un'] ?? $data['lv1'] ?? '',
-                'lv2' => $data['lvDeux'] ?? $data['lv_deux'] ?? $data['lv2'] ?? '',
                 'redoublant' => $data['redoublant'] ?? false,
-                'dernier_diplome' => $data['dernierDiplome'] ?? $data['dernier_diplome'] ?? '',
-                'transport_scolaire' => $data['transportScolaire'] ?? $data['transport_scolaire'] ?? '',
-                'immatriculation_vehicule' => $data['immatriculationVeic'] ?? $data['immatriculation_veic'] ?? '',
-                'numero_secu_social' => $data['numSecuSocial'] ?? $data['num_secu_social'] ?? '',
+                'lv1' => $data['lvUn'] ?? '',
+                'lv2' => $data['lvDeux'] ?? '',
+                'dernier_diplome' => $data['dernierDiplome'] ?? '',
+                'transport_scolaire' => $data['transportScolaire'] ?? '',
+                'immatriculation_vehicule' => $data['immatriculationVeic'] ?? '',
             ],
             'representant_legal_1' => [
-                'nom' => $data['representantLegal1Nom'] ?? $data['representant_legal_nom'] ?? '',
+                'nom' => $data['representantLegal1Nom'] ?? '',
                 'prenom' => $data['representantLegal1Prenom'] ?? '',
-                'email' => $data['representantLegal1Email'] ?? '',
+                'email' => $data['representantLegal1Courriel'] ?? '',
                 'telephone' => $data['representantLegal1Telephone'] ?? '',
-                'telephone_fixe' => $data['representantLegal1TelephoneFixe'] ?? '',
-                'telephone_pro' => $data['representantLegal1TelephonePro'] ?? '',
                 'adresse' => $data['representantLegal1Adresse'] ?? '',
                 'code_postal' => $data['representantLegal1CodePostal'] ?? '',
                 'commune' => $data['representantLegal1Commune'] ?? '',
-                'lien_eleve' => $data['representantLegal1LienEleve'] ?? '',
                 'poste' => $data['representantLegal1Poste'] ?? '',
-                'nom_employeur' => $data['representantLegal1NomEmployeur'] ?? '',
+                'lien_eleve' => $data['representantLegal1LienEleve'] ?? '',
+                'employeur' => $data['representantLegal1NomEmployeur'] ?? '',
                 'adresse_employeur' => $data['representantLegal1AdresseEmployeur'] ?? '',
+                'sms' => $data['representantLegal1Sms'] ?? false,
             ],
             'representant_legal_2' => [
                 'nom' => $data['representantLegal2Nom'] ?? '',
                 'prenom' => $data['representantLegal2Prenom'] ?? '',
-                'email' => $data['representantLegal2Email'] ?? '',
+                'email' => $data['representantLegal2Courriel'] ?? '',
                 'telephone' => $data['representantLegal2Telephone'] ?? '',
-                'telephone_fixe' => $data['representantLegal2TelephoneFixe'] ?? '',
-                'telephone_pro' => $data['representantLegal2TelephonePro'] ?? '',
                 'adresse' => $data['representantLegal2Adresse'] ?? '',
                 'code_postal' => $data['representantLegal2CodePostal'] ?? '',
                 'commune' => $data['representantLegal2Commune'] ?? '',
-                'lien_eleve' => $data['representantLegal2LienEleve'] ?? '',
                 'poste' => $data['representantLegal2Poste'] ?? '',
-                'nom_employeur' => $data['representantLegal2NomEmployeur'] ?? '',
+                'lien_eleve' => $data['representantLegal2LienEleve'] ?? '',
+                'employeur' => $data['representantLegal2NomEmployeur'] ?? '',
                 'adresse_employeur' => $data['representantLegal2AdresseEmployeur'] ?? '',
+                'sms' => $data['representantLegal2Sms'] ?? false,
             ],
-                        'scolarite_anterieure' => [
-                'etablissement_1' => $data['etablissementPrecedent1'] ?? $data['etablissement_precedent1'] ?? '',
-                'classe_1' => $data['classePrecedente1'] ?? $data['classe_precedente1'] ?? '',
-                'annee_scolaire_1' => $data['anneeScolairePrecedente1'] ?? $data['annee_scolaire_precedente1'] ?? '',
-                'etablissement_2' => $data['etablissementPrecedent2'] ?? $data['etablissement_precedent2'] ?? '',
-                'classe_2' => $data['classePrecedente2'] ?? $data['classe_precedente2'] ?? '',
-                'annee_scolaire_2' => $data['anneeScolairePrecedente2'] ?? $data['annee_scolaire_precedente2'] ?? '',
+            'scolarite_anterieure' => [
+                'etablissement_1' => $data['etablissementPrecedent1'] ?? '',
+                'classe_1' => $data['classePrecedente1'] ?? '',
+                'annee_scolaire_1' => $data['anneeScolairePrecedente1'] ?? '',
+                'etablissement_2' => $data['etablissementPrecedent2'] ?? '',
+                'classe_2' => $data['classePrecedente2'] ?? '',
+                'annee_scolaire_2' => $data['anneeScolairePrecedente2'] ?? '',
             ],
             'informations_medicales' => [
-                'medecin_traitant_nom' => $data['medecinTraitantNom'] ?? $data['medecin_traitant_nom'] ?? '',
+                'medecin_traitant_nom' => $data['medecinTraitantNom'] ?? '',
                 'medecin_traitant_telephone' => $data['medecinTraitantTelephone'] ?? '',
                 'medecin_traitant_adresse' => $data['medecinTraitantAdresse'] ?? '',
-                'dernier_rappel_antitetanique' => $data['dernierRappelAntitetanique'] ?? $data['dernier_rappel_antitetanique'] ?? null,
+                'dernier_rappel_antitetanique' => $data['dernierRappelAntitetanique'] ?? null,
                 'observations' => $data['observations'] ?? '',
-                'secu_sociale_nom' => $data['secuSocialeNom'] ?? $data['secu_sociale_nom'] ?? '',
-                'secu_sociale_adresse' => $data['secuSocialeAdresse'] ?? $data['secu_sociale_adresse'] ?? '',
-                'assureur_nom' => $data['assureurNom'] ?? $data['assureur_nom'] ?? '',
-                'assureur_adresse' => $data['assureurAdresse'] ?? $data['assureur_adresse'] ?? '',
-                'assureur_numero_assurance' => $data['assureurNumeroAssurance'] ?? $data['assureur_numero_assurance'] ?? '',
+                'secu_sociale_nom' => $data['secuSocialeNom'] ?? '',
+                'secu_sociale_adresse' => $data['secuSocialeAdresse'] ?? '',
+                'assureur_nom' => $data['assureurNom'] ?? '',
+                'assureur_adresse' => $data['assureurAdresse'] ?? '',
+                'assureur_numero_assurance' => $data['assureurNumeroAssurance'] ?? '',
             ],
             'responsable_financier' => [
-                'nom' => $data['responsableFinancierNom'] ?? $data['responsable_financier_nom'] ?? '',
-                'prenom' => $data['responsableFinancierPrenom'] ?? $data['responsable_financier_prenom'] ?? '',
-                'nom_employeur' => $data['responsableFinancierNomEmployeur'] ?? $data['responsable_financier_nom_employeur'] ?? '',
-                'adresse_employeur' => $data['responsableFinancierAdresseEmployeur'] ?? $data['responsable_financier_adresse_employeur'] ?? '',
+                'nom' => $data['responsableFinancierNom'] ?? '',
+                'prenom' => $data['responsableFinancierPrenom'] ?? '',
+                'nom_employeur' => $data['responsableFinancierNomEmployeur'] ?? '',
+                'adresse_employeur' => $data['responsableFinancierAdresseEmployeur'] ?? '',
             ],
             'documents' => [
-                'carte_vitale' => !empty($data['carteVitale'] ?? $data['carte_vitale']),
-                'photo_identite' => !empty($data['photoIdentite'] ?? $data['photo_identite']),
-                'bourse' => !empty($data['bourse']),
-                'attestation_jdc' => !empty($data['attestationJDC'] ?? $data['attestation_jdc']),
-                'attestation_identite' => !empty($data['attestationIdentite'] ?? $data['attestation_identite']),
-                'attestation_reusite' => !empty($data['attestationReusite'] ?? $data['attestation_reusite']),
+                'carte_vitale' => $data['carteVitale'],
+                'photo_identite' => $data['photoIdentite'],
+                'bourse' => $data['bourse'],
+                'attestation_jdc' => $data['attestationJDC'],
+                'attestation_identite' => $data['attestationIdentite'],
+                'attestation_reusite' => $data['attestationReusite'],
             ],
             'adhesion' => [
-                'accepted' => $data['adhesionAccepted'] ?? $data['adhesion_accepted'] ?? false,
-                'payment_method' => $data['adhesionPaymentMethod'] ?? $data['adhesion_payment_method'] ?? '',
-                'image_rights' => $data['adhesionImageRights'] ?? $data['adhesion_image_rights'] ?? '',
+                'accepted' => $data['adhesionAccepted'] ?? false,
+                'payment_method' => $data['adhesionPaymentMethod'] ?? '',
+                'image_rights' => $data['adhesionImageRights'] ?? '',
                 'cheque' => $data['cheque'] ?? false,
-                'droit_image' => $data['droitImage'] ?? $data['droit_image'] ?? false,
+                'droit_image' => $data['droitImage'] ?? false,
             ],
         ];
     }
@@ -445,148 +406,116 @@ class InscriptionFlow extends FormFlow
     private function mapDataToEntity($inscription, array $data): void
     {
         // Informations personnelles
-        $inscription->setNom($data['nom'] ?? '');
+               $inscription->setNom($data['nom'] ?? '');
         $inscription->setPrenom($data['prenom'] ?? '');
         $inscription->setEmail($data['email'] ?? '');
-        
-        // Gérer la date de naissance (plusieurs formats possibles)
-        $dateNaissance = $data['dateNaissance'] ?? $data['date_de_naissance'] ?? null;
-        if ($dateNaissance) {
-            if (is_string($dateNaissance)) {
-                $dateNaissance = new \DateTime($dateNaissance);
-            }
-            $inscription->setDateNaissance($dateNaissance);
+
+        // Gérer la date de naissance
+        if (!empty($data['dateNaissance'])) {
+            $inscription->setDateNaissance(new \DateTime($data['dateNaissance']));
         }
-        
+
         $inscription->setSexe($data['sexe'] ?? '');
         $inscription->setNationalite($data['nationalite'] ?? '');
-        $inscription->setDepartement($data['departement'] ?? $data['departement_naissance'] ?? '');
-        $inscription->setCommuneNaissance($data['communeNaissance'] ?? $data['commune_naissance'] ?? '');
+        $inscription->setDepartement($data['departement'] ?? '');
+        $inscription->setCommuneNaissance($data['communeNaissance'] ?? '');
+        $inscription->setNumSecuSocial($data['numSecuSocial'] ?? '');
 
         // Contact et urgence
-        $inscription->setNumeroMobile($data['numeroMobile'] ?? $data['numero_mobile'] ?? '');
-        $inscription->setNomContacteUrgence($data['nomContacteUrgence'] ?? $data['nom_contacte_urgence'] ?? '');
-        $inscription->setNumeroContacteUrgence($data['numeroContacteUrgence'] ?? $data['numero_contacte_urgence'] ?? '');
+        $inscription->setNumeroMobile($data['numeroMobile'] ?? '');
+        $inscription->setTelephoneFixe($data['telephoneFixe'] ?? '');
+        $inscription->setAccepterSms($data['accepterSms'] ?? false);
+        $inscription->setNomContacteUrgence($data['nomContacteUrgence'] ?? '');
+        $inscription->setNumeroContacteUrgence($data['numeroContacteUrgence'] ?? '');
 
         // Informations scolaires
         $inscription->setClasse($data['classe'] ?? '');
         $inscription->setPromotion($data['promotion'] ?? '');
         $inscription->setRegime($data['regime'] ?? '');
-        $inscription->setLv1($data['lvUn'] ?? $data['lv_un'] ?? $data['lv1'] ?? '');
-        $inscription->setLv2($data['lvDeux'] ?? $data['lv_deux'] ?? $data['lv2'] ?? '');
         $inscription->setRedoublant($data['redoublant'] ?? false);
-        $inscription->setDernierDiplome($data['dernierDiplome'] ?? $data['dernier_diplome'] ?? '');
-        $inscription->setTransportScolaire($data['transportScolaire'] ?? $data['transport_scolaire'] ?? '');
-        $inscription->setImmatriculationVehicule($data['immatriculationVeic'] ?? $data['immatriculation_veic'] ?? '');
-        $inscription->setNumeroSecuSocial($data['numSecuSocial'] ?? $data['num_secu_social'] ?? '');
+        $inscription->setLvUn($data['lvUn'] ?? '');
+        $inscription->setLvDeux($data['lvDeux'] ?? '');
+        $inscription->setDernierDiplome($data['dernierDiplome'] ?? '');
+        $inscription->setTransportScolaire($data['transportScolaire'] ?? '');
+        $inscription->setImmatriculationVeic($data['immatriculationVeic'] ?? '');
 
         // Représentant légal 1
-        $inscription->setRepresentantLegal1Nom($data['representantLegal1Nom'] ?? $data['representant_legal_nom'] ?? '');
+        $inscription->setRepresentantLegal1Nom($data['representantLegal1Nom'] ?? '');
         $inscription->setRepresentantLegal1Prenom($data['representantLegal1Prenom'] ?? '');
-        $inscription->setRepresentantLegal1Email($data['representantLegal1Email'] ?? '');
+        $inscription->setRepresentantLegal1Courriel($data['representantLegal1Courriel'] ?? '');
         $inscription->setRepresentantLegal1Telephone($data['representantLegal1Telephone'] ?? '');
         $inscription->setRepresentantLegal1TelephoneFixe($data['representantLegal1TelephoneFixe'] ?? '');
         $inscription->setRepresentantLegal1TelephonePro($data['representantLegal1TelephonePro'] ?? '');
         $inscription->setRepresentantLegal1Adresse($data['representantLegal1Adresse'] ?? '');
         $inscription->setRepresentantLegal1CodePostal($data['representantLegal1CodePostal'] ?? '');
         $inscription->setRepresentantLegal1Commune($data['representantLegal1Commune'] ?? '');
-        $inscription->setRepresentantLegal1LienEleve($data['representantLegal1LienEleve'] ?? '');
         $inscription->setRepresentantLegal1Poste($data['representantLegal1Poste'] ?? '');
+        $inscription->setRepresentantLegal1LienEleve($data['representantLegal1LienEleve'] ?? '');
         $inscription->setRepresentantLegal1NomEmployeur($data['representantLegal1NomEmployeur'] ?? '');
         $inscription->setRepresentantLegal1AdresseEmployeur($data['representantLegal1AdresseEmployeur'] ?? '');
+        $inscription->setRepresentantLegal1Sms($data['representantLegal1Sms'] ?? false);
 
         // Représentant légal 2
         $inscription->setRepresentantLegal2Nom($data['representantLegal2Nom'] ?? '');
         $inscription->setRepresentantLegal2Prenom($data['representantLegal2Prenom'] ?? '');
-        $inscription->setRepresentantLegal2Email($data['representantLegal2Email'] ?? '');
+        $inscription->setRepresentantLegal2Courriel($data['representantLegal2Courriel'] ?? '');
         $inscription->setRepresentantLegal2Telephone($data['representantLegal2Telephone'] ?? '');
         $inscription->setRepresentantLegal2TelephoneFixe($data['representantLegal2TelephoneFixe'] ?? '');
         $inscription->setRepresentantLegal2TelephonePro($data['representantLegal2TelephonePro'] ?? '');
         $inscription->setRepresentantLegal2Adresse($data['representantLegal2Adresse'] ?? '');
         $inscription->setRepresentantLegal2CodePostal($data['representantLegal2CodePostal'] ?? '');
         $inscription->setRepresentantLegal2Commune($data['representantLegal2Commune'] ?? '');
-        $inscription->setRepresentantLegal2LienEleve($data['representantLegal2LienEleve'] ?? '');
         $inscription->setRepresentantLegal2Poste($data['representantLegal2Poste'] ?? '');
+        $inscription->setRepresentantLegal2LienEleve($data['representantLegal2LienEleve'] ?? '');
         $inscription->setRepresentantLegal2NomEmployeur($data['representantLegal2NomEmployeur'] ?? '');
         $inscription->setRepresentantLegal2AdresseEmployeur($data['representantLegal2AdresseEmployeur'] ?? '');
+        $inscription->setRepresentantLegal2Sms($data['representantLegal2Sms'] ?? false);
 
         // Scolarité antérieure
-        $inscription->setEtablissementPrecedent1($data['etablissementPrecedent1'] ?? $data['etablissement_precedent1'] ?? '');
-        $inscription->setClassePrecedente1($data['classePrecedente1'] ?? $data['classe_precedente1'] ?? '');
-        $inscription->setAnneeScolairePrecedente1($data['anneeScolairePrecedente1'] ?? $data['annee_scolaire_precedente1'] ?? '');
-        $inscription->setEtablissementPrecedent2($data['etablissementPrecedent2'] ?? $data['etablissement_precedent2'] ?? '');
-        $inscription->setClassePrecedente2($data['classePrecedente2'] ?? $data['classe_precedente2'] ?? '');
-        $inscription->setAnneeScolairePrecedente2($data['anneeScolairePrecedente2'] ?? $data['annee_scolaire_precedente2'] ?? '');
+        $inscription->setEtablissementPrecedent1($data['etablissementPrecedent1'] ?? '');
+        $inscription->setClassePrecedente1($data['classePrecedente1'] ?? '');
+        $inscription->setAnneeScolairePrecedente1($data['anneeScolairePrecedente1'] ?? '');
+        $inscription->setEtablissementPrecedent2($data['etablissementPrecedent2'] ?? '');
+        $inscription->setClassePrecedente2($data['classePrecedente2'] ?? '');
+        $inscription->setAnneeScolairePrecedente2($data['anneeScolairePrecedente2'] ?? '');
 
         // Informations médicales
-        $inscription->setMedecinTraitantNom($data['medecinTraitantNom'] ?? $data['medecin_traitant_nom'] ?? '');
+        $inscription->setMedecinTraitantNom($data['medecinTraitantNom'] ?? '');
         $inscription->setMedecinTraitantTelephone($data['medecinTraitantTelephone'] ?? '');
         $inscription->setMedecinTraitantAdresse($data['medecinTraitantAdresse'] ?? '');
         
-        // Gérer la date du dernier rappel antitétanique
-        $dernierRappel = $data['dernierRappelAntitetanique'] ?? $data['dernier_rappel_antitetanique'] ?? null;
-        if ($dernierRappel) {
-            if (is_string($dernierRappel)) {
-                $dernierRappel = new \DateTime($dernierRappel);
-            }
-            $inscription->setDernierRappelAntitetanique($dernierRappel);
+        if (!empty($data['dernierRappelAntitetanique'])) {
+            $inscription->setDernierRappelAntitetanique(new \DateTime($data['dernierRappelAntitetanique']));
         }
         
         $inscription->setObservations($data['observations'] ?? '');
-        $inscription->setSecuSocialeNom($data['secuSocialeNom'] ?? $data['secu_sociale_nom'] ?? '');
-        $inscription->setSecuSocialeAdresse($data['secuSocialeAdresse'] ?? $data['secu_sociale_adresse'] ?? '');
-        $inscription->setAssureurNom($data['assureurNom'] ?? $data['assureur_nom'] ?? '');
-        $inscription->setAssureurAdresse($data['assureurAdresse'] ?? $data['assureur_adresse'] ?? '');
-        $inscription->setAssureurNumeroAssurance($data['assureurNumeroAssurance'] ?? $data['assureur_numero_assurance'] ?? '');
+        $inscription->setSecuSocialeNom($data['secuSocialeNom'] ?? '');
+        $inscription->setSecuSocialeAdresse($data['secuSocialeAdresse'] ?? '');
+        $inscription->setAssureurNom($data['assureurNom'] ?? '');
+        $inscription->setAssureurAdresse($data['assureurAdresse'] ?? '');
+        $inscription->setAssureurNumeroAssurance($data['assureurNumeroAssurance'] ?? '');
 
         // Responsable financier
-        $inscription->setResponsableFinancierNom($data['responsableFinancierNom'] ?? $data['responsable_financier_nom'] ?? '');
-        $inscription->setResponsableFinancierPrenom($data['responsableFinancierPrenom'] ?? $data['responsable_financier_prenom'] ?? '');
-        $inscription->setResponsableFinancierRIB($data['responsableFinancierRIB'] ?? $data['responsable_financier_rib'] ?? '');
-        $inscription->setResponsableFinancierNomEmployeur($data['responsableFinancierNomEmployeur'] ?? $data['responsable_financier_nom_employeur'] ?? '');
-        $inscription->setResponsableFinancierAdresseEmployeur($data['responsableFinancierAdresseEmployeur'] ?? $data['responsable_financier_adresse_employeur'] ?? '');
+        $inscription->setResponsableFinancierNom($data['responsableFinancierNom'] ?? '');
+        $inscription->setResponsableFinancierPrenom($data['responsableFinancierPrenom'] ?? '');
+        $inscription->setResponsableFinancierNomEmployeur($data['responsableFinancierNomEmployeur'] ?? '');
+        $inscription->setResponsableFinancierAdresseEmployeur($data['responsableFinancierAdresseEmployeur'] ?? '');
 
-        // Documents (gérer les fichiers uploadés)
-        $inscription->setCarteVitale($data['carteVitale'] ?? $data['carte_vitale'] ?? null);
-        $inscription->setPhotoIdentite($data['photoIdentite'] ?? $data['photo_identite'] ?? null);
-        $inscription->setBourse($data['bourse'] ?? null);
-        $inscription->setAttestationJDC($data['attestationJDC'] ?? $data['attestation_jdc'] ?? null);
-        $inscription->setAttestationIdentite($data['attestationIdentite'] ?? $data['attestation_identite'] ?? null);
-        $inscription->setAttestationReusite($data['attestationReusite'] ?? $data['attestation_reusite'] ?? null);
+        // Documents
+        $inscription->setCarteVitale($data['carteVitale']);
+        $inscription->setPhotoIdentite($data['photoIdentite']);
+        $inscription->setAttestationIdentite($data['attestationIdentite']);
+        $inscription->setBourse($data['bourse']);
+        $inscription->setAttestationJDC($data['attestationJDC']);
+        $inscription->setAttestationReusite($data['attestationReusite']);
 
         // Adhésion et finalisation
         $inscription->setCheque($data['cheque'] ?? false);
-        $inscription->setDroitImage($data['droitImage'] ?? $data['droit_image'] ?? false);
-        $inscription->setAdhesionAccepted($data['adhesionAccepted'] ?? $data['adhesion_accepted'] ?? false);
-        $inscription->setAdhesionPaymentMethod($data['adhesionPaymentMethod'] ?? $data['adhesion_payment_method'] ?? '');
-        $inscription->setAdhesionImageRights($data['adhesionImageRights'] ?? $data['adhesion_image_rights'] ?? '');
+        $inscription->setDroitImage($data['droitImage'] ?? false);
+        $inscription->setAdhesionAccepted($data['adhesionAccepted'] ?? false);
+        $inscription->setAdhesionPaymentMethod($data['adhesionPaymentMethod'] ?? '');
+        $inscription->setAdhesionImageRights($data['adhesionImageRights'] ?? false);
     }
-
-    // public function saveInscriptionData($inscriptionEntity): bool
-    // {
-    //     try {
-    //         $data = $this->getFinalDataForPersistence();
-            
-    //         // Mapper les données vers l'entité
-    //         $this->mapDataToEntity($inscriptionEntity, $data);
-            
-    //         // Persister en base
-    //         $this->entityManager->persist($inscriptionEntity);
-    //         $this->entityManager->flush();
-            
-    //         // Nettoyer après sauvegarde réussie
-    //         $this->clearDraft();
-    //         $this->cleanup();
-            
-    //         return true;
-    //     } catch (\Exception $e) {
-    //         $this->logger->error('Erreur lors de la sauvegarde en base de données', [
-    //             'error' => $e->getMessage(),
-    //             'trace' => $e->getTraceAsString()
-    //         ]);
-    //         return false;
-    //     }
-    // }
 
     /**
      * Nouvelle méthode : Génère un récapitulatif complet pour validation finale
@@ -756,12 +685,8 @@ class InscriptionFlow extends FormFlow
     private function cleanupTemporaryFiles(): void
     {
         $documentsFields = [
-            'carteVitale', 'carte_vitale',
-            'photoIdentite', 'photo_identite',
-            'bourse',
-            'attestationJDC', 'attestation_jdc',
-            'attestationIdentite', 'attestation_identite',
-            'attestationReusite', 'attestation_reusite'
+            'carteVitale', 'photoIdentite', 'bourse',
+            'attestationJDC', 'attestationIdentite', 'attestationReusite'
         ];
         
         $data = $this->getFormData();
@@ -793,20 +718,20 @@ class InscriptionFlow extends FormFlow
                 if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
                     $errors[] = 'L\'adresse email est obligatoire et doit être valide.';
                 }
-                if (empty($data['dateNaissance']) && empty($data['date_de_naissance'])) {
+                if (empty($data['dateNaissance'])) {
                     $errors[] = 'La date de naissance est obligatoire.';
                 }
                 if (empty($data['sexe'])) $errors[] = 'Le sexe est obligatoire.';
                 break;
 
             case 2: // Contact et urgence
-                if (empty($data['numeroMobile']) && empty($data['numero_mobile'])) {
+                if (empty($data['numeroMobile'])) {
                     $errors[] = 'Le numéro de téléphone mobile est obligatoire.';
                 }
-                if (empty($data['nomContacteUrgence']) && empty($data['nom_contacte_urgence'])) {
+                if (empty($data['nomContacteUrgence'])) {
                     $errors[] = 'Le nom du contact d\'urgence est obligatoire.';
                 }
-                if (empty($data['numeroContacteUrgence']) && empty($data['numero_contacte_urgence'])) {
+                if (empty($data['numeroContacteUrgence'])) {
                     $errors[] = 'Le numéro du contact d\'urgence est obligatoire.';
                 }
                 break;
@@ -817,29 +742,29 @@ class InscriptionFlow extends FormFlow
                 break;
 
             case 4: // Représentant légal 1
-                if (empty($data['representantLegal1Nom']) && empty($data['representant_legal_nom'])) {
+                if (empty($data['representantLegal1Nom'])) {
                     $errors[] = 'Le nom du représentant légal est obligatoire.';
                 }
                 if (empty($data['representantLegal1Prenom'])) {
                     $errors[] = 'Le prénom du représentant légal est obligatoire.';
                 }
-                if (!empty($data['representantLegal1Email']) && 
-                    !filter_var($data['representantLegal1Email'], FILTER_VALIDATE_EMAIL)) {
+                if (!empty($data['representantLegal1Courriel']) && 
+                    !filter_var($data['representantLegal1Courriel'], FILTER_VALIDATE_EMAIL)) {
                     $errors[] = 'L\'email du représentant légal n\'est pas valide.';
                 }
                 break;
 
             case 8: // Responsable financier
-                if (empty($data['responsableFinancierNom']) && empty($data['responsable_financier_nom'])) {
+                if (empty($data['responsableFinancierNom'])) {
                     $errors[] = 'Le nom du responsable financier est obligatoire.';
                 }
-                if (empty($data['responsableFinancierPrenom']) && empty($data['responsable_financier_prenom'])) {
+                if (empty($data['responsableFinancierPrenom'])) {
                     $errors[] = 'Le prénom du responsable financier est obligatoire.';
                 }
                 break;
 
             case 10: // Adhésion
-                if (!($data['adhesionAccepted'] ?? $data['adhesion_accepted'] ?? false)) {
+                if (!($data['adhesionAccepted'] ?? false)) {
                     $errors[] = 'L\'adhésion doit être acceptée pour finaliser l\'inscription.';
                 }
                 break;
@@ -889,7 +814,7 @@ class InscriptionFlow extends FormFlow
             // Valider toutes les données
             $errors = $this->validateAllData();
             if (!empty($errors)) {
-                return false;
+                               return false;
             }
             
             // Les données sont prêtes pour la sauvegarde
@@ -1027,8 +952,8 @@ class InscriptionFlow extends FormFlow
     {
         try {
             $token = $this->tokenStorage->getToken();
-            if ($token && ($user = $token->getUser())) {
-                if ($user instanceof \App\Entity\User) {
+            if ($token && ($user = $token->getUser ())) {
+                if ($user instanceof User) {
                     return $user->getId();
                 }
             }
@@ -1119,8 +1044,8 @@ class InscriptionFlow extends FormFlow
             
             // Définir l'utilisateur actuel si disponible
             $token = $this->tokenStorage->getToken();
-            if ($token && $token->getUser()) {
-                $inscriptionEntity->setUtilisateur($token->getUser());
+            if ($token && $token->getUser ()) {
+                $inscriptionEntity->setUtilisateur($token->getUser ());
             }
             
             // Persister l'entité
@@ -1186,11 +1111,14 @@ class InscriptionFlow extends FormFlow
             'Nationalité' => $summary['informations_personnelles']['nationalite'],
             'Département de naissance' => $summary['informations_personnelles']['departement'],
             'Commune de naissance' => $summary['informations_personnelles']['commune_naissance'],
+            'Numéro de sécurité sociale' => $summary['informations_personnelles']['num_secu_social'],
         ];
 
         // Contact et urgence
         $formatted['Contact et urgence'] = [
             'Numéro mobile' => $summary['contact_urgence']['numero_mobile'],
+            'Téléphone fixe' => $summary['contact_urgence']['telephone_fixe'],
+            'Accepter SMS' => $summary['contact_urgence']['accepter_sms'] ? 'Oui' : 'Non',
             'Contact d\'urgence' => $summary['contact_urgence']['nom_contacte_urgence'],
             'Numéro d\'urgence' => $summary['contact_urgence']['numero_contacte_urgence'],
         ];
@@ -1200,13 +1128,12 @@ class InscriptionFlow extends FormFlow
             'Classe' => $summary['scolarite']['classe'],
             'Promotion' => $summary['scolarite']['promotion'],
             'Régime' => $summary['scolarite']['regime'],
-            'LV1' => $summary['scolarite']['lv1'],
-            'LV2' => $summary['scolarite']['lv2'],
             'Redoublant' => $summary['scolarite']['redoublant'] ? 'Oui' : 'Non',
+            'Langue vivante 1' => $summary['scolarite']['lv1'],
+            'Langue vivante 2' => $summary['scolarite']['lv2'],
             'Dernier diplôme' => $summary['scolarite']['dernier_diplome'],
             'Transport scolaire' => $summary['scolarite']['transport_scolaire'],
             'Immatriculation véhicule' => $summary['scolarite']['immatriculation_vehicule'],
-            'N° Sécurité sociale' => $summary['scolarite']['numero_secu_social'],
         ];
 
         // Représentant légal 1
@@ -1221,10 +1148,11 @@ class InscriptionFlow extends FormFlow
                 'Adresse' => $summary['representant_legal_1']['adresse'],
                 'Code postal' => $summary['representant_legal_1']['code_postal'],
                 'Commune' => $summary['representant_legal_1']['commune'],
-                'Lien avec l\'élève' => $summary['representant_legal_1']['lien_eleve'],
                 'Poste' => $summary['representant_legal_1']['poste'],
-                'Employeur' => $summary['representant_legal_1']['nom_employeur'],
+                'Lien avec l\'élève' => $summary['representant_legal_1']['lien_eleve'],
+                'Employeur' => $summary['representant_legal_1']['employeur'],
                 'Adresse employeur' => $summary['representant_legal_1']['adresse_employeur'],
+                'SMS autorisés' => $summary['representant_legal_1']['sms'] ? 'Oui' : 'Non',
             ];
         }
 
@@ -1240,10 +1168,11 @@ class InscriptionFlow extends FormFlow
                 'Adresse' => $summary['representant_legal_2']['adresse'],
                 'Code postal' => $summary['representant_legal_2']['code_postal'],
                 'Commune' => $summary['representant_legal_2']['commune'],
-                'Lien avec l\'élève' => $summary['representant_legal_2']['lien_eleve'],
                 'Poste' => $summary['representant_legal_2']['poste'],
-                'Employeur' => $summary['representant_legal_2']['nom_employeur'],
+                'Lien avec l\'élève' => $summary['representant_legal_2']['lien_eleve'],
+                'Employeur' => $summary['representant_legal_2']['employeur'],
                 'Adresse employeur' => $summary['representant_legal_2']['adresse_employeur'],
+                'SMS autorisés' => $summary['representant_legal_2']['sms'] ? 'Oui' : 'Non',
             ];
         }
 
@@ -1306,53 +1235,5 @@ class InscriptionFlow extends FormFlow
         ];
 
         return $formatted;
-    }
-
-    /**
-     * Vérifie si toutes les étapes obligatoires sont complétées
-     */
-    public function isComplete(): bool
-    {
-        $errors = $this->validateAllData();
-        return empty($errors);
-    }
-
-    /**
-     * Retourne le pourcentage de completion du formulaire
-     */
-    public function getCompletionPercentage(): int
-    {
-        $data = $this->getFormData();
-        $totalFields = 0;
-        $completedFields = 0;
-
-        // Champs obligatoires à vérifier
-        $requiredFields = [
-            'nom', 'prenom', 'email', 'sexe',
-            'numeroMobile', 'numero_mobile',
-            'nomContacteUrgence', 'nom_contacte_urgence',
-            'numeroContacteUrgence', 'numero_contacte_urgence',
-            'classe', 'regime',
-            'representantLegal1Nom', 'representant_legal_nom',
-            'representantLegal1Prenom',
-            'responsableFinancierNom', 'responsable_financier_nom',
-            'responsableFinancierPrenom', 'responsable_financier_prenom',
-            'adhesionAccepted', 'adhesion_accepted'
-        ];
-
-        foreach ($requiredFields as $field) {
-            $totalFields++;
-            if (!empty($data[$field])) {
-                $completedFields++;
-            }
-        }
-
-        // Vérification spéciale pour la date de naissance
-        $totalFields++;
-        if (!empty($data['dateNaissance']) || !empty($data['date_de_naissance'])) {
-            $completedFields++;
-        }
-
-        return $totalFields > 0 ? round(($completedFields / $totalFields) * 100) : 0;
     }
 }
