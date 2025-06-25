@@ -1,0 +1,884 @@
+{% extends 'base.html.twig' %}
+{% block title %}Inscription - Étape {{ flow.currentStepNumber }} - E-Inscription{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .fr-fieldset {
+            margin-bottom: 2rem;
+        }
+        .fr-alert--success {
+            margin-bottom: 1rem;
+        }
+        .validation-error {
+            color: var(--error-500);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .fr-btn--disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .form-error {
+            color: var(--error-500);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .fr-alert--error {
+            margin-bottom: 1rem;
+        }
+        .loading-spinner {
+            display: none;
+            margin-left: 0.5rem;
+        }
+        .fr-btn--loading .loading-spinner {
+            display: inline-block;
+        }
+        .fr-grid-row.fr-grid-row--gutters > * {
+            margin-bottom: 1rem;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="fr-container">
+    <div class="fr-grid-row fr-grid-row--center">
+        <div class="fr-col-12 fr-col-lg-10">
+            <nav class="fr-breadcrumb" aria-label="vous êtes ici :" role="navigation">
+                <button class="fr-breadcrumb__button" aria-expanded="false" aria-controls="breadcrumb-{{ flow.currentStepNumber }}">
+                    Voir le fil d'Ariane
+                </button>
+                <div class="fr-collapse" id="breadcrumb-{{ flow.currentStepNumber }}">
+                    <ol class="fr-breadcrumb__list">
+                        <li>
+                            <a class="fr-breadcrumb__link" href="{{ path('app_home') }}">Accueil</a>
+                        </li>
+                        <li>
+                            <a class="fr-breadcrumb__link" aria-current="page">Inscription</a>
+                        </li>
+                    </ol>
+                </div>
+            </nav>
+
+            <div class="fr-stepper">
+                <h2 class="fr-stepper__title" id="step-title">
+                    Étape {{ flow.currentStepNumber }} sur 10 : {{ flow.currentStepLabel }}
+                </h2>
+                <div class="fr-stepper__steps" data-fr-current-step="{{ flow.currentStepNumber }}" data-fr-steps="10"></div>
+                {% if flow.nextStepLabel is defined %}
+                    <p class="fr-stepper__details">
+                        <span class="fr-text--bold">Étape suivante :</span> 
+                        {{ flow.nextStepLabel }}
+                    </p>
+                {% endif %}
+            </div>
+
+            <!-- Conteneur pour les messages d'erreur AJAX -->
+            <div id="ajax-messages"></div>
+
+            {% for flash_error in app.flashes('error') %}
+                <div class="fr-alert fr-alert--error">
+                    <p class="fr-alert__title">Erreur</p>
+                    <p>{{ flash_error }}</p>
+                </div>
+            {% endfor %}
+
+            {% for flash_success in app.flashes('success') %}
+                <div class="fr-alert fr-alert--success">
+                    <p class="fr-alert__title">Succès</p>
+                    <p>{{ flash_success }}</p>
+                </div>
+            {% endfor %}
+
+            <div class="fr-card">
+                <div class="fr-card__body">
+                    <div class="fr-card__content">
+                        {{ form_start(form, {'attr': {'id': 'inscription-form', 'novalidate': 'novalidate'}}) }}
+
+                        {% if flow.currentStepNumber == 1 %}
+                            <fieldset class="fr-fieldset">
+                                <legend class="fr-fieldset__legend fr-text--regular">
+                                    <span class="fr-icon-user-line fr-icon--sm" aria-hidden="true"></span>
+                                    Informations personnelles
+                                </legend>
+                                <div class="fr-fieldset__content">
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.nom) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.prenom) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.email) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.dateNaissance) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.sexe) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.nationalite) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.departement) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.communeNaissance) }}
+                                        </div>
+                                    </div>
+                                    {{ form_row(form.numSecuSocial) }}
+                                </div>
+                            </fieldset>
+                        {% endif %}
+
+                        {% if flow.currentStepNumber == 2 %}
+                            <fieldset class="fr-fieldset">
+                                <legend class="fr-fieldset__legend fr-text--regular">
+                                    <span class="fr-icon-contacts-line fr-icon--sm" aria-hidden="true"></span>
+                                    Contact et urgence
+                                </legend>
+                                <div class="fr-fieldset__content">
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-12">
+                                            {{ form_row(form.numeroMobile) }}
+                                        </div>
+                                    </div>
+                                    {{ form_row(form.accepterSms) }}
+                                    
+                                    <h4 class="fr-h4 fr-mt-3w">Contact d'urgence</h4>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.nomContacteUrgence) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.numeroContacteUrgence) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        {% endif %}
+
+                        {% if flow.currentStepNumber == 3 %}
+                            <fieldset class="fr-fieldset">
+                                <legend class="fr-fieldset__legend fr-text--regular">
+                                    <span class="fr-icon-school-line fr-icon--sm" aria-hidden="true"></span>
+                                    Informations scolaires
+                                </legend>
+                                <div class="fr-fieldset__content">
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.classe) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.promotion) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.regime) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.redoublant) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <h4 class="fr-h4 fr-mt-3w">Langues vivantes</h4>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.lvUn) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.lvDeux) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <h4 class="fr-h4 fr-mt-3w">Autres informations</h4>
+                                    {{ form_row(form.dernierDiplome) }}
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.transportScolaire) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.immatriculationVeic) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        {% endif %}
+
+                        {% if flow.currentStepNumber == 4 %}
+                            <fieldset class="fr-fieldset">
+                                <legend class="fr-fieldset__legend fr-text--regular">
+                                    <span class="fr-icon-parent-line fr-icon--sm" aria-hidden="true"></span>
+                                    Représentant légal 1
+                                </legend>
+                                <div class="fr-fieldset__content">
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal1Nom) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal1Prenom) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <h4 class="fr-h4 fr-mt-3w">Contact</h4>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal1Courriel) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal1Telephone) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal1TelephoneFixe) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal1TelephonePro) }}
+                                        </div>
+                                    </div>
+                                    {{ form_row(form.representantLegal1Sms) }}
+                                    
+                                    <h4 class="fr-h4 fr-mt-3w">Adresse</h4>
+                                    {{ form_row(form.representantLegal1Adresse) }}
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal1CodePostal) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal1Commune) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <h4 class="fr-h4 fr-mt-3w">Informations professionnelles</h4>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal1Poste) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal1LienEleve) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal1NomEmployeur) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal1AdresseEmployeur) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        {% endif %}
+
+                        {% if flow.currentStepNumber == 5 %}
+                            <fieldset class="fr-fieldset">
+                                <legend class="fr-fieldset__legend fr-text--regular">
+                                    <span class="fr-icon-parent-line fr-icon--sm" aria-hidden="true"></span>
+                                    Représentant légal 2 (optionnel)
+                                </legend>
+                                <div class="fr-fieldset__content">
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal2Nom) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal2Prenom) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <h4 class="fr-h4 fr-mt-3w">Contact</h4>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal2Courriel) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal2Telephone) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal2TelephoneFixe) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal2TelephonePro) }}
+                                        </div>
+                                    </div>
+                                    {{ form_row(form.representantLegal2Sms) }}
+                                    
+                                    <h4 class="fr-h4 fr-mt-3w">Adresse</h4>
+                                    {{ form_row(form.representantLegal2Adresse) }}
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal2CodePostal) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal2Commune) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <h4 class="fr-h4 fr-mt-3w">Informations professionnelles</h4>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal2Poste) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal2LienEleve) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal2NomEmployeur) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.representantLegal2AdresseEmployeur) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        {% endif %}
+
+                        {% if flow.currentStepNumber == 6 %}
+                            <fieldset class="fr-fieldset">
+                                <legend class="fr-fieldset__legend fr-text--regular">
+                                    <span class="fr-icon-book-line fr-icon--sm" aria-hidden="true"></span>
+                                    Scolarité antérieure
+                                </legend>
+                                <div class="fr-fieldset__content">
+                                    <h4 class="fr-h4">Établissement précédent 1</h4>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.etablissementPrecedent1) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.classePrecedente1) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.anneeScolairePrecedente1) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.lvUnPrecedente1) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row-gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.lvDeuxPrecedente1) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.optionPrecedente1) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <h4 class="fr-h4 fr-mt-3w">Établissement précédent 2</h4>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.etablissementPrecedent2) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.classePrecedente2) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.anneeScolairePrecedente2) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.lvUnPrecedente2) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row-gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.lvDeuxPrecedente2) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.optionPrecedente2) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        {% endif %}
+
+                        {% if flow.currentStepNumber == 7 %}
+                            <fieldset class="fr-fieldset">
+                                <legend class="fr-fieldset__legend fr-text--regular">
+                                    <span class="fr-icon-heart-pulse-line fr-icon--sm" aria-hidden="true"></span>
+                                    Informations médicales
+                                </legend>
+                                <div class="fr-fieldset__content">
+                                    <h4 class="fr-h4">Médecin traitant</h4>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.medecinTraitantNom) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.medecinTraitantTelephone) }}
+                                        </div>
+                                    </div>
+                                    {{ form_row(form.medecinTraitantAdresse) }}
+                                    
+                                    <h4 class="fr-h4 fr-mt-3w">Informations de santé</h4>
+                                    {{ form_row(form.dernierRappelAntitetanique) }}
+                                    {{ form_row(form.observations) }}
+                                    
+                                    <h4 class="fr-h4 fr-mt-3w">Sécurité sociale</h4>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.secuSocialeNom) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.secuSocialeAdresse) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <h4 class="fr-h4 fr-mt-3w">Assurance</h4>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.assureurNom) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.assureurNumeroAssurance) }}
+                                        </div>
+                                    </div>
+                                    {{ form_row(form.assureurAdresse) }}
+                                </div>
+                            </fieldset>
+                        {% endif %}
+
+                        {% if flow.currentStepNumber == 8 %}
+                            <fieldset class="fr-fieldset">
+                                <legend class="fr-fieldset__legend fr-text--regular">
+                                    <span class="fr-icon-money-euro-circle-line fr-icon--sm" aria-hidden="true"></span>
+                                    Responsable financier
+                                </legend>
+                                <div class="fr-fieldset__content">
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.responsableFinancierNom) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.responsableFinancierPrenom) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.responsableFinancierNomEmployeur) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.responsableFinancierAdresseEmployeur) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        {% endif %}
+
+                        {% if flow.currentStepNumber == 9 %}
+                            <fieldset class="fr-fieldset">
+                                <legend class="fr-fieldset__legend fr-text--regular">
+                                    <span class="fr-icon-documents-line fr-icon--sm" aria-hidden="true"></span>
+                                    Documents à fournir
+                                </legend>
+                                <div class="fr-fieldset__content">
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.carteVitale) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.photoIdentite) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.attestationIdentite) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.bourse) }}
+                                        </div>
+                                    </div>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.attestationJDC) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.attestationReusite) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        {% endif %}
+
+                        {% if flow.currentStepNumber == 10 %}
+                            <fieldset class="fr-fieldset">
+                                <legend class="fr-fieldset__legend fr-text--regular">
+                                    <span class="fr-icon-check-line fr-icon--sm" aria-hidden="true"></span>
+                                    Finalisation et adhésion
+                                </legend>
+                                <div class="fr-fieldset__content">
+                                    <h4 class="fr-h4">Documents complémentaires</h4>
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.cheque) }}
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            {{ form_row(form.droitImage) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <h4 class="fr-h4 fr-mt-3w">Adhésion</h4>
+                                    {{ form_row(form.adhesionAccepted) }}
+                                    {{ form_row(form.adhesionPaymentMethod) }}
+                                    {{ form_row(form.adhesionImageRights) }}
+                                </div>
+                            </fieldset>
+                            
+                            <!-- Message d'information pour l'étape finale -->
+                            <div class="fr-alert fr-alert--info fr-mt-2w">
+                                <p class="fr-alert__title">Information importante</p>
+                                <p>Vous êtes sur le point de finaliser votre inscription. Vérifiez bien toutes les informations saisies avant de valider.</p>
+                            </div>
+                        {% endif %}
+
+                        <div class="fr-mt-4w">
+                            <ul class="fr-btns-group fr-btns-group--inline-reverse fr-btns-group--inline-lg">
+                                <li>
+                                    {% if flow.currentStepNumber < 10 %}
+                                        <button type="submit" name="flow_transition" value="next" class="fr-btn" id="next-btn">
+                                            Étape suivante
+                                            <span class="fr-icon-arrow-right-line fr-icon--sm" aria-hidden="true"></span>
+                                            <span class="loading-spinner">⏳</span>
+                                        </button>
+                                    {% else %}
+                                        <button type="submit" name="flow_transition" value="finish" class="fr-btn fr-btn--icon-left fr-icon-check-line" id="finish-btn">
+                                            Valider l'inscription
+                                            <span class="loading-spinner">⏳</span>
+                                        </button>
+                                    {% endif %}
+                                </li>
+                                {% if flow.currentStepNumber > 1 %}
+                                    <li>
+                                        <button type="submit" name="flow_transition" value="previous" class="fr-btn fr-btn--secondary" id="previous-btn">
+                                            <span class="fr-icon-arrow-left-line fr-icon--sm" aria-hidden="true"></span>
+                                            Étape précédente
+                                        </button>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('inscription-form');
+    
+    if (!form) {
+        console.error('Formulaire inscription-form non trouvé');
+        return;
+    }
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Trouver le bouton qui a été cliqué
+        const clickedButton = [...form.querySelectorAll('button[type="submit"]')]
+            .find(btn => btn === document.activeElement);
+        
+        if (!clickedButton) {
+            console.warn('Aucun bouton de soumission détecté');
+            return;
+        }
+
+        // Validation spéciale pour l'étape 10
+        if (clickedButton.value === 'finish') {
+            if (!validateFinalStep()) {
+                return;
+            }
+        }
+
+        // Préparer les données du formulaire
+        const formData = new FormData(form);
+        formData.append(clickedButton.name, clickedButton.value);
+
+        // Désactiver le bouton pendant l'envoi
+        setButtonLoading(clickedButton, true);
+
+        // Effacer les erreurs précédentes
+        clearMessages();
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Succès
+                if (data.message) {
+                    showMessage('success', data.message);
+                }
+                
+                if (data.redirect) {
+                    // Délai court pour permettre à l'utilisateur de voir le message
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1000);
+                } else {
+                    console.error('Pas d\'URL de redirection fournie');
+                    showMessage('error', 'Succès mais pas de redirection définie');
+                }
+            } else {
+                // Échec - afficher les erreurs
+                handleErrors(data);
+            }
+        })
+        .catch(error => {
+            console.error('Erreur AJAX :', error);
+            showMessage('error', 'Une erreur de connexion est survenue. Veuillez réessayer.');
+        })
+        .finally(() => {
+            // Réactiver le bouton
+            setButtonLoading(clickedButton, false);
+        });
+    });
+
+    /**
+     * Validation spécifique pour l'étape finale
+     */
+    function validateFinalStep() {
+        const requiredFields = form.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+                field.classList.add('fr-input--error');
+            } else {
+                field.classList.remove('fr-input--error');
+            }
+        });
+        
+        if (!isValid) {
+            showMessage('error', 'Veuillez remplir tous les champs obligatoires avant de finaliser votre inscription.');
+            return false;
+        }
+        
+        return true;
+    }
+
+    /**
+     * Gère l'état de chargement des boutons
+     */
+    function setButtonLoading(button, loading) {
+        if (loading) {
+            button.disabled = true;
+            button.classList.add('fr-btn--loading');
+            button.setAttribute('aria-busy', 'true');
+        } else {
+            button.disabled = false;
+            button.classList.remove('fr-btn--loading');
+            button.removeAttribute('aria-busy');
+        }
+    }
+
+    /**
+     * Affiche un message (succès ou erreur)
+     */
+    function showMessage(type, message) {
+        const container = document.getElementById('ajax-messages');
+        const alertClass = type === 'success' ? 'fr-alert--success' : 'fr-alert--error';
+        const alertTitle = type === 'success' ? 'Succès' : 'Erreur';
+        
+        container.innerHTML = `
+            <div class="fr-alert ${alertClass}">
+                <p class="fr-alert__title">${alertTitle}</p>
+                <p>${message}</p>
+            </div>
+        `;
+        
+        // Scroll vers le message
+        container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /**
+     * Gère l'affichage des erreurs selon le type de réponse du contrôleur
+     */
+    function handleErrors(data) {
+        if (data.errors && Array.isArray(data.errors)) {
+            // Erreurs de validation - les afficher
+            displayValidationErrors(data.errors);
+        } else if (data.form_html) {
+            // Le contrôleur renvoie le HTML du formulaire avec les erreurs
+            updateFormContent(data.form_html);
+        } else if (data.error) {
+            // Message d'erreur simple
+            showMessage('error', data.error);
+        } else {
+            // Erreur générique
+            showMessage('error', 'Une erreur est survenue lors du traitement du formulaire.');
+        }
+    }
+
+    /**
+     * Affiche les erreurs de validation de manière accessible
+     */
+    function displayValidationErrors(errors) {
+        let errorMessages = '';
+        
+        if (errors.length === 1) {
+            errorMessages = errors[0];
+        } else {
+            errorMessages = '<ul>';
+            errors.forEach(error => {
+                errorMessages += `<li>${error}</li>`;
+            });
+            errorMessages += '</ul>';
+        }
+        
+        const container = document.getElementById('ajax-messages');
+        container.innerHTML = `
+            <div class="fr-alert fr-alert--error">
+                <p class="fr-alert__title">Erreurs de validation</p>
+                <div>${errorMessages}</div>
+            </div>
+        `;
+        
+        container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /**
+     * Met à jour le contenu du formulaire avec la version contenant les erreurs
+     */
+    function updateFormContent(formHtml) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = formHtml;
+        
+        const newFormContent = tempDiv.querySelector('#inscription-form');
+        if (newFormContent) {
+            // Sauvegarder les données du formulaire actuel
+            const currentData = new FormData(form);
+            
+            // Remplacer le contenu
+            form.innerHTML = newFormContent.innerHTML;
+            
+            // Restaurer les données si possible
+            restoreFormData(currentData);
+            
+            // Réattacher les event listeners
+            reattachEventListeners();
+        }
+    }
+
+    /**
+     * Restaure les données du formulaire après mise à jour du DOM
+     */
+    function restoreFormData(formData) {
+        for (let [name, value] of formData.entries()) {
+            const field = form.querySelector(`[name="${name}"]`);
+            if (field) {
+                if (field.type !== 'file') {
+                    field.value = value;
+                }
+            }
+        }
+    }
+
+    /**
+     * Efface les messages précédents
+     */
+    function clearMessages() {
+        const container = document.getElementById('ajax-messages');
+        container.innerHTML = '';
+        
+        // Effacer les classes d'erreur sur les champs
+        const invalidFields = form.querySelectorAll('.fr-input--error, .is-invalid');
+        invalidFields.forEach(field => {
+            field.classList.remove('fr-input--error', 'is-invalid');
+        });
+    }
+
+    /**
+     * Réattache les event listeners après mise à jour du DOM
+     */
+    function reattachEventListeners() {
+        // Réattacher l'event listener principal
+        form.removeEventListener('submit', arguments.callee);
+        form.addEventListener('submit', arguments.callee);
+        
+        console.log('Event listeners réattachés');
+    }
+
+    // Gestion de la sauvegarde automatique (désactivée pour l'étape 10)
+    let autoSaveTimeout;
+    
+    function autoSave() {
+        // Ne pas sauvegarder automatiquement à l'étape 10
+        const currentStep = parseInt(document.querySelector('[data-fr-current-step]')?.getAttribute('data-fr-current-step') || '1');
+        if (currentStep === 10) {
+            return;
+        }
+        
+        clearTimeout(autoSaveTimeout);
+        autoSaveTimeout = setTimeout(() => {
+            const formData = new FormData(form);
+            formData.append('auto_save', '1');
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Sauvegarde automatique réussie');
+                }
+            })
+            .catch(error => {
+                console.log('Erreur sauvegarde automatique:', error);
+            });
+        }, 3000); // 3 secondes d'inactivité
+    }
+
+    // Activer la sauvegarde automatique sur les changements de champs
+    form.addEventListener('input', autoSave);
+    form.addEventListener('change', autoSave);
+    
+    // Confirmation avant de quitter la page à l'étape 10
+    window.addEventListener('beforeunload', function(e) {
+        const currentStep = parseInt(document.querySelector('[data-fr-current-step]')?.getAttribute('data-fr-current-step') || '1');
+        if (currentStep === 10) {
+            const confirmationMessage = 'Vous êtes sur le point de quitter la page. Vos données non sauvegardées seront perdues.';
+            e.returnValue = confirmationMessage;
+            return confirmationMessage;
+        }
+    });
+});
+</script>
+{% endblock %}

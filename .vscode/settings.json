@@ -10,5 +10,6 @@
             "password": "APPazerty432156789",
             "database": "E-Inscription"
         }
-    ]
+    ],
+    "zencoder.enableRepoIndexing": true
 }

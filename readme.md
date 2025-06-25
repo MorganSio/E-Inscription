@@ -18,6 +18,7 @@ Assurez-vous d'avoir les éléments suivants installés :
 - PostgreSQL 15.8
 - Un serveur Web (Apache, Nginx, ou le serveur Symfony en local)
 - Symfony CLI (recommandé)
+- Avoir installé Libre Office sur le pc avec la version la plus récente
 
 ## 🛠️ Installation en local
 
@@ -363,6 +364,7 @@ sudo chmod -R 755 /var/www/E-Inscription
 php bin/console doctrine:database:create
 php bin/console make:migration  
 php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load --append
 ```
 
 ### 🔐 Configuration Microsoft Azure (OAuth / API Graph)
@@ -390,6 +392,10 @@ AZURE_CLIENT_ID="votre-client-id"  # déjà présent dans le .env
 AZURE_TENANT_ID="votre-tenant-id"  # déjà présent dans le .env
 AZURE_CLIENT_SECRET="votre-secret"   # à modifier tout les 6 mois dans le .env
 ```
+
+### Ajout des informations clients sur le .env
+
+les informations se trouvent dans notre équipe teams : Master Corp, les informations pour l'envoie de mail se trouve dans la publication, la publication se trouve epinglé
 
 ## 📦 Autres commandes utiles
 

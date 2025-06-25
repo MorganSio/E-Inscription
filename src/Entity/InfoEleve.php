@@ -6,6 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use App\Entity\RepresentantLegal;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\InfoEleveRepository;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: InfoEleveRepository::class)]
 class InfoEleve
@@ -21,8 +22,9 @@ class InfoEleve
     #[ORM\Column(nullable: true)]
     private ?string $promotion = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $classe = null;
+    #[ORM\ManyToOne(targetEntity: Classe::class, inversedBy: 'infoEleves')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Classe $classe = null;
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $nationalite = null;
@@ -86,8 +88,8 @@ class InfoEleve
     #[ORM\Column(length: 15, nullable: true)]
     private ?string $numSecuSocial= null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $transportScolaire = null;
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => false])]
+    private ?bool $transportScolaire = false;
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $LVUn = null;
@@ -101,6 +103,9 @@ class InfoEleve
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $regime = null;
 
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $sms_send = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
@@ -136,7 +141,7 @@ class InfoEleve
     #[ORM\JoinColumn(nullable: true)]
     private ?AssuranceScolaire $assureur = null;
 
-    #[ORM\OneToOne]
+    #[ORM\OneToOne(inversedBy: 'infoEleve')]
     #[ORM\JoinColumn(nullable: true)]
     private User $user;
 
@@ -155,11 +160,9 @@ class InfoEleve
     {
         return $this->date_de_naissance;
     }
-
-    public function setDateDeNaissance(?\DateTimeInterface $date_de_naissance): static
+    public function setDateDeNaissance(?\DateTimeInterface $dateNaissance): self
     {
-        $this->date_de_naissance = $date_de_naissance;
-
+        $this->date_de_naissance = $dateNaissance;
         return $this;
     }
 
@@ -176,15 +179,13 @@ class InfoEleve
     }
 
 
-    public function getClasse(): ?string
+    public function getClasse(): ?Classe
     {
         return $this->classe;
     }
-
     public function setClasse(?Classe $classe): static
     {
         $this->classe = $classe;
-
         return $this;
     }
 
@@ -428,15 +429,14 @@ class InfoEleve
         return $this;
     }
 
-    public function getTransportScolaire()
+    public function getTransportScolaire() : ?bool
     {
         return $this->transportScolaire;
     }
 
-    public function setTransportScolaire($transportScolaire): static
+    public function setTransportScolaire(?bool $transportScolaire): self
     {
         $this->transportScolaire = $transportScolaire;
-
         return $this;
     }
 
@@ -589,6 +589,12 @@ class InfoEleve
         return $this->user;
     }
 
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
+        return $this;
+    }
+
     public function switchResponsable()
     {
         $repLegaltemp = $this->getResponsableDeux();
@@ -596,4 +602,62 @@ class InfoEleve
         $this->setResponsableUn($repLegaltemp);
     }
 
+    #[ORM\OneToOne(targetEntity: Adhesion::class)]
+    private ?Adhesion $adhesion = null;
+
+    public function getAdhesion(): ?Adhesion
+    {
+        return $this->adhesion;
+    }
+
+    public function setAdhesion(?Adhesion $adhesion): static
+    {
+        $this->adhesion = $adhesion;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private bool $inscriptionComplete = false;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTime $dateInscription = null;
+
+    public function setInscriptionComplete(bool $inscriptionComplete): self
+    {
+        $this->inscriptionComplete = $inscriptionComplete;
+        return $this;
+    }
+
+    public function isInscriptionComplete(): bool
+    {
+        return $this->inscriptionComplete;
+    }
+
+    public function setDateInscription(?\DateTime $dateInscription): self
+    {
+        $this->dateInscription = $dateInscription;
+        return $this;
+    }
+
+    public function getDateInscription(): ?\DateTime
+    {
+        return $this->dateInscription;
+    }
+
+    public function getSmsSend(): ?bool
+    {
+        return $this->sms_send;
+    }
+
+    public function setSmsSend(?bool $sms_send): static
+    {
+        $this->sms_send = $sms_send;
+
+        return $this;
+    }
 }

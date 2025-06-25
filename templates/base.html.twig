@@ -138,8 +138,20 @@
         {{ include('index/header.html.twig') }}
         {{ include('index/theme.html.twig') }}
         {# {{ include('index/fil.html.twig')}} #}
-        {% block body %}
-        {% endblock %}
+
+        <main class="container mt-4">
+            {% for type, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ type == 'error' ? 'danger' : type }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {% block body %}{% endblock %}
+        </main>
+        
         {{ include('index/footer.html.twig') }}
 
         <!-- Script en version es6 module et nomodule pour les navigateurs le ne supportant pas -->
