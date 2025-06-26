@@ -571,7 +571,7 @@ class InscriptionType extends AbstractType
                 'widget' => 'single_text',
                 'html5' => true,
                 'required' => false,
-                'attr' => ['class' => 'fr-input']
+                'attr' => ['class' => 'fr-input'],
             ])
             ->add('observations', TextareaType::class, [
                 'label' => 'Observations médicales',

@@ -1003,7 +1003,7 @@ class InscriptionController extends AbstractController
     private function handleRepresentantLegal(array $data, InfoEleve $infoEleve, int $numero): void
     {
         try {
-            $prefix = $numero === 1 ? 'representantLegal' : 'representantLegal2';
+            $prefix = $numero === 1 ? 'representantLegal1' : 'representantLegal2';
             
             $this->logger->info("Traitement représentant légal $numero", [
                 'prefix' => $prefix,
