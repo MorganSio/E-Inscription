@@ -88,72 +88,6 @@ class InscriptionController extends AbstractController
         ]);
     }
 
-    // #[Route('/inscription/formulaire/{step}', name: 'app_inscription_form', requirements: ['step' => '\d+'], defaults: ['step' => 1])]
-    // #[IsGranted('ROLE_USER')]
-    // public function inscriptionForm(Request $request, int $step): Response|JsonResponse
-    // {
-    //     try {
-    //         $user = $this->getUser();
-            
-    //         // Validation de l'étape
-    //         if ($step < 1 || $step > self::TOTAL_STEPS) {
-    //             throw new \InvalidArgumentException('Étape invalide');
-    //         }
-
-    //         // S'assurer qu'InfoEleve existe
-    //         $infoEleve = $this->getOrCreateInfoEleve($user);
-            
-    //         // Récupération des données depuis la BDD
-    //         $data = $this->getInscriptionDataFromDatabase($user, $infoEleve);
-            
-    //         // Création du formulaire avec l'étape courante
-    //         $form = $this->createForm(InscriptionType::class, $data, [
-    //             'step' => $step,
-    //         ]);
-
-    //         $form->handleRequest($request);
-
-    //         // Traitement AJAX
-    //         if ($request->isXmlHttpRequest()) {
-    //             return $this->handleAjaxRequest($request, $form, $user, $step, $infoEleve);
-    //         }
-
-    //         // Traitement standard
-    //         if ($form->isSubmitted() && $form->isValid()) {
-    //             return $this->handleFormSubmission($request, $form, $user, $step, $infoEleve);
-    //         }
-
-    //         return $this->render('inscription/form.html.twig', [
-    //             'form' => $form->createView(),
-    //             'flow' => [
-    //                 'currentStepNumber' => $step,
-    //                 'currentStepLabel' => $this->getStepLabel($step),
-    //                 'nextStepLabel' => $step < self::TOTAL_STEPS ? $this->getStepLabel($step + 1) : null,
-    //                 'isFirstStep' => $step === 1,
-    //                 'isLastStep' => $step === self::TOTAL_STEPS,
-    //                 'totalSteps' => self::TOTAL_STEPS,
-    //             ],
-    //             'user' => $user,
-    //         ]);
-            
-    //     } catch (\Exception $e) {
-    //         $this->logger->error('ERREUR dans inscriptionForm', [
-    //             'error' => $e->getMessage(),
-    //             'step' => $step,
-    //             'trace' => $e->getTraceAsString()
-    //         ]);
-            
-    //         if ($request->isXmlHttpRequest()) {
-    //             return new JsonResponse([
-    //                 'success' => false,
-    //                 'error' => 'Erreur de connexion avec le serveur.'
-    //             ], 500);
-    //         }
-            
-    //         throw $e;
-    //     }
-    // }
-
     private function handleAjaxRequest(Request $request, FormInterface $form, User $user, int $step, InfoEleve $infoEleve): JsonResponse
     {
         try {
@@ -307,43 +241,6 @@ class InscriptionController extends AbstractController
         }
     }
 
-    // private function handleFormSubmission(Request $request, FormInterface $form, User $user, int $step, InfoEleve $infoEleve): Response
-    // {
-    //     $formData = $form->getData();
-    //     $formData = $this->filterFormData($formData);
-    //     $this->saveStepDataToDatabase($user, $infoEleve, $formData, $step);
-
-    //     $transition = $request->request->get('flow_transition', 'next');
-
-    //     switch ($transition) {
-    //         case 'next':
-    //             if ($step < self::TOTAL_STEPS) {
-    //                 return $this->redirectToRoute('app_inscription_form', ['step' => $step + 1]);
-    //             }
-    //             break;
-
-    //         case 'previous':
-    //             if ($step > 1) {
-    //                 return $this->redirectToRoute('app_inscription_form', ['step' => $step - 1]);
-    //             }
-    //             break;
-
-    //         case 'finish':
-    //             if ($step === self::TOTAL_STEPS) {
-    //                 $infoEleve->setInscriptionComplete(true);
-    //                 $infoEleve->setDateInscription(new \DateTime());
-    //                 $this->entityManager->flush();
-    //                 return $this->redirectToRoute('app_inscription_dashboard');
-    //             }
-    //             break;
-    //     }
-
-    //     return $this->redirectToRoute('app_inscription_form', ['step' => $step]);
-    // }
-
-    /**
-     * Filtre les données du formulaire pour éviter les valeurs nulles/vides problématiques
-     */
     private function filterFormData(array $data): array
     {
         $filteredData = [];
@@ -409,69 +306,6 @@ class InscriptionController extends AbstractController
         return $data;
     }
 
-    /**
-     * Sauvegarde les données de l'étape directement en base
-     */
-    // private function saveStepDataToDatabase(User $user, InfoEleve $infoEleve, array $formData, int $step): void
-    // {
-    //     try {
-    //         $this->logger->info('Début sauvegarde étape', [
-    //             'user_id' => $user->getId(),
-    //             'step' => $step,
-    //             'data_keys' => array_keys($formData),
-    //             'info_eleve_id' => $infoEleve->getId()
-    //         ]);
-
-    //         // Utiliser la transaction pour assurer la cohérence
-    //         $this->entityManager->getConnection()->beginTransaction();
-
-    //         try {
-    //             // Récupérer les entités fraîches depuis la base
-    //             $freshInfoEleve = $this->infoEleveRepository->find($infoEleve->getId());
-    //             $freshUser = $this->entityManager->getRepository(User::class)->find($user->getId());
-
-    //             if (!$freshInfoEleve || !$freshUser) {
-    //                 throw new \RuntimeException('Entités introuvables');
-    //             }
-
-    //             // Utiliser les entités fraîches
-    //             $this->mapStepDataToEntity($freshUser, $freshInfoEleve, $formData, $step);
-
-    //             // Vérifier l'état avant flush
-    //             $this->logger->info('Avant flush', [
-    //                 'step' => $step,
-    //                 'info_eleve_id' => $freshInfoEleve->getId()
-    //             ]);
-
-    //             $this->entityManager->flush();
-    //             $this->entityManager->getConnection()->commit();
-                
-    //             $this->logger->info('Étape sauvegardée avec succès', [
-    //                 'user_id' => $freshUser->getId(),
-    //                 'step' => $step,
-    //                 'info_eleve_id' => $freshInfoEleve->getId()
-    //             ]);
-                
-    //         } catch (\Exception $e) {
-    //             $this->entityManager->getConnection()->rollBack();
-    //             throw $e;
-    //         }
-            
-    //     } catch (\Exception $e) {
-    //         $this->logger->error('Erreur lors de la sauvegarde étape', [
-    //             'user_id' => $user->getId(),
-    //             'step' => $step,
-    //             'error' => $e->getMessage(),
-    //             'trace' => $e->getTraceAsString()
-    //         ]);
-            
-    //         throw new \RuntimeException('Erreur lors de la sauvegarde: ' . $e->getMessage(), 0, $e);
-    //     }
-    // }
-
-    /**
-     * Mappe les données selon l'étape spécifique
-     */
     private function mapStepDataToEntity(User $user, InfoEleve $infoEleve, array $data, int $step): void
     {
         try {
@@ -1185,137 +1019,8 @@ class InscriptionController extends AbstractController
             'droitImage' => $infoEleve->isDroitImage(),
         ];
 
-        // // Gestion spécifique de la classe avec debug
-        // $classe = $infoEleve->getClasse();
-        // if ($classe !== null) {
-        //     $data['classe'] = [
-        //         'id' => $classe->getId(),
-        //         'label' => $classe->getLabel()
-        //     ];
-        //     dump('Classe ajoutée au tableau: ', $data['classe']);
-        // } else {
-        //     $inscription['classe'] = null;
-        //     dump('Aucune classe trouvée pour cet élève');
-        // }
-
-
         return $data;
     }
-
-    /**
-     * Prépare les données d'inscription avec les entités liées
-     */
-    // private function prepareInscriptionData(InfoEleve $infoEleve, array &$data): void
-    // {
-    //     // Représentant légal 1
-    //     if ($infoEleve->getResponsableUn()) {
-    //         $rep1 = $infoEleve->getResponsableUn();
-    //         $data['representantLegal1Nom'] = $rep1->getNom();
-    //         $data['representantLegal1Prenom'] = $rep1->getPrenom();
-    //         $data['representantLegal1Telephone'] = $rep1->getTelephonePerso();
-    //         $data['representantLegal1TelephoneFixe'] = $rep1->getTelephoneFixe();
-    //         $data['representantLegal1TelephonePro'] = $rep1->getTelephonePro();
-    //         $data['representantLegal1SmsSend'] = $rep1->getSmsSend();
-    //         $data['representantLegal1Courriel'] = $rep1->getCourriel();
-    //         $data['representantLegal1Adresse'] = $rep1->getAdresse();
-    //         $data['representantLegal1CodePostal'] = $rep1->getCodePostal();
-    //         $data['representantLegal1Commune'] = $rep1->getCommune();
-    //         $data['representantLegal1LienEleve'] = $rep1->getLienEleve();
-    //         $data['representantLegal1Poste'] = $rep1->getPoste();
-    //         $data['representantLegal1NomEmployeur'] = $rep1->getNomEmployeur();
-    //         $data['representantLegal1AdresseEmployeur'] = $rep1->getAdresseEmployeur();
-    //     }
-
-    //     // Représentant légal 2
-    //     if ($infoEleve->getResponsableDeux()) {
-    //         $rep2 = $infoEleve->getResponsableDeux();
-    //         $data['representantLegal2Nom'] = $rep2->getNom();
-    //         $data['representantLegal2Prenom'] = $rep2->getPrenom();
-    //         $data['representantLegal2Telephone'] = $rep2->getTelephonePerso();
-    //         $data['representantLegal2TelephoneFixe'] = $rep2->getTelephoneFixe();
-    //         $data['representantLegal2TelephonePro'] = $rep2->getTelephonePro();
-    //         $data['representantLegal2SmsSend'] = $rep2->getSmsSend();
-    //         $data['representantLegal2Courriel'] = $rep2->getCourriel();
-    //         $data['representantLegal2Adresse'] = $rep2->getAdresse();
-    //         $data['representantLegal2CodePostal'] = $rep2->getCodePostal();
-    //         $data['representantLegal2Commune'] = $rep2->getCommune();
-    //         $data['representantLegal2LienEleve'] = $rep2->getLienEleve();
-    //         $data['representantLegal2Poste'] = $rep2->getPoste();
-    //         $data['representantLegal2NomEmployeur'] = $rep2->getNomEmployeur();
-    //         $data['representantLegal2AdresseEmployeur'] = $rep2->getAdresseEmployeur();
-    //     }
-
-    //     // Scolarité antérieure - Année 1 (N-1)
-    //     if ($infoEleve->getAnneScolaireUn()) {
-    //         $scolarite1 = $infoEleve->getAnneScolaireUn();
-    //         $data['scolariteUnEtablissement'] = $scolarite1->getEtablissement();
-    //         $data['scolariteUnClasse'] = $scolarite1->getClasse();
-    //         $data['scolariteUnOption'] = $scolarite1->getOption();
-    //         $data['scolariteUnLVUn'] = $scolarite1->getLVUn();
-    //         $data['scolariteUnLVDeux'] = $scolarite1->getLVDeux();
-    //         $data['scolariteUnAnnee'] = $scolarite1->getAnneScolaire();
-    //     }
-
-    //     // Scolarité antérieure - Année 2 (N-2)
-    //     if ($infoEleve->getAnneScolaireDeux()) {
-    //         $scolarite2 = $infoEleve->getAnneScolaireDeux();
-    //         $data['scolariteDeuxEtablissement'] = $scolarite2->getEtablissement();
-    //         $data['scolariteDeuxClasse'] = $scolarite2->getClasse();
-    //         $data['scolariteDeuxOption'] = $scolarite2->getOption();
-    //         $data['scolariteDeuxLVUn'] = $scolarite2->getLVUn();
-    //         $data['scolariteDeuxLVDeux'] = $scolarite2->getLVDeux();
-    //         $data['scolariteDeuxAnnee'] = $scolarite2->getAnneScolaire();
-    //     }
-
-    //     // Médecin traitant
-    //     if ($infoEleve->getMedecinTraitant()) {
-    //         $medecin = $infoEleve->getMedecinTraitant();
-    //         $data['medecinTraitantNom'] = $medecin->getNom();
-    //         $data['medecinTraitantTelephone'] = $medecin->getNumero();
-    //         $data['medecinTraitantAdresse'] = $medecin->getAdresse();
-    //     }
-
-    //     // Sécurité sociale
-    //     if ($infoEleve->getSecuSociale()) {
-    //         $secu = $infoEleve->getSecuSociale();
-    //         $data['secuSocialeNom'] = $secu->getNom();
-    //         $data['secuSocialeAdresse'] = $secu->getAddresse();
-    //     }
-
-    //     // Assureur
-    //     if ($infoEleve->getAssureur()) {
-    //         $assureur = $infoEleve->getAssureur();
-    //         $data['assureurNom'] = $assureur->getNom();
-    //         $data['assureurAdresse'] = $assureur->getAddresse();
-    //         $data['assureurNumeroAssurance'] = $assureur->getNumeroAssurance();
-    //     }
-
-    //     // Responsable financier
-    //     if ($infoEleve->getResponsableFinancier()) {
-    //         $responsable = $infoEleve->getResponsableFinancier();
-    //         $data['responsableFinancierNom'] = $responsable->getNom();
-    //         $data['responsableFinancierPrenom'] = $responsable->getPrenom();
-    //         $data['responsableFinancierNomEmployeur'] = $responsable->getNomEmployeur();
-    //         $data['responsableFinancierAdresseEmployeur'] = $responsable->getAdresseEmployeur();
-    //     }
-
-    //     // Adhésion
-    //     if ($infoEleve->getAdhesion()) {
-    //         $adhesion = $infoEleve->getAdhesion();
-    //         $data['adhesionAccepted'] = $adhesion->isAccepted();
-    //         $data['adhesionPaymentMethod'] = $adhesion->getPaymentMethod();
-    //         $data['adhesionImageRights'] = $adhesion->getImageRights();
-    //     }
-
-    //     if ($infoEleve->getClasse()) {
-    //         $data['classe'] = [
-    //             'id' => $infoEleve->getClasse()->getId(),
-    //             'label' => $infoEleve->getClasse()->getLabel()
-    //         ];
-    //     } else {
-    //         $data['classe'] = null;
-    //     }
-    // }
 
     private function prepareInscriptionData(InfoEleve $infoEleve, array &$data): void
     {
@@ -1360,23 +1065,23 @@ class InscriptionController extends AbstractController
         // Scolarité antérieure - Année 1 (N-1)
         if ($infoEleve->getAnneScolaireUn()) {
             $scolarite1 = $infoEleve->getAnneScolaireUn();
-            $data['scolariteUnEtablissement'] = $scolarite1->getEtablissement();
-            $data['scolariteUnClasse'] = $scolarite1->getClasse();
-            $data['scolariteUnOption'] = $scolarite1->getOption();
-            $data['scolariteUnLVUn'] = $scolarite1->getLVUn();
-            $data['scolariteUnLVDeux'] = $scolarite1->getLVDeux();
-            $data['scolariteUnAnnee'] = $scolarite1->getAnneScolaire();
+            $data['etablissementPrecedent1'] = $scolarite1->getEtablissement();
+            $data['classePrecedente1'] = $scolarite1->getClasse();
+            $data['optionPrecedente1'] = $scolarite1->getOption();
+            $data['lvUnPrecedente1'] = $scolarite1->getLVUn();
+            $data['lvDeuxPrecedente1'] = $scolarite1->getLVDeux();
+            $data['anneeScolairePrecedente1'] = $scolarite1->getAnneScolaire();
         }
 
         // Scolarité antérieure - Année 2 (N-2)
         if ($infoEleve->getAnneScolaireDeux()) {
             $scolarite2 = $infoEleve->getAnneScolaireDeux();
-            $data['scolariteDeuxEtablissement'] = $scolarite2->getEtablissement();
-            $data['scolariteDeuxClasse'] = $scolarite2->getClasse();
-            $data['scolariteDeuxOption'] = $scolarite2->getOption();
-            $data['scolariteDeuxLVUn'] = $scolarite2->getLVUn();
-            $data['scolariteDeuxLVDeux'] = $scolarite2->getLVDeux();
-            $data['scolariteDeuxAnnee'] = $scolarite2->getAnneScolaire();
+            $data['etablissementPrecedent2'] = $scolarite2->getEtablissement();
+            $data['classePrecedente2'] = $scolarite2->getClasse();
+            $data['optionPrecedente2'] = $scolarite2->getOption();
+            $data['lvUnPrecedente2'] = $scolarite2->getLVUn();
+            $data['lvDeuxPrecedente2'] = $scolarite2->getLVDeux();
+            $data['anneeScolairePrecedente2'] = $scolarite2->getAnneScolaire();
         }
 
         // Médecin traitant
@@ -1430,17 +1135,85 @@ class InscriptionController extends AbstractController
         }
 
         // Étape 9 : Documents à fournir
-        $data['carteVitale'] = $infoEleve->getCarteVitale();
-        $data['photoIdentite'] = $infoEleve->getPhotoIdentite();
-        $data['attestationIdentite'] = $infoEleve->getAttestationIdentite();
-        $data['bourse'] = $infoEleve->getBourse();
-        $data['attestationJDC'] = $infoEleve->getAttestationJDC();
-        $data['attestationReusite'] = $infoEleve->getAttestationReusite();
+        $data['carteVitale'] = null;
+        $data['carteVitaleExists'] = $infoEleve->getCarteVitale() !== null;
+
+        $data['photoIdentite'] = null;
+        $data['photoIdentiteExists'] = $infoEleve->getPhotoIdentite() !== null;
+
+        $data['attestationIdentite'] = null;
+        $data['attestationIdentiteExists'] = $infoEleve->getAttestationIdentite() !== null;
+
+        $data['bourse'] = null;
+        $data['bourseExists'] = $infoEleve->getBourse() !== null;
+
+        $data['attestationJDC'] = null;
+        $data['attestationJDCExists'] = $infoEleve->getAttestationJDC() !== null;
+
+        $data['attestationReusite'] = null;
+        $data['attestationReusiteExists'] = $infoEleve->getAttestationReusite() !== null;
 
         // Étape 10 : Droit à l'image et mode de paiement
         $data['cheque'] = $infoEleve->isCheque();
         $data['droitImage'] = $infoEleve->isDroitImage();
     }
+
+    // #[Route('/inscription/document/{type}', name: 'download_document')]
+    // #[IsGranted('ROLE_USER')]
+    // public function downloadDocument(string $type): Response
+    // {
+    //     $user = $this->getUser();
+    //     $infoEleve = $this->getOrCreateInfoEleve($user);
+        
+    //     $documentData = null;
+    //     $filename = '';
+    //     $mimeType = 'application/octet-stream';
+        
+    //     switch ($type) {
+    //         case 'carteVitale':
+    //             $documentData = $infoEleve->getCarteVitale();
+    //             $filename = 'carte_vitale.pdf';
+    //             $mimeType = 'application/pdf';
+    //             break;
+    //         case 'photoIdentite':
+    //             $documentData = $infoEleve->getPhotoIdentite();
+    //             $filename = 'photo_identite.jpg';
+    //             $mimeType = 'image/jpeg';
+    //             break;
+    //         case 'attestationIdentite':
+    //             $documentData = $infoEleve->getAttestationIdentite();
+    //             $filename = 'attestation_identite.pdf';
+    //             $mimeType = 'application/pdf';
+    //             break;
+    //         case 'bourse':
+    //             $documentData = $infoEleve->getBourse();
+    //             $filename = 'bourse.pdf';
+    //             $mimeType = 'application/pdf';
+    //             break;
+    //         case 'attestationJDC':
+    //             $documentData = $infoEleve->getAttestationJDC();
+    //             $filename = 'attestation_jdc.pdf';
+    //             $mimeType = 'application/pdf';
+    //             break;
+    //         case 'attestationReusite':
+    //             $documentData = $infoEleve->getAttestationReusite();
+    //             $filename = 'attestation_reussite.pdf';
+    //             $mimeType = 'application/pdf';
+    //             break;
+    //         default:
+    //             throw $this->createNotFoundException('Type de document non reconnu');
+    //     }
+        
+    //     if (!$documentData) {
+    //         throw $this->createNotFoundException('Document non trouvé');
+    //     }
+        
+    //     $response = new Response($documentData);
+    //     $response->headers->set('Content-Type', $mimeType);
+    //     $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
+        
+    //     return $response;
+    // }
 
     /**
      * Vérifie si l'inscription est complète
@@ -1515,6 +1288,7 @@ class InscriptionController extends AbstractController
                     'isLastStep' => $step === self::TOTAL_STEPS,
                     'totalSteps' => self::TOTAL_STEPS,
                 ],
+                'infoEleve' => $infoEleve,
                 'user' => $user,
             ]);
             
@@ -1538,38 +1312,242 @@ class InscriptionController extends AbstractController
 
     private function handleFormSubmission(Request $request, FormInterface $form, User $user, int $step, InfoEleve $infoEleve): Response
     {
-        $formData = $form->getData();
-        $formData = $this->filterFormData($formData);
+        try {
+            $formData = $form->getData();
+            $formData = $this->filterFormData($formData);
+            
+            // Traitement spécifique selon l'étape (seulement si on avance)
+            $transition = $request->request->get('flow_transition', 'next');
+            
+            if ($transition === 'next' || $transition === 'finish') {
+                $this->processStepData($step, $form, $user, $infoEleve, $formData);
+            }
+            
+            // Sauvegarde des données de l'étape
+            $this->saveStepDataToDatabase($user, $infoEleve, $formData, $step);
+            
+            // Gestion des transitions
+            return $this->handleTransition($request, $step, $infoEleve);
+            
+        } catch (\Exception $e) {
+            $this->logger->error('Erreur lors de la soumission du formulaire', [
+                'step' => $step,
+                'user_id' => $user->getId(),
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            $this->addFlash('error', 'Une erreur est survenue lors de l\'enregistrement : ' . $e->getMessage());
+            
+            return $this->redirectToRoute('app_inscription_form', ['step' => $step]);
+        }
+    }
+
+    private function validateFile(UploadedFile $file): bool
+    {
+        // Vérifier la taille (5MB max)
+        if ($file->getSize() > 5 * 1024 * 1024) {
+            throw new \InvalidArgumentException('Le fichier est trop volumineux (5MB maximum).');
+        }
         
-        // Sauvegarde des données de l'étape
-        $this->saveStepDataToDatabase($user, $infoEleve, $formData, $step);
+        // Vérifier le type MIME
+        $allowedMimeTypes = [
+            'application/pdf',
+            'image/jpeg',
+            'image/png'
+        ];
+        
+        if (!in_array($file->getMimeType(), $allowedMimeTypes)) {
+            throw new \InvalidArgumentException('Type de fichier non autorisé.');
+        }
+        
+        return true;
+    }
 
+    private function handleStep9Submission(FormInterface $form, InfoEleve $infoEleve): void
+    {
+        // Récupération des fichiers uploadés
+        $files = [
+            'carteVitale' => $form->get('carteVitale')->getData(),
+            'photoIdentite' => $form->get('photoIdentite')->getData(),
+            'attestationIdentite' => $form->get('attestationIdentite')->getData(),
+            'bourse' => $form->get('bourse')->getData(),
+            'attestationJDC' => $form->get('attestationJDC')->getData(),
+            'attestationReusite' => $form->get('attestationReusite')->getData(),
+        ];
+        
+        // Traitement de chaque fichier
+        foreach ($files as $fieldName => $file) {
+            if ($file instanceof UploadedFile) {
+                try {
+                    // Validation du fichier
+                    if ($this->validateFile($file)) {
+                        // Conversion en BLOB
+                        $blobData = file_get_contents($file->getPathname());
+                        
+                        // Sauvegarde selon le type de document
+                        $this->saveFileToEntity($infoEleve, $fieldName, $blobData);
+                        
+                        $this->logger->info("Fichier {$fieldName} sauvegardé avec succès");
+                    }
+                } catch (\Exception $e) {
+                    $this->logger->error("Erreur lors du traitement du fichier {$fieldName}", [
+                        'error' => $e->getMessage()
+                    ]);
+                    throw new \Exception("Erreur lors du traitement du fichier {$fieldName}: " . $e->getMessage());
+                }
+            }
+        }
+    }
+
+    private function saveFileToEntity(InfoEleve $infoEleve, string $fieldName, $blobData): void
+    {
+        switch ($fieldName) {
+            case 'carteVitale':
+                $infoEleve->setCarteVitale($blobData);
+                break;
+            case 'photoIdentite':
+                $infoEleve->setPhotoIdentite($blobData);
+                break;
+            case 'attestationIdentite':
+                $infoEleve->setAttestationIdentite($blobData);
+                break;
+            case 'bourse':
+                $infoEleve->setBourse($blobData);
+                break;
+            case 'attestationJDC':
+                $infoEleve->setAttestationJDC($blobData);
+                break;
+            case 'attestationReusite':
+                $infoEleve->setAttestationReusite($blobData);
+                break;
+            default:
+                throw new \InvalidArgumentException("Type de fichier non reconnu: {$fieldName}");
+        }
+    }
+    
+    private function handleTransition(Request $request, int $step, InfoEleve $infoEleve): Response
+    {
         $transition = $request->request->get('flow_transition', 'next');
-
+        
         switch ($transition) {
             case 'next':
                 if ($step < self::TOTAL_STEPS) {
                     return $this->redirectToRoute('app_inscription_form', ['step' => $step + 1]);
                 }
-                break;
-
+                // Si on est à la dernière étape et qu'on clique sur "suivant", on finalise
+                return $this->finalizeInscription($infoEleve);
+                
             case 'previous':
                 if ($step > 1) {
                     return $this->redirectToRoute('app_inscription_form', ['step' => $step - 1]);
                 }
                 break;
-
+                
             case 'finish':
                 if ($step === self::TOTAL_STEPS) {
-                    $infoEleve->setInscriptionComplete(true);
-                    $infoEleve->setDateInscription(new \DateTime());
-                    $this->entityManager->flush();
-                    return $this->redirectToRoute('app_inscription_dashboard');
+                    return $this->finalizeInscription($infoEleve);
                 }
                 break;
         }
-
+        
         return $this->redirectToRoute('app_inscription_form', ['step' => $step]);
+    }
+
+    private function finalizeInscription(InfoEleve $infoEleve): Response
+    {
+        $infoEleve->setInscriptionComplete(true);
+        $infoEleve->setDateInscription(new \DateTime());
+        $this->entityManager->flush();
+        
+        $this->addFlash('success', 'Votre inscription a été finalisée avec succès !');
+        
+        return $this->redirectToRoute('app_inscription_dashboard');
+    }
+
+    private function processStepData(int $step, FormInterface $form, User $user, InfoEleve $infoEleve, array $formData): void
+    {
+        switch ($step) {
+            case 1:
+                $this->handleStep1Submission($form, $user, $infoEleve, $formData);
+                break;
+            case 2:
+                $this->handleStep2Submission($form, $infoEleve, $formData);
+                break;
+            case 3:
+                $this->handleStep3Submission($form, $infoEleve, $formData);
+                break;
+            case 4:
+                $this->handleStep4Submission($form, $infoEleve, $formData);
+                break;
+            case 5:
+                $this->handleStep5Submission($form, $infoEleve, $formData);
+                break;
+            case 6:
+                $this->handleStep6Submission($form, $infoEleve, $formData);
+                break;
+            case 7:
+                $this->handleStep7Submission($form, $infoEleve, $formData);
+                break;
+            case 8:
+                $this->handleStep8Submission($form, $infoEleve, $formData);
+                break;
+            case 9:
+                $this->handleStep9Submission($form, $infoEleve);
+                break;
+            case 10:
+                $this->handleStep10Submission($form, $infoEleve, $formData);
+                break;
+        }
+    }
+
+    // Méthodes spécifiques pour chaque étape
+    private function handleStep1Submission(FormInterface $form, User $user, InfoEleve $infoEleve, array $formData): void
+    {
+        // Traitement spécifique étape 1 - Informations personnelles
+        // Exemple : validation de l'âge, formatage des données...
+    }
+
+    private function handleStep2Submission(FormInterface $form, InfoEleve $infoEleve, array $formData): void
+    {
+        // Traitement spécifique étape 2 - Adresse
+        // Exemple : géocodage de l'adresse, validation code postal...
+    }
+
+    private function handleStep3Submission(FormInterface $form, InfoEleve $infoEleve, array $formData): void
+    {
+        // Traitement spécifique étape 3 - Contact d'urgence
+    }
+
+    private function handleStep4Submission(FormInterface $form, InfoEleve $infoEleve, array $formData): void
+    {
+        // Traitement spécifique étape 4 - Informations médicales
+    }
+
+    private function handleStep5Submission(FormInterface $form, InfoEleve $infoEleve, array $formData): void
+    {
+        // Traitement spécifique étape 5 - Scolarité antérieure
+    }
+
+    private function handleStep6Submission(FormInterface $form, InfoEleve $infoEleve, array $formData): void
+    {
+        // Traitement spécifique étape 6 - Choix de formation
+    }
+
+    private function handleStep7Submission(FormInterface $form, InfoEleve $infoEleve, array $formData): void
+    {
+        // Traitement spécifique étape 7 - Informations complémentaires
+    }
+
+    private function handleStep8Submission(FormInterface $form, InfoEleve $infoEleve, array $formData): void
+    {
+        // Traitement spécifique étape 8 - Validation des données
+    }
+
+    private function handleStep10Submission(FormInterface $form, InfoEleve $infoEleve, array $formData): void
+    {
+        // Traitement spécifique étape 10 - Récapitulatif et validation finale
+        // Exemple : génération d'un numéro d'inscription, envoi d'email de confirmation...
     }
 
     private function saveStepDataToDatabase(User $user, InfoEleve $infoEleve, array $formData, int $step): void
@@ -1625,5 +1603,114 @@ class InscriptionController extends AbstractController
             ]);
             throw new \RuntimeException('Erreur lors de la sauvegarde: ' . $e->getMessage(), 0, $e);
         }
+    }
+    #[Route('/upload-pdf', name: 'upload_pdf', methods: ['POST'])]
+    public function uploadPdf(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $eleveId = $request->request->get('eleve_id');
+        $infoEleve = $entityManager->getRepository(InfoEleve::class)->find($eleveId);
+
+        if (!$infoEleve) {
+            return $this->json(['error' => 'Élève non trouvé'], 404);
+        }
+
+        /** @var UploadedFile $uploadedFile */
+        $uploadedFile = $request->files->get('pdf_file');
+
+        if (!$uploadedFile) {
+            return $this->json(['error' => 'Aucun fichier uploadé'], 400);
+        }
+
+        if ($uploadedFile->getMimeType() !== 'application/pdf') {
+            return $this->json(['error' => 'Le fichier doit être un PDF'], 400);
+        }
+
+        if ($uploadedFile->getSize() > 5 * 1024 * 1024) {
+            return $this->json(['error' => 'Le fichier est trop volumineux (max 5MB)'], 400);
+        }
+
+        try {
+            $fileContent = file_get_contents($uploadedFile->getPathname());
+            $documentType = $request->request->get('document_type');
+
+            switch ($documentType) {
+                case 'carte_vitale':
+                    $infoEleve->setCarteVitale($fileContent);
+                    break;
+                case 'attestation_jdc':
+                    $infoEleve->setAttestationJDC($fileContent);
+                    break;
+                case 'attestation_identite':
+                    $infoEleve->setAttestationIdentite($fileContent);
+                    break;
+                case 'attestation_reusite':
+                    $infoEleve->setAttestationReusite($fileContent);
+                    break;
+                case 'bourse':
+                    $infoEleve->setBourse($fileContent);
+                    break;
+                default:
+                    return $this->json(['error' => 'Type de document non reconnu'], 400);
+            }
+
+            $entityManager->flush();
+
+            return $this->json([
+                'success' => true,
+                'message' => 'Fichier enregistré avec succès',
+                'document_type' => $documentType
+            ]);
+
+        } catch (\Exception $e) {
+            return $this->json(['error' => 'Erreur lors de l\'enregistrement : ' . $e->getMessage()], 500);
+        }
+    }
+
+    #[Route('/download-pdf/{eleveId}/{documentType}', name: 'download_pdf', methods: ['GET'])]
+    public function downloadPdf(int $eleveId, string $documentType, EntityManagerInterface $entityManager): Response
+    {
+        $infoEleve = $entityManager->getRepository(InfoEleve::class)->find($eleveId);
+
+        if (!$infoEleve) {
+            throw $this->createNotFoundException('Élève non trouvé');
+        }
+
+        $fileContent = null;
+        $filename = '';
+
+        switch ($documentType) {
+            case 'carte_vitale':
+                $fileContent = $infoEleve->getCarteVitale();
+                $filename = 'carte_vitale_' . $eleveId . '.pdf';
+                break;
+            case 'attestation_jdc':
+                $fileContent = $infoEleve->getAttestationJDC();
+                $filename = 'attestation_jdc_' . $eleveId . '.pdf';
+                break;
+            case 'attestation_identite':
+                $fileContent = $infoEleve->getAttestationIdentite();
+                $filename = 'attestation_identite_' . $eleveId . '.pdf';
+                break;
+            case 'attestation_reusite':
+                $fileContent = $infoEleve->getAttestationReusite();
+                $filename = 'attestation_reusite_' . $eleveId . '.pdf';
+                break;
+            case 'bourse':
+                $fileContent = $infoEleve->getBourse();
+                $filename = 'bourse_' . $eleveId . '.pdf';
+                break;
+            default:
+                throw $this->createNotFoundException('Type de document non reconnu');
+        }
+
+        if (!$fileContent) {
+            throw $this->createNotFoundException('Document non trouvé');
+        }
+
+        $response = new Response($fileContent);
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
+
+        return $response;
     }
 }

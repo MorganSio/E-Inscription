@@ -1217,12 +1217,12 @@ class InscriptionFlow extends FormFlow
 
         // Documents
         $formatted['Documents fournis'] = [
-            'Carte vitale' => $summary['documents']['carte_vitale'] ? 'Oui' : 'Non',
-            'Photo d\'identité' => $summary['documents']['photo_identite'] ? 'Oui' : 'Non',
-            'Attestation bourse' => $summary['documents']['bourse'] ? 'Oui' : 'Non',
-            'Attestation JDC' => $summary['documents']['attestation_jdc'] ? 'Oui' : 'Non',
-            'Attestation d\'identité' => $summary['documents']['attestation_identite'] ? 'Oui' : 'Non',
-            'Attestation de réussite' => $summary['documents']['attestation_reusite'] ? 'Oui' : 'Non',
+            'Carte vitale' => $summary['documents']['carteVitale'],
+            'Photo d\'identité' => $summary['documents']['photoIdentite'],
+            'Attestation bourse' => $summary['documents']['bourse'],
+            'Attestation JDC' => $summary['documents']['attestationJdc'],
+            'Attestation d\'identité' => $summary['documents']['attestationIdentite'],
+            'Attestation de réussite' => $summary['documents']['attestationReusite'],
         ];
 
         // Adhésion
