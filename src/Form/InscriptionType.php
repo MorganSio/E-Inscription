@@ -5,6 +5,7 @@ namespace App\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Classe;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -46,7 +47,7 @@ class InscriptionType extends AbstractType
             throw new \InvalidArgumentException(sprintf('Étape invalide: %d. Les étapes valides sont: %s', $step, implode(', ', array_keys(self::STEPS))));
         }
 
-        $this->buildStepForm($builder, $step);
+        $this->buildStepForm($builder, $step, $options);
     }
 
     private function isValidStep(int $step): bool
@@ -54,7 +55,7 @@ class InscriptionType extends AbstractType
         return array_key_exists($step, self::STEPS);
     }
 
-    private function buildStepForm(FormBuilderInterface $builder, int $step): void
+    private function buildStepForm(FormBuilderInterface $builder, int $step, array $options): void
     {
         switch ($step) {
             case 1:
@@ -82,7 +83,7 @@ class InscriptionType extends AbstractType
                 $this->buildStep8($builder);
                 break;
             case 9:
-                $this->buildStep9($builder);
+                $this->buildStep9($builder, $options);
                 break;
             case 10:
                 $this->buildStep10($builder);
@@ -252,8 +253,10 @@ class InscriptionType extends AbstractType
             ->add('transportScolaire', ChoiceType::class, [
                 'label' => 'Transport scolaire',
                 'choices' => [
-                    'Oui' => true,
-                    'Non' => false,
+                    'Voiture' => 'Voiture',
+                    'Bus' => 'Bus',
+                    'Train' => 'Train',
+                    'Autre' => 'Autre',
                 ],
                 'expanded' => true, // pour des radio buttons
                 'required' => false,
@@ -635,45 +638,45 @@ class InscriptionType extends AbstractType
                 'attr' => ['class' => 'fr-input', 'rows' => 2, 'placeholder' => 'Adresse complète de l\'employeur']
             ]);
     }
-    private function buildStep9(FormBuilderInterface $builder): void 
+
+    private function buildStep9(FormBuilderInterface $builder, array $options): void 
     {
         $builder
-            ->add('carteVitale', FileType::class, [
-                'label' => 'Carte vitale (copie)',
-                'required' => false,
-                'mapped' => false, // Si vous gérez l'upload manuellement
-                'attr' => ['class' => 'fr-upload']
+            ->add('pdf_file', FileType::class, [
+                'label' => 'Fichier PDF',
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '5M',
+                        'mimeTypes' => ['application/pdf'],
+                        'mimeTypesMessage' => 'Veuillez uploader un fichier PDF valide',
+                    ])
+                ],
             ])
-            ->add('photoIdentite', FileType::class, [
-                'label' => 'Photo d\'identité',
-                'required' => false,
-                'mapped' => false,
-                'attr' => ['class' => 'fr-upload']
+            ->add('document_type', ChoiceType::class, [
+                'label' => 'Type de document',
+                'choices' => [
+                    'Carte Vitale' => 'carteVitale',
+                    'Attestation JDC' => 'attestationJdc',
+                    'Attestation d\'identité' => 'attestationIdentite',
+                    'Attestation de réussite' => 'attestationReusite',
+                    'Bourse' => 'bourse',
+                    'Photo d\'identité' => 'photoIdentite',
+                ],
+                'required' => true,
             ])
-            ->add('attestationIdentite', FileType::class, [
-                'label' => 'Attestation d\'identité',
-                'required' => false,
-                'mapped' => false,
-                'attr' => ['class' => 'fr-upload']
-            ])
-            ->add('bourse', FileType::class, [
-                'label' => 'Justificatif de bourse',
-                'required' => false,
-                'mapped' => false,
-                'attr' => ['class' => 'fr-upload']
-            ])
-            ->add('attestationJDC', FileType::class, [
-                'label' => 'Attestation JDC (Journée Défense et Citoyenneté)',
-                'required' => false,
-                'mapped' => false,
-                'attr' => ['class' => 'fr-upload']
-            ])
-            ->add('attestationReusite', FileType::class, [
-                'label' => 'Attestation de réussite',
-                'required' => false,
-                'mapped' => false,
-                'attr' => ['class' => 'fr-upload']
+            ->add('upload', SubmitType::class, [
+                'label' => 'Uploader le document'
             ]);
+    }
+
+    private function getDocumentHelp(array $data, string $existsField): string
+    {
+        if (isset($data[$existsField]) && $data[$existsField]) {
+            return 'Un document existe déjà. Sélectionnez un nouveau fichier pour le remplacer.';
+        }
+        
+        return 'Formats acceptés : PDF, JPG, PNG. Taille maximum : 5MB.';
     }
 
     private function buildStep10(FormBuilderInterface $builder): void 

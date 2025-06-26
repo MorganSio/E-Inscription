@@ -88,8 +88,8 @@ class InfoEleve
     #[ORM\Column(length: 15, nullable: true)]
     private ?string $numSecuSocial= null;
 
-    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => false])]
-    private ?bool $transportScolaire = false;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $transportScolaire = null;
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $LVUn = null;
@@ -429,12 +429,12 @@ class InfoEleve
         return $this;
     }
 
-    public function getTransportScolaire() : ?bool
+    public function getTransportScolaire() : ?string
     {
         return $this->transportScolaire;
     }
 
-    public function setTransportScolaire(?bool $transportScolaire): self
+    public function setTransportScolaire(?string $transportScolaire): self
     {
         $this->transportScolaire = $transportScolaire;
         return $this;
