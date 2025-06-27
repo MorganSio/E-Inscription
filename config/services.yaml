@@ -44,6 +44,11 @@ services:
             $clientSecret: '%email_client_secret%'
             $tenantId: '%email_tenant%'
             $fromEmail: '%email_from%'
+            
+    App\Service\DocumentManager:
+        arguments:
+            $documentsDirectory: '%documents_directory%'
+            $documentsWebDirectory: '%documents_web_directory%'
 
     Nyholm\Psr7\Factory\Psr17Factory: ~
     Psr\Http\Message\RequestFactoryInterface: '@Nyholm\Psr7\Factory\Psr17Factory'
@@ -61,3 +66,5 @@ parameters:
     email_client_secret: '%env(EMAIL_CLIENT_SECRET)%'
     email_tenant: '%env(EMAIL_TENANT)%'
     email_from: 'inscription@lyceefulbert.fr'
+    documents_directory: '%kernel.project_dir%/var/documents'
+    documents_web_directory: '%kernel.project_dir%/public/uploads/documents'

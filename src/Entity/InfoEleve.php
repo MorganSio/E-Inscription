@@ -61,26 +61,8 @@ class InfoEleve
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $dernier_diplome = null;
 
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private $carte_vitale = null;
-
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private $photo_identite = null;
-
     #[ORM\Column(length: 9, nullable: true)]
     private ?string $immattriculationVeic = null;
-
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private $bourse = null;
-
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private $attestationJDC = null;
-
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private $attestation_identite = null;
-
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private $attestation_reusite = null;
 
     #[ORM\Column(length: 15, nullable: true)]
     private ?string $numero_mobile = null;
@@ -321,30 +303,6 @@ class InfoEleve
         return $this;
     }
 
-    public function getCarteVitale()
-    {
-        return $this->carte_vitale;
-    }
-
-    public function setCarteVitale($carte_vitale): static
-    {
-        $this->carte_vitale = $carte_vitale;
-
-        return $this;
-    }
-
-    public function getPhotoIdentite()
-    {
-        return $this->photo_identite;
-    }
-
-    public function setPhotoIdentite($photo_identite): static
-    {
-        $this->photo_identite = $photo_identite;
-
-        return $this;
-    }
-
     public function getImmattriculationVeic(): ?string
     {
         return $this->immattriculationVeic;
@@ -353,54 +311,6 @@ class InfoEleve
     public function setImmattriculationVeic(?string $immattriculationVeic): static
     {
         $this->immattriculationVeic = $immattriculationVeic;
-
-        return $this;
-    }
-
-    public function getBourse()
-    {
-        return $this->bourse;
-    }
-
-    public function setBourse($bourse): static
-    {
-        $this->bourse = $bourse;
-
-        return $this;
-    }
-
-    public function getAttestationJDC()
-    {
-        return $this->attestationJDC;
-    }
-
-    public function setAttestationJDC($attestationJDC): static
-    {
-        $this->attestationJDC = $attestationJDC;
-
-        return $this;
-    }
-
-    public function getAttestationIdentite()
-    {
-        return $this->attestation_identite;
-    }
-
-    public function setAttestationIdentite($attestation_identite): static
-    {
-        $this->attestation_identite = $attestation_identite;
-
-        return $this;
-    }
-
-    public function getAttestationReusite()
-    {
-        return $this->attestation_reusite;
-    }
-
-    public function setAttestationReusite($attestation_reusite): static
-    {
-        $this->attestation_reusite = $attestation_reusite;
 
         return $this;
     }
@@ -658,6 +568,91 @@ class InfoEleve
     {
         $this->sms_send = $sms_send;
 
+        return $this;
+    }
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $carteVitaleFilename = null;
+    
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $photoIdentiteFilename = null;
+    
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $attestationIdentiteFilename = null;
+    
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $bourseFilename = null;
+    
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $attestationJDCFilename = null;
+    
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $attestationReusiteFilename = null;
+    
+    // Getters et setters
+    public function getCarteVitaleFilename(): ?string
+    {
+        return $this->carteVitaleFilename;
+    }
+    
+    public function setCarteVitaleFilename(?string $carteVitaleFilename): self
+    {
+        $this->carteVitaleFilename = $carteVitaleFilename;
+        return $this;
+    }
+    
+    public function getPhotoIdentiteFilename(): ?string
+    {
+        return $this->photoIdentiteFilename;
+    }
+    
+    public function setPhotoIdentiteFilename(?string $photoIdentiteFilename): self
+    {
+        $this->photoIdentiteFilename = $photoIdentiteFilename;
+        return $this;
+    }
+    
+    public function getAttestationIdentiteFilename(): ?string
+    {
+        return $this->attestationIdentiteFilename;
+    }
+    
+    public function setAttestationIdentiteFilename(?string $attestationIdentiteFilename): self
+    {
+        $this->attestationIdentiteFilename = $attestationIdentiteFilename;
+        return $this;
+    }
+    
+    public function getBourseFilename(): ?string
+    {
+        return $this->bourseFilename;
+    }
+    
+    public function setBourseFilename(?string $bourseFilename): self
+    {
+        $this->bourseFilename = $bourseFilename;
+        return $this;
+    }
+    
+    public function getAttestationJDCFilename(): ?string
+    {
+        return $this->attestationJDCFilename;
+    }
+    
+    public function setAttestationJDCFilename(?string $attestationJDCFilename): self
+    {
+        $this->attestationJDCFilename = $attestationJDCFilename;
+        return $this;
+    }
+    
+    public function getAttestationReusiteFilename(): ?string
+    {
+        return $this->attestationReusiteFilename;
+    }
+    
+    public function setAttestationReusiteFilename(?string $attestationReusiteFilename): self
+    {
+        $this->attestationReusiteFilename = $attestationReusiteFilename;
         return $this;
     }
 }

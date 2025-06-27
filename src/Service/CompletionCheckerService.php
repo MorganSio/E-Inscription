@@ -224,32 +224,12 @@ class CompletionCheckerService
      */
     public function checkRequiredDocuments(User $user, string $projectDir): array
     {
-        $documents = [
-            'carte_vitale' => $user->getInfoEleve()?->getCarteVitale(),
-            'photo_identite' => $user->getInfoEleve()?->getPhotoIdentite(),
-            'bourse' => $user->getInfoEleve()?->getBourse(),
-            'attestation_jdc' => $user->getInfoEleve()?->getAttestationJDC(),
-            'attestation_identite' => $user->getInfoEleve()?->getAttestationIdentite(),
-            'attestation_reussite' => $user->getInfoEleve()?->getAttestationReusite(),
-        ];
 
         $result = [
             'present' => 0,
             'missing' => 0,
             'details' => []
         ];
-
-        foreach ($documents as $name => $document) {
-            $isPresent = !empty($document);
-
-            $result['details'][$name] = $isPresent;
-
-            if ($isPresent) {
-                $result['present']++;
-            } else {
-                $result['missing']++;
-            }
-        }
 
         // Vérifier les PDF générés
         $pdfTypes = ['intendance', 'urgence', 'mdl', 'dossier'];

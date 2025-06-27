@@ -640,44 +640,7 @@ class InscriptionType extends AbstractType
     }
 
     private function buildStep9(FormBuilderInterface $builder, array $options): void 
-    {
-        $builder
-            ->add('pdf_file', FileType::class, [
-                'label' => 'Fichier PDF',
-                'required' => true,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '5M',
-                        'mimeTypes' => ['application/pdf'],
-                        'mimeTypesMessage' => 'Veuillez uploader un fichier PDF valide',
-                    ])
-                ],
-            ])
-            ->add('document_type', ChoiceType::class, [
-                'label' => 'Type de document',
-                'choices' => [
-                    'Carte Vitale' => 'carteVitale',
-                    'Attestation JDC' => 'attestationJdc',
-                    'Attestation d\'identité' => 'attestationIdentite',
-                    'Attestation de réussite' => 'attestationReusite',
-                    'Bourse' => 'bourse',
-                    'Photo d\'identité' => 'photoIdentite',
-                ],
-                'required' => true,
-            ])
-            ->add('upload', SubmitType::class, [
-                'label' => 'Uploader le document'
-            ]);
-    }
-
-    private function getDocumentHelp(array $data, string $existsField): string
-    {
-        if (isset($data[$existsField]) && $data[$existsField]) {
-            return 'Un document existe déjà. Sélectionnez un nouveau fichier pour le remplacer.';
-        }
-        
-        return 'Formats acceptés : PDF, JPG, PNG. Taille maximum : 5MB.';
-    }
+    { }
 
     private function buildStep10(FormBuilderInterface $builder): void 
     {

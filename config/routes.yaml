@@ -3,3 +3,23 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+upload_document:
+    path: /upload-document
+    controller: App\Controller\DocumentController::uploadDocument
+    methods: [POST]
+
+delete_document:
+    path: /delete-document
+    controller: App\Controller\DocumentController::deleteDocument
+    methods: [POST]
+
+download_document:
+    path: /download-document/{eleveId}/{documentType}
+    controller: App\Controller\DocumentController::downloadDocument
+    methods: [GET]
+
+documents_status:
+    path: /documents-status/{eleveId}
+    controller: App\Controller\DocumentController::getDocumentsStatus
+    methods: [GET]
