@@ -45,7 +45,7 @@ class RepresentantLegal extends Humain
 
     public function __construct()
     {
-        parent::__construct(); // Si la classe Humain a un constructeur
+        // parent::__construct(); // Si la classe Humain a un constructeur
         $this->infoEleves = new ArrayCollection();
     }
 

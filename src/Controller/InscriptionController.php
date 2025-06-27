@@ -798,8 +798,8 @@ class InscriptionController extends AbstractController
             }
             
             // SMS autorisation
-            if (isset($data[$prefix . 'SmsSend'])) {
-                $representant->setSmsSend((bool)$data[$prefix . 'SmsSend']);
+            if (isset($data[$prefix . 'Sms'])) {
+                $representant->setSmsSend((bool)$data[$prefix . 'Sms']);
             }
             
             // Informations professionnelles
@@ -1032,7 +1032,7 @@ class InscriptionController extends AbstractController
             $data['representantLegal1Telephone'] = $rep1->getTelephonePerso();
             $data['representantLegal1TelephoneFixe'] = $rep1->getTelephoneFixe();
             $data['representantLegal1TelephonePro'] = $rep1->getTelephonePro();
-            $data['representantLegal1SmsSend'] = $rep1->getSmsSend();
+            $data['representantLegal1Sms'] = $rep1->getSmsSend();
             $data['representantLegal1Courriel'] = $rep1->getCourriel();
             $data['representantLegal1Adresse'] = $rep1->getAdresse();
             $data['representantLegal1CodePostal'] = $rep1->getCodePostal();
@@ -1051,7 +1051,7 @@ class InscriptionController extends AbstractController
             $data['representantLegal2Telephone'] = $rep2->getTelephonePerso();
             $data['representantLegal2TelephoneFixe'] = $rep2->getTelephoneFixe();
             $data['representantLegal2TelephonePro'] = $rep2->getTelephonePro();
-            $data['representantLegal2SmsSend'] = $rep2->getSmsSend();
+            $data['representantLegal2Sms'] = $rep2->getSmsSend();
             $data['representantLegal2Courriel'] = $rep2->getCourriel();
             $data['representantLegal2Adresse'] = $rep2->getAdresse();
             $data['representantLegal2CodePostal'] = $rep2->getCodePostal();
