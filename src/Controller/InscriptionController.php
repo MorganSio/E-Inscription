@@ -710,11 +710,21 @@ class InscriptionController extends AbstractController
 
     private function mapStep10Data(InfoEleve $infoEleve, array $data): void 
     {
-        if (isset($data['cheque'])) {
-            $infoEleve->setCheque((bool)$data['cheque']);
+        if (!empty($data['adhesionPaymentMethod'])) {
+            $adhesion = $infoEleve->getAdhesion() ?: new \App\Entity\Adhesion();
+            $adhesion->setPaymentMethod('cheque');
+            if (!$infoEleve->getAdhesion()) {
+                $infoEleve->setAdhesion($adhesion);
+                $this->entityManager->persist($adhesion);
+            }
+        } else {
+            if ($infoEleve->getAdhesion()) {
+                $infoEleve->getAdhesion()->setPaymentMethod(null);
+            }
         }
-        if (isset($data['droitImage'])) {
-            $infoEleve->setDroitImage((bool)$data['droitImage']);
+
+        if (isset($data['adhesionImageRights'])) {
+            $infoEleve->setDroitImage((bool)$data['adhesionImageRights']);
         }
         
         if (isset($data['adhesionAccepted'])) {
@@ -1242,6 +1252,14 @@ class InscriptionController extends AbstractController
         try {
             $formData = $form->getData();
             $formData = $this->filterFormData($formData);
+
+            // Ajoute ceci pour l'étape 10 :
+            if ($step === 10) {
+                $formData['adhesionAccepted'] = $form->get('adhesionAccepted')->getData();
+                $formData['adhesionImageRights'] = $form->get('adhesionImageRights')->getData();
+                $formData['cheque'] = $form->get('cheque')->getData();
+                // $formData['adhesionPaymentMethod'] = $form->get('adhesionPaymentMethod')->getData(); // si tu ajoutes ce champ
+            }
             
             // Traitement spécifique selon l'étape (seulement si on avance)
             $transition = $request->request->get('flow_transition', 'next');
