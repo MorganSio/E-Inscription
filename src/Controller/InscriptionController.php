@@ -16,6 +16,7 @@ use App\Repository\ClasseRepository;
 use App\Form\InscriptionType;
 use App\Repository\InfoEleveRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\DocumentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,24 +52,34 @@ class InscriptionController extends AbstractController
 
     #[Route('/inscription/dashboard', name: 'app_inscription_dashboard')]
     #[IsGranted('ROLE_USER')]
-    public function dashboard(): Response
+    public function dashboard(DocumentManager $documentManager): Response
     {
         $user = $this->getUser();
-        // $infoEleve = $this->infoEleveRepository->findOneBy(['user' => $user]);
+        
+        // Récupération de l'InfoEleve avec la classe
         $infoEleve = $this->infoEleveRepository->createQueryBuilder('i')
-        ->leftJoin('i.classe', 'c')
-        ->addSelect('c')
-        ->where('i.user = :user')
-        ->setParameter('user', $user)
-        ->getQuery()
-        ->getOneOrNullResult();
+            ->leftJoin('i.classe', 'c')
+            ->addSelect('c')
+            ->where('i.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getOneOrNullResult();
 
         $inscription = null;
         $isComplete = false;
+        
+        // Variables pour les documents
+        $documentsStatus = [];
+        $missingRequiredDocuments = [];
+        $hasAllRequiredDocuments = false;
 
         if ($infoEleve) {
+            // Traitement existant de l'inscription
             $inscription = $this->convertEntityToArray($user, $infoEleve);
             $this->prepareInscriptionData($infoEleve, $inscription);
+            
+            $document = $infoEleve;
+            
             if ($infoEleve->getClasse()) {
                 $inscription['classe'] = [
                     'id' => $infoEleve->getClasse()->getId(),
@@ -77,14 +88,32 @@ class InscriptionController extends AbstractController
             } else {
                 $inscription['classe'] = null;
             }
+            
             $inscription['isComplete'] = $this->isInscriptionComplete($infoEleve);
             $isComplete = $inscription['isComplete'];
+            
+            // Nouveau : Récupération du statut des documents
+            $documentsStatus = $documentManager->getDocumentsStatus($infoEleve);
+            $missingRequiredDocuments = $documentManager->getMissingRequiredDocuments($infoEleve);
+            $hasAllRequiredDocuments = $documentManager->hasAllRequiredDocuments($infoEleve);
+            
+            // Ajout des informations documents dans le tableau inscription
+            $inscription['documents'] = [
+                'status' => $documentsStatus,
+                'missingRequired' => $missingRequiredDocuments,
+                'allRequiredUploaded' => $hasAllRequiredDocuments
+            ];
         }
 
         return $this->render('inscription/dashboard.html.twig', [
             'user' => $user,
             'inscription' => $inscription,
             'isComplete' => $isComplete,
+            'document' => $document,
+            'documentManager' => $documentManager,
+            'documentsStatus' => $documentsStatus,
+            'missingRequiredDocuments' => $missingRequiredDocuments,
+            'hasAllRequiredDocuments' => $hasAllRequiredDocuments,
         ]);
     }
 
@@ -676,25 +705,7 @@ class InscriptionController extends AbstractController
     // Correction dans mapStep9Data - Séparer les documents des autres champs
     private function mapStep9Data(InfoEleve $infoEleve, array $data): void
     {
-        // Vérifiez si des fichiers ont été téléchargés pour chaque document
-        if (isset($data['carteVitale']) && $data['carteVitale'] instanceof UploadedFile) {
-            $infoEleve->setCarteVitale(file_get_contents($data['carteVitale']->getPathname()));
-        }
-        if (isset($data['photoIdentite']) && $data['photoIdentite'] instanceof UploadedFile) {
-            $infoEleve->setPhotoIdentite(file_get_contents($data['photoIdentite']->getPathname()));
-        }
-        if (isset($data['attestationIdentite']) && $data['attestationIdentite'] instanceof UploadedFile) {
-            $infoEleve->setAttestationIdentite(file_get_contents($data['attestationIdentite']->getPathname()));
-        }
-        if (isset($data['bourse']) && $data['bourse'] instanceof UploadedFile) {
-            $infoEleve->setBourse(file_get_contents($data['bourse']->getPathname()));
-        }
-        if (isset($data['attestationJDC']) && $data['attestationJDC'] instanceof UploadedFile) {
-            $infoEleve->setAttestationJDC(file_get_contents($data['attestationJDC']->getPathname()));
-        }
-        if (isset($data['attestationReusite']) && $data['attestationReusite'] instanceof UploadedFile) {
-            $infoEleve->setAttestationReusite(file_get_contents($data['attestationReusite']->getPathname()));
-        }
+        
     }
 
     private function mapStep10Data(InfoEleve $infoEleve, array $data): void 
@@ -1007,14 +1018,6 @@ class InscriptionController extends AbstractController
             'dernierDiplome' => $infoEleve->getDernierDiplome(),
             'transportScolaire' => $infoEleve->getTransportScolaire(),
             'immatriculationVeic' => $infoEleve->getImmattriculationVeic(),
-            
-            // Documents
-            'carteVitale' => $infoEleve->getCarteVitale(),
-            'photoIdentite' => $infoEleve->getPhotoIdentite(),
-            'attestationIdentite' => $infoEleve->getAttestationIdentite(),
-            'bourse' => $infoEleve->getBourse(),
-            'attestationJDC' => $infoEleve->getAttestationJDC(),
-            'attestationReusite' => $infoEleve->getAttestationReusite(),
             'cheque' => $infoEleve->isCheque(),
             'droitImage' => $infoEleve->isDroitImage(),
         ];
@@ -1134,86 +1137,10 @@ class InscriptionController extends AbstractController
             $data['classe'] = null;
         }
 
-        // Étape 9 : Documents à fournir
-        $data['carteVitale'] = null;
-        $data['carteVitaleExists'] = $infoEleve->getCarteVitale() !== null;
-
-        $data['photoIdentite'] = null;
-        $data['photoIdentiteExists'] = $infoEleve->getPhotoIdentite() !== null;
-
-        $data['attestationIdentite'] = null;
-        $data['attestationIdentiteExists'] = $infoEleve->getAttestationIdentite() !== null;
-
-        $data['bourse'] = null;
-        $data['bourseExists'] = $infoEleve->getBourse() !== null;
-
-        $data['attestationJDC'] = null;
-        $data['attestationJDCExists'] = $infoEleve->getAttestationJDC() !== null;
-
-        $data['attestationReusite'] = null;
-        $data['attestationReusiteExists'] = $infoEleve->getAttestationReusite() !== null;
-
         // Étape 10 : Droit à l'image et mode de paiement
         $data['cheque'] = $infoEleve->isCheque();
         $data['droitImage'] = $infoEleve->isDroitImage();
     }
-
-    // #[Route('/inscription/document/{type}', name: 'download_document')]
-    // #[IsGranted('ROLE_USER')]
-    // public function downloadDocument(string $type): Response
-    // {
-    //     $user = $this->getUser();
-    //     $infoEleve = $this->getOrCreateInfoEleve($user);
-        
-    //     $documentData = null;
-    //     $filename = '';
-    //     $mimeType = 'application/octet-stream';
-        
-    //     switch ($type) {
-    //         case 'carteVitale':
-    //             $documentData = $infoEleve->getCarteVitale();
-    //             $filename = 'carte_vitale.pdf';
-    //             $mimeType = 'application/pdf';
-    //             break;
-    //         case 'photoIdentite':
-    //             $documentData = $infoEleve->getPhotoIdentite();
-    //             $filename = 'photo_identite.jpg';
-    //             $mimeType = 'image/jpeg';
-    //             break;
-    //         case 'attestationIdentite':
-    //             $documentData = $infoEleve->getAttestationIdentite();
-    //             $filename = 'attestation_identite.pdf';
-    //             $mimeType = 'application/pdf';
-    //             break;
-    //         case 'bourse':
-    //             $documentData = $infoEleve->getBourse();
-    //             $filename = 'bourse.pdf';
-    //             $mimeType = 'application/pdf';
-    //             break;
-    //         case 'attestationJDC':
-    //             $documentData = $infoEleve->getAttestationJDC();
-    //             $filename = 'attestation_jdc.pdf';
-    //             $mimeType = 'application/pdf';
-    //             break;
-    //         case 'attestationReusite':
-    //             $documentData = $infoEleve->getAttestationReusite();
-    //             $filename = 'attestation_reussite.pdf';
-    //             $mimeType = 'application/pdf';
-    //             break;
-    //         default:
-    //             throw $this->createNotFoundException('Type de document non reconnu');
-    //     }
-        
-    //     if (!$documentData) {
-    //         throw $this->createNotFoundException('Document non trouvé');
-    //     }
-        
-    //     $response = new Response($documentData);
-    //     $response->headers->set('Content-Type', $mimeType);
-    //     $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
-        
-    //     return $response;
-    // }
 
     /**
      * Vérifie si l'inscription est complète
@@ -1342,89 +1269,6 @@ class InscriptionController extends AbstractController
             return $this->redirectToRoute('app_inscription_form', ['step' => $step]);
         }
     }
-
-    private function validateFile(UploadedFile $file): bool
-    {
-        // Vérifier la taille (5MB max)
-        if ($file->getSize() > 5 * 1024 * 1024) {
-            throw new \InvalidArgumentException('Le fichier est trop volumineux (5MB maximum).');
-        }
-        
-        // Vérifier le type MIME
-        $allowedMimeTypes = [
-            'application/pdf',
-            'image/jpeg',
-            'image/png'
-        ];
-        
-        if (!in_array($file->getMimeType(), $allowedMimeTypes)) {
-            throw new \InvalidArgumentException('Type de fichier non autorisé.');
-        }
-        
-        return true;
-    }
-
-    private function handleStep9Submission(FormInterface $form, InfoEleve $infoEleve): void
-    {
-        // Récupération des fichiers uploadés
-        $files = [
-            'carteVitale' => $form->get('carteVitale')->getData(),
-            'photoIdentite' => $form->get('photoIdentite')->getData(),
-            'attestationIdentite' => $form->get('attestationIdentite')->getData(),
-            'bourse' => $form->get('bourse')->getData(),
-            'attestationJDC' => $form->get('attestationJDC')->getData(),
-            'attestationReusite' => $form->get('attestationReusite')->getData(),
-        ];
-        
-        // Traitement de chaque fichier
-        foreach ($files as $fieldName => $file) {
-            if ($file instanceof UploadedFile) {
-                try {
-                    // Validation du fichier
-                    if ($this->validateFile($file)) {
-                        // Conversion en BLOB
-                        $blobData = file_get_contents($file->getPathname());
-                        
-                        // Sauvegarde selon le type de document
-                        $this->saveFileToEntity($infoEleve, $fieldName, $blobData);
-                        
-                        $this->logger->info("Fichier {$fieldName} sauvegardé avec succès");
-                    }
-                } catch (\Exception $e) {
-                    $this->logger->error("Erreur lors du traitement du fichier {$fieldName}", [
-                        'error' => $e->getMessage()
-                    ]);
-                    throw new \Exception("Erreur lors du traitement du fichier {$fieldName}: " . $e->getMessage());
-                }
-            }
-        }
-    }
-
-    private function saveFileToEntity(InfoEleve $infoEleve, string $fieldName, $blobData): void
-    {
-        switch ($fieldName) {
-            case 'carteVitale':
-                $infoEleve->setCarteVitale($blobData);
-                break;
-            case 'photoIdentite':
-                $infoEleve->setPhotoIdentite($blobData);
-                break;
-            case 'attestationIdentite':
-                $infoEleve->setAttestationIdentite($blobData);
-                break;
-            case 'bourse':
-                $infoEleve->setBourse($blobData);
-                break;
-            case 'attestationJDC':
-                $infoEleve->setAttestationJDC($blobData);
-                break;
-            case 'attestationReusite':
-                $infoEleve->setAttestationReusite($blobData);
-                break;
-            default:
-                throw new \InvalidArgumentException("Type de fichier non reconnu: {$fieldName}");
-        }
-    }
     
     private function handleTransition(Request $request, int $step, InfoEleve $infoEleve): Response
     {
@@ -1544,11 +1388,16 @@ class InscriptionController extends AbstractController
         // Traitement spécifique étape 8 - Validation des données
     }
 
+    private function handleStep9Submission(FormInterface $form, InfoEleve $infoEleve): void
+    {
+        // Traitement spécifique étape 9 - Téléchargement des documents
+    }
+    
     private function handleStep10Submission(FormInterface $form, InfoEleve $infoEleve, array $formData): void
     {
         // Traitement spécifique étape 10 - Récapitulatif et validation finale
         // Exemple : génération d'un numéro d'inscription, envoi d'email de confirmation...
-    }
+    }    
 
     private function saveStepDataToDatabase(User $user, InfoEleve $infoEleve, array $formData, int $step): void
     {
@@ -1603,114 +1452,5 @@ class InscriptionController extends AbstractController
             ]);
             throw new \RuntimeException('Erreur lors de la sauvegarde: ' . $e->getMessage(), 0, $e);
         }
-    }
-    #[Route('/upload-pdf', name: 'upload_pdf', methods: ['POST'])]
-    public function uploadPdf(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $eleveId = $request->request->get('eleve_id');
-        $infoEleve = $entityManager->getRepository(InfoEleve::class)->find($eleveId);
-
-        if (!$infoEleve) {
-            return $this->json(['error' => 'Élève non trouvé'], 404);
-        }
-
-        /** @var UploadedFile $uploadedFile */
-        $uploadedFile = $request->files->get('pdf_file');
-
-        if (!$uploadedFile) {
-            return $this->json(['error' => 'Aucun fichier uploadé'], 400);
-        }
-
-        if ($uploadedFile->getMimeType() !== 'application/pdf') {
-            return $this->json(['error' => 'Le fichier doit être un PDF'], 400);
-        }
-
-        if ($uploadedFile->getSize() > 5 * 1024 * 1024) {
-            return $this->json(['error' => 'Le fichier est trop volumineux (max 5MB)'], 400);
-        }
-
-        try {
-            $fileContent = file_get_contents($uploadedFile->getPathname());
-            $documentType = $request->request->get('document_type');
-
-            switch ($documentType) {
-                case 'carte_vitale':
-                    $infoEleve->setCarteVitale($fileContent);
-                    break;
-                case 'attestation_jdc':
-                    $infoEleve->setAttestationJDC($fileContent);
-                    break;
-                case 'attestation_identite':
-                    $infoEleve->setAttestationIdentite($fileContent);
-                    break;
-                case 'attestation_reusite':
-                    $infoEleve->setAttestationReusite($fileContent);
-                    break;
-                case 'bourse':
-                    $infoEleve->setBourse($fileContent);
-                    break;
-                default:
-                    return $this->json(['error' => 'Type de document non reconnu'], 400);
-            }
-
-            $entityManager->flush();
-
-            return $this->json([
-                'success' => true,
-                'message' => 'Fichier enregistré avec succès',
-                'document_type' => $documentType
-            ]);
-
-        } catch (\Exception $e) {
-            return $this->json(['error' => 'Erreur lors de l\'enregistrement : ' . $e->getMessage()], 500);
-        }
-    }
-
-    #[Route('/download-pdf/{eleveId}/{documentType}', name: 'download_pdf', methods: ['GET'])]
-    public function downloadPdf(int $eleveId, string $documentType, EntityManagerInterface $entityManager): Response
-    {
-        $infoEleve = $entityManager->getRepository(InfoEleve::class)->find($eleveId);
-
-        if (!$infoEleve) {
-            throw $this->createNotFoundException('Élève non trouvé');
-        }
-
-        $fileContent = null;
-        $filename = '';
-
-        switch ($documentType) {
-            case 'carte_vitale':
-                $fileContent = $infoEleve->getCarteVitale();
-                $filename = 'carte_vitale_' . $eleveId . '.pdf';
-                break;
-            case 'attestation_jdc':
-                $fileContent = $infoEleve->getAttestationJDC();
-                $filename = 'attestation_jdc_' . $eleveId . '.pdf';
-                break;
-            case 'attestation_identite':
-                $fileContent = $infoEleve->getAttestationIdentite();
-                $filename = 'attestation_identite_' . $eleveId . '.pdf';
-                break;
-            case 'attestation_reusite':
-                $fileContent = $infoEleve->getAttestationReusite();
-                $filename = 'attestation_reusite_' . $eleveId . '.pdf';
-                break;
-            case 'bourse':
-                $fileContent = $infoEleve->getBourse();
-                $filename = 'bourse_' . $eleveId . '.pdf';
-                break;
-            default:
-                throw $this->createNotFoundException('Type de document non reconnu');
-        }
-
-        if (!$fileContent) {
-            throw $this->createNotFoundException('Document non trouvé');
-        }
-
-        $response = new Response($fileContent);
-        $response->headers->set('Content-Type', 'application/pdf');
-        $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
-
-        return $response;
     }
 }

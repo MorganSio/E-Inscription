@@ -496,89 +496,6 @@
                         </div>
                     </fieldset>
                 {% endif %}
-                
-                {# {% if flow.currentStepNumber == 9 %}
-                    <fieldset class="fr-fieldset">
-                        <legend class="fr-fieldset__legend fr-text--regular">
-                            <span class="fr-icon-documents-line fr-icon--sm" aria-hidden="true"></span>
-                            Documents à fournir
-                        </legend>
-                        <div class="fr-fieldset__content">
-                            <div class="fr-grid-row fr-grid-row--gutters">
-                                <div class="fr-col-12 fr-col-md-6">
-                                    {{ form_row(form.carteVitale) }}
-                                    {% if infoEleve.hasCarteVitale %}
-                                        <div class="fr-alert fr-alert--success fr-alert--sm">
-                                            <p>✅ Document déjà fourni</p>
-                                            <a href="{{ path('download_document', {type: 'carteVitale'}) }}" class="fr-btn fr-btn--sm fr-btn--secondary">
-                                                Télécharger le document actuel
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="fr-col-12 fr-col-md-6">
-                                    {{ form_row(form.photoIdentite) }}
-                                    {% if infoEleve.hasPhotoIdentite %}
-                                        <div class="fr-alert fr-alert--success fr-alert--sm">
-                                            <p>✅ Document déjà fourni</p>
-                                            <a href="{{ path('download_document', {type: 'photoIdentite'}) }}" class="fr-btn fr-btn--sm fr-btn--secondary">
-                                                Télécharger le document actuel
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="fr-grid-row fr-grid-row--gutters">
-                                <div class="fr-col-12 fr-col-md-6">
-                                    {{ form_row(form.attestationIdentite) }}
-                                    {% if infoEleve.hasAttestationIdentite %}
-                                        <div class="fr-alert fr-alert--success fr-alert--sm">
-                                            <p>✅ Document déjà fourni</p>
-                                            <a href="{{ path('download_document', {type: 'attestationIdentite'}) }}" class="fr-btn fr-btn--sm fr-btn--secondary">
-                                                Télécharger le document actuel
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="fr-col-12 fr-col-md-6">
-                                    {{ form_row(form.bourse) }}
-                                    {% if infoEleve.hasBourse %}
-                                        <div class="fr-alert fr-alert--success fr-alert--sm">
-                                            <p>✅ Document déjà fourni</p>
-                                            <a href="{{ path('download_document', {type: 'bourse'}) }}" class="fr-btn fr-btn--sm fr-btn--secondary">
-                                                Télécharger le document actuel
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="fr-grid-row fr-grid-row--gutters">
-                                <div class="fr-col-12 fr-col-md-6">
-                                    {{ form_row(form.attestationJDC) }}
-                                    {% if infoEleve.hasAttestationJDC %}
-                                        <div class="fr-alert fr-alert--success fr-alert--sm">
-                                            <p>✅ Document déjà fourni</p>
-                                            <a href="{{ path('download_document', {type: 'attestationJDC'}) }}" class="fr-btn fr-btn--sm fr-btn--secondary">
-                                                Télécharger le document actuel
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="fr-col-12 fr-col-md-6">
-                                    {{ form_row(form.attestationReusite) }}
-                                    {% if infoEleve.hasAttestationReusite %}
-                                        <div class="fr-alert fr-alert--success fr-alert--sm">
-                                            <p>✅ Document déjà fourni</p>
-                                            <a href="{{ path('download_document', {type: 'attestationReusite'}) }}" class="fr-btn fr-btn--sm fr-btn--secondary">
-                                                Télécharger le document actuel
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                {% endif %} #}
 
                 {% if flow.currentStepNumber == 9 %}
                     <fieldset class="fr-fieldset">
@@ -586,261 +503,33 @@
                             <span class="fr-icon-documents-line fr-icon--sm" aria-hidden="true"></span>
                             Documents à fournir
                         </legend>
+
                         <div class="fr-fieldset__content">
-                            <!-- Nouveau système d'upload avec sélection de type de document -->
-                            <div class="fr-grid-row fr-grid-row--gutters">
-                                <div class="fr-col-12">
-                                    <div class="fr-upload-group">
-                                        <label class="fr-label" for="file-upload">
-                                            Type de document
-                                        </label>
-                                        <select class="fr-select" id="document-type">
-                                            <option value="carte_vitale">Carte Vitale</option>
-                                            <option value="attestation_identite">Attestation d'identité</option>
-                                            <option value="photo_identite">Photo d'identité</option>
-                                            <option value="bourse">Justificatif de bourse</option>
-                                            <option value="attestation_jdc">Attestation JDC</option>
-                                            <option value="attestation_reusite">Attestation de réussite</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="fr-grid-row fr-grid-row--gutters">
-                                <div class="fr-col-12">
-                                    <div class="fr-upload-group">
-                                        <label class="fr-label" for="file-upload">
-                                            Sélectionnez un fichier (PDF, JPG, PNG - max 5MB)
-                                            <span class="fr-hint-text">Formats acceptés : PDF, JPG, PNG. Taille maximum : 5MB.</span>
-                                        </label>
-                                        <input class="fr-upload" type="file" id="file-upload" accept=".pdf,.jpg,.jpeg,.png">
-                                        <input type="hidden" name="document_file" id="document-file">
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="fr-grid-row fr-grid-row--gutters">
-                                <div class="fr-col-12">
-                                    <button type="button" class="fr-btn" id="upload-btn">
-                                        <span class="fr-icon-upload-line fr-icon--sm" aria-hidden="true"></span>
-                                        Uploader le document
-                                    </button>
-                                </div>
+                            <div class="alert fr-alert fr-alert--info fr-mb-4w">
+                                <p class="fr-alert__title">Informations</p>
+                                <p>
+                                    <strong>Documents obligatoires :</strong> Carte Vitale, Photo d'identité, Attestation d'identité<br>
+                                    <small>Formats acceptés : PDF, JPG, PNG (max 5MB par fichier)</small>
+                                </p>
                             </div>
 
-                            <hr class="fr-mt-4w fr-mb-4w">
-
-                            <!-- Liste des documents existants -->
-                            <h4 class="fr-h4">Documents enregistrés</h4>
-                            <div id="documents-list" class="fr-grid-row fr-grid-row--gutters">
-                                {% if infoEleve.carteVitale %}
-                                    <div class="fr-col-12 fr-col-md-6">
-                                        <div class="fr-card fr-card--shadowed fr-enlarge-link">
-                                            <div class="fr-card__body">
-                                                <h4 class="fr-card__title">
-                                                    <a href="{{ path('download_pdf', {'eleveId': infoEleve.id, 'documentType': 'carteVitale'}) }}" class="fr-card__link" download>Carte Vitale</a>
-                                                </h4>
-                                                <p class="fr-card__desc">Fichier PDF</p>
-                                            </div>
-                                            <div class="fr-card__footer">
-                                                <button class="fr-btn fr-btn--secondary fr-btn--sm replace-btn" data-doc-type="carteVitale">
-                                                    Remplacer
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                                
-                                {% if infoEleve.photoIdentite %}
-                                    <div class="fr-col-12 fr-col-md-6">
-                                        <div class="fr-card fr-card--shadowed fr-enlarge-link">
-                                            <div class="fr-card__body">
-                                                <h4 class="fr-card__title">
-                                                    <a href="{{ path('download_pdf', {'eleveId': infoEleve.id, 'documentType': 'photoIdentite'}) }}" class="fr-card__link" download>Photo d'identité</a>
-                                                </h4>
-                                                <p class="fr-card__desc">Fichier image</p>
-                                            </div>
-                                            <div class="fr-card__footer">
-                                                <button class="fr-btn fr-btn--secondary fr-btn--sm replace-btn" data-doc-type="photoIdentite">
-                                                    Remplacer
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                                
-                                {% if infoEleve.attestationIdentite %}
-                                    <div class="fr-col-12 fr-col-md-6">
-                                        <div class="fr-card fr-card--shadowed fr-enlarge-link">
-                                            <div class="fr-card__body">
-                                                <h4 class="fr-card__title">
-                                                    <a href="{{ path('download_pdf', {'eleveId': infoEleve.id, 'documentType': 'attestationIdentite'}) }}" class="fr-card__link" download>Attestation d'identité</a>
-                                                </h4>
-                                                <p class="fr-card__desc">Fichier PDF</p>
-                                            </div>
-                                            <div class="fr-card__footer">
-                                                <button class="fr-btn fr-btn--secondary fr-btn--sm replace-btn" data-doc-type="attestationIdentite">
-                                                    Remplacer
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                                
-                                {% if infoEleve.bourse %}
-                                    <div class="fr-col-12 fr-col-md-6">
-                                        <div class="fr-card fr-card--shadowed fr-enlarge-link">
-                                            <div class="fr-card__body">
-                                                <h4 class="fr-card__title">
-                                                    <a href="{{ path('download_pdf', {'eleveId': infoEleve.id, 'documentType': 'bourse'}) }}" class="fr-card__link" download>Justificatif de bourse</a>
-                                                </h4>
-                                                <p class="fr-card__desc">Fichier PDF</p>
-                                            </div>
-                                            <div class="fr-card__footer">
-                                                <button class="fr-btn fr-btn--secondary fr-btn--sm replace-btn" data-doc-type="bourse">
-                                                    Remplacer
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                                
-                                {% if infoEleve.attestationJDC %}
-                                    <div class="fr-col-12 fr-col-md-6">
-                                        <div class="fr-card fr-card--shadowed fr-enlarge-link">
-                                            <div class="fr-card__body">
-                                                <h4 class="fr-card__title">
-                                                    <a href="{{ path('download_pdf', {'eleveId': infoEleve.id, 'documentType': 'attestationJDC'}) }}" class="fr-card__link" download>Attestation JDC</a>
-                                                </h4>
-                                                <p class="fr-card__desc">Fichier PDF</p>
-                                            </div>
-                                            <div class="fr-card__footer">
-                                                <button class="fr-btn fr-btn--secondary fr-btn--sm replace-btn" data-doc-type="attestationJDC">
-                                                    Remplacer
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                                
-                                {% if infoEleve.attestationReusite %}
-                                    <div class="fr-col-12 fr-col-md-6">
-                                        <div class="fr-card fr-card--shadowed fr-enlarge-link">
-                                            <div class="fr-card__body">
-                                                <h4 class="fr-card__title">
-                                                    <a href="{{ path('download_pdf', {'eleveId': infoEleve.id, 'documentType': 'attestationReusite'}) }}" class="fr-card__link" download>Attestation de réussite</a>
-                                                </h4>
-                                                <p class="fr-card__desc">Fichier PDF</p>
-                                            </div>
-                                            <div class="fr-card__footer">
-                                                <button class="fr-btn fr-btn--secondary fr-btn--sm replace-btn" data-doc-type="attestationReusite">
-                                                    Remplacer
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endif %}
+                            <div id="documents-container" class="fr-mb-4w">
+                                <!-- Les documents seront chargés ici via JavaScript -->
                             </div>
                         </div>
                     </fieldset>
 
                     <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const uploadBtn = document.getElementById('upload-btn');
-                            const fileInput = document.getElementById('file-upload');
-                            const docTypeSelect = document.getElementById('document-type');
-                            
-                            uploadBtn.addEventListener('click', async function() {
-                                const file = fileInput.files[0];
-                                const docType = docTypeSelect.value;
-                                
-                                if (!file) {
-                                    showAlert('Veuillez sélectionner un fichier', 'error');
-                                    return;
-                                }
-                                
-                                // Vérification de la taille
-                                if (file.size > 5 * 1024 * 1024) {
-                                    showAlert('Le fichier est trop volumineux (max 5MB)', 'error');
-                                    return;
-                                }
-                                
-                                // Vérification du type de fichier
-                                const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
-                                if (!validTypes.includes(file.type)) {
-                                    showAlert('Format de fichier non valide (PDF, JPG, PNG uniquement)', 'error');
-                                    return;
-                                }
-                                
-                                // Afficher l'indicateur de chargement
-                                uploadBtn.classList.add('fr-btn--loading');
-                                uploadBtn.disabled = true;
-                                
-                                try {
-                                    // Convertir le fichier en base64 pour l'envoyer
-                                    const reader = new FileReader();
-                                    reader.onload = async function(e) {
-                                        const base64Data = e.target.result.split(',')[1];
-                                        
-                                        // Envoyer les données au serveur via AJAX
-                                        const response = await fetch('{{ path("upload_pdf") }}', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'X-Requested-With': 'XMLHttpRequest'
-                                            },
-                                            body: JSON.stringify({
-                                                eleve_id: '{{ app.user.id }}',
-                                                document_type: docType,
-                                                file_data: base64Data,
-                                                file_name: file.name,
-                                                file_type: file.type
-                                            })
-                                        });
-                                        
-                                        const result = await response.json();
-                                        
-                                        if (result.success) {
-                                            showAlert('Document enregistré avec succès', 'success');
-                                            // Recharger la page pour afficher le nouveau document
-                                            setTimeout(() => window.location.reload(), 1500);
-                                        } else {
-                                            showAlert(result.error || 'Erreur lors de l\'enregistrement', 'error');
-                                        }
-                                    };
-                                    reader.readAsDataURL(file);
-                                } catch (error) {
-                                    showAlert('Erreur lors de l\'upload: ' + error.message, 'error');
-                                } finally {
-                                    uploadBtn.classList.remove('fr-btn--loading');
-                                    uploadBtn.disabled = false;
-                                }
-                            });
-                            
-                            // Gestion des boutons "Remplacer"
-                            document.querySelectorAll('.replace-btn').forEach(btn => {
-                                btn.addEventListener('click', function() {
-                                    const docType = this.getAttribute('data-doc-type');
-                                    docTypeSelect.value = docType;
-                                    // Scroll vers le champ d'upload
-                                    docTypeSelect.scrollIntoView({ behavior: 'smooth' });
-                                });
-                            });
-                            
-                            function showAlert(message, type) {
-                                const alertDiv = document.createElement('div');
-                                alertDiv.className = `fr-alert fr-alert--${type} fr-mt-2w`;
-                                alertDiv.innerHTML = `
-                                    <p class="fr-alert__title">${type === 'success' ? 'Succès' : 'Erreur'}</p>
-                                    <p>${message}</p>
-                                `;
-                                
-                                const container = document.getElementById('ajax-messages');
-                                container.innerHTML = '';
-                                container.appendChild(alertDiv);
-                            }
+                        const eleveId = {{ infoEleve.id|default(0) }};
+                        let documentUploader;
+
+                        document.addEventListener('DOMContentLoaded', function () {
+                            documentUploader = new DocumentUploader(eleveId);
                         });
                     </script>
+
+                    <!-- Ajoute ici le script DocumentUploader complet ou en import -->
+                    <script src="{{ asset('documentUploader.js') }}"></script>
                 {% endif %}
 
                 {% if flow.currentStepNumber == 10 %}

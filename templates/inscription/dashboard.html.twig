@@ -28,6 +28,277 @@
             </div>
         </div>
     </div>
+    <div class="fr-container fr-container--border fr-container--shadow fr-mb-4w">
+        <div class="fr-container__body">
+            <div class="fr-container__content">
+                <h3 class="fr-container__title fr-mb-3w">
+                    <span class="fr-icon-line-chart-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
+                    Progression du dossier
+                </h3>
+                <div class="fr-container__desc">
+                    {% set totalSteps = 69 %}
+                    {% set completedSteps = 0 %}
+                            
+                    {# Vérification des données pour chaque section #}
+                    {# Informations personnelles #}
+                    {% if inscription.nom is defined and inscription.prenom is defined and inscription.email is defined %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.dateNaissance is not null %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.sexe is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.nationalite is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.departement is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.communeNaissance is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.numSecuSocial is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+
+                    {# Contact d'urgence #}
+                    {% if inscription.numeroMobile is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.nomContacteUrgence is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.numeroContacteUrgence is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+
+                    {# Scolarité #}
+                    {% if inscription.classe is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.promotion is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.regime is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.redoublant %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.lvUn is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.lvDeux is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.dernierDiplome is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.transportScolaire is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.immatriculationVeic is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+
+                    {# Représentant légal 1 #}
+                    {% if inscription.representantLegal1Nom is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal1Prenom is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal1Courriel is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal1Telephone is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal1Adresse is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal1CodePostal is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal1Commune is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal1Poste is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal1LienEleve is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal1NomEmployeur is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal1AdresseEmployeur is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+
+                    {# Représentant légal 2 #}
+                    {% if inscription.representantLegal2Nom is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal2Prenom is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal2Courriel is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal2Telephone is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal2Adresse is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal2CodePostal is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal2Commune is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal2Poste is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal2LienEleve is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal2NomEmployeur is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal2AdresseEmployeur is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {# Scolarité antérieure #}
+                    {% if inscription.etablissementPrecedent1 is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.classePrecedente1 is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.optionPrecedente1 is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.anneeScolairePrecedente1 is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.etablissementPrecedent2 is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.classePrecedente2 is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.optionPrecedente2 is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.anneeScolairePrecedente2 is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+
+                    {# Informations médicales #}
+                    {% if inscription.medecinTraitantNom is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.medecinTraitantTelephone is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.medecinTraitantAdresse is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.dernierRappelAntitetanique is defined and inscription.dernierRappelAntitetanique is not null %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.observations is defined and inscription.observations is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.secuSocialeNom is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.secuSocialeAdresse is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.assureurNom is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.assureurAdresse is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.assureurNumeroAssurance is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+
+                    {# Responsable financier #}
+                    {% if inscription.responsableFinancierNom is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.responsableFinancierPrenom is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.responsableFinancierNomEmployeur is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.responsableFinancierAdresseEmployeur is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+
+                    {# Adhésion #}
+                    {% if inscription.adhesionAccepted %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.adhesionPaymentMethod is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.adhesionImageRights is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.cheque %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.droitImage %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+
+                    {% set progressPercent = (completedSteps / totalSteps * 100)|round %}
+                    
+                    <div class="fr-mb-3w">
+                        <div class="fr-text--bold fr-mb-1w">{{ completedSteps }} / {{ totalSteps }} étapes complétées</div>
+                        <div class="fr-progress">
+                            <div class="fr-progress__bar" role="progressbar" 
+                                aria-valuenow="{{ progressPercent }}" 
+                                aria-valuemin="0" 
+                                aria-valuemax="100">
+                                <span class="fr-progress__value" style="width: {{ progressPercent }}%"></span>
+                            </div>
+                        </div>
+                        <div class="fr-text--sm fr-text--muted fr-mt-1v">{{ progressPercent }}% complété</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact et assistance -->
+    <div class="fr-container fr-container--border fr-container--shadow">
+        <div class="fr-container__body">
+            <div class="fr-container__content">
+                <h3 class="fr-container__title fr-mb-3w">
+                    <span class="fr-icon-customer-service-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
+                    Conseil ?
+                </h3>
+                <div class="fr-container__desc"> 
+                    <div class="fr-alert fr-alert--info fr-alert--sm">
+                        <p class="fr-alert__desc">
+                            Pensez à sauvegarder régulièrement vos informations en faisant "Etape Suivante" dans le form, pour éviter toute perte de données.
+                        </p>
+                    </div>
+                </div>
+                <div><p></p></div>
+            </div>
+        </div>
+    </div>
 
     <div class="fr-grid-row fr-grid-row--gutters">
         <!-- Colonne principale -->
@@ -388,73 +659,259 @@
                 {% endif %}
             </div>
 
-            <!-- Documents à fournir -->
+            <!-- Documents à fournir - Récapitulatif -->
+            {% if document %}
             <div class="fr-container--fluid fr-py-4w fr-px-3w fr-mb-4w" style="border: 1px solid var(--border-default-grey); border-radius: 8px; background-color: var(--background-default-grey);">
                 <h3 class="fr-h3 fr-mb-3w">
                     <span class="fr-icon-file-text-line fr-icon--sm" aria-hidden="true"></span>
-                    Documents à fournir
+                    Documents fournis
                 </h3>
                 <div class="fr-grid-row fr-grid-row--gutters">
                     <div class="fr-col-12 fr-col-md-6">
+                        <!-- Carte Vitale -->
                         <div class="fr-checkbox-group">
-                            <input type="checkbox" id="carte-vitale" name="carte-vitale" disabled {{ inscription.carteVitale is defined and inscription.carteVitale ? 'checked' : '' }}>
+                            <input type="checkbox" id="carte-vitale" name="carte-vitale" disabled 
+                                {{ documentManager.hasDocument(document, 'carte_vitale') ? 'checked' : '' }}>
                             <label class="fr-label" for="carte-vitale">
-                                Carte Vitale
-                                {% if inscription.carteVitale is defined and inscription.carteVitale %}
-                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                <span class="document-label">
+                                    Carte Vitale
+                                    {% if documentManager.hasDocument(document, 'carte_vitale') %}
+                                        <span class="fr-badge fr-badge--success fr-badge--sm fr-ml-1w">Fourni</span>
+                                    {% else %}
+                                        <span class="fr-badge fr-badge--error fr-badge--sm fr-ml-1w">Manquant</span>
+                                    {% endif %}
+                                </span>
+                                {% if documentManager.hasDocument(document, 'carte_vitale') %}
+                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-ml-1w" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                    <a href="{{ path('download_document', {eleveId: document.id, documentType: 'carte_vitale'}) }}" 
+                                    class="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-download-line fr-btn--icon-left fr-ml-2w"
+                                    title="Télécharger le document">
+                                        Télécharger
+                                    </a>
                                 {% endif %}
                             </label>
                         </div>
+
+                        <!-- Photo d'identité -->
                         <div class="fr-checkbox-group">
-                            <input type="checkbox" id="photo-identite" name="photo-identite" disabled {{ inscription.photoIdentite is defined and inscription.photoIdentite ? 'checked' : '' }}>
+                            <input type="checkbox" id="photo-identite" name="photo-identite" disabled 
+                                {{ documentManager.hasDocument(document, 'photo_identite') ? 'checked' : '' }}>
                             <label class="fr-label" for="photo-identite">
-                                Photo d'identité
-                                {% if inscription.photoIdentite is defined and inscription.photoIdentite %}
-                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                <span class="document-label">
+                                    Photo d'identité
+                                    {% if documentManager.hasDocument(document, 'photo_identite') %}
+                                        <span class="fr-badge fr-badge--success fr-badge--sm fr-ml-1w">Fourni</span>
+                                    {% else %}
+                                        <span class="fr-badge fr-badge--error fr-badge--sm fr-ml-1w">Manquant</span>
+                                    {% endif %}
+                                </span>
+                                {% if documentManager.hasDocument(document, 'photo_identite') %}
+                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-ml-1w" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                    <a href="{{ path('download_document', {eleveId: document.id, documentType: 'photo_identite'}) }}" 
+                                    class="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-download-line fr-btn--icon-left fr-ml-2w"
+                                    title="Télécharger le document">
+                                        Télécharger
+                                    </a>
                                 {% endif %}
                             </label>
                         </div>
+
+                        <!-- Attestation d'identité -->
                         <div class="fr-checkbox-group">
-                            <input type="checkbox" id="attestation-identite" name="attestation-identite" disabled {{ inscription.attestationIdentite is defined and inscription.attestationIdentite ? 'checked' : '' }}>
+                            <input type="checkbox" id="attestation-identite" name="attestation-identite" disabled 
+                                {{ documentManager.hasDocument(document, 'attestation_identite') ? 'checked' : '' }}>
                             <label class="fr-label" for="attestation-identite">
-                                Attestation d'identité
-                                {% if inscription.attestationIdentite is defined and inscription.attestationIdentite %}
-                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                <span class="document-label">
+                                    Attestation d'identité
+                                    {% if documentManager.hasDocument(document, 'attestation_identite') %}
+                                        <span class="fr-badge fr-badge--success fr-badge--sm fr-ml-1w">Fourni</span>
+                                    {% else %}
+                                        <span class="fr-badge fr-badge--error fr-badge--sm fr-ml-1w">Manquant</span>
+                                    {% endif %}
+                                </span>
+                                {% if documentManager.hasDocument(document, 'attestation_identite') %}
+                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-ml-1w" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                    <a href="{{ path('download_document', {eleveId: document.id, documentType: 'attestation_identite'}) }}" 
+                                    class="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-download-line fr-btn--icon-left fr-ml-2w"
+                                    title="Télécharger le document">
+                                        Télécharger
+                                    </a>
                                 {% endif %}
                             </label>
                         </div>
                     </div>
+
                     <div class="fr-col-12 fr-col-md-6">
+                        <!-- Bourse -->
                         <div class="fr-checkbox-group">
-                            <input type="checkbox" id="bourse" name="bourse" disabled {{ inscription.bourse is defined and inscription.bourse ? 'checked' : '' }}>
+                            <input type="checkbox" id="bourse" name="bourse" disabled 
+                                {{ documentManager.hasDocument(document, 'bourse') ? 'checked' : '' }}>
                             <label class="fr-label" for="bourse">
-                                Bourse
-                                {% if inscription.bourse is defined and inscription.bourse %}
-                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                <span class="document-label">
+                                    Justificatif de bourse
+                                    <span class="fr-text--xs" style="color: var(--text-mention-grey);">(optionnel)</span>
+                                    {% if documentManager.hasDocument(document, 'bourse') %}
+                                        <span class="fr-badge fr-badge--success fr-badge--sm fr-ml-1w">Fourni</span>
+                                    {% else %}
+                                        <span class="fr-badge fr-badge--info fr-badge--sm fr-ml-1w">Non fourni</span>
+                                    {% endif %}
+                                </span>
+                                {% if documentManager.hasDocument(document, 'bourse') %}
+                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-ml-1w" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                    <a href="{{ path('download_document', {eleveId: document.id, documentType: 'bourse'}) }}" 
+                                    class="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-download-line fr-btn--icon-left fr-ml-2w"
+                                    title="Télécharger le document">
+                                        Télécharger
+                                    </a>
                                 {% endif %}
                             </label>
                         </div>
+
+                        <!-- Attestation JDC -->
                         <div class="fr-checkbox-group">
-                            <input type="checkbox" id="attestation-jdc" name="attestation-jdc" disabled {{ inscription.attestationJDC is defined and inscription.attestationJDC ? 'checked' : '' }}>
+                            <input type="checkbox" id="attestation-jdc" name="attestation-jdc" disabled 
+                                {{ documentManager.hasDocument(document, 'attestation_jdc') ? 'checked' : '' }}>
                             <label class="fr-label" for="attestation-jdc">
-                                Attestation JDC
-                                {% if inscription.attestationJDC is defined and inscription.attestationJDC %}
-                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                <span class="document-label">
+                                    Attestation JDC
+                                    <span class="fr-text--xs" style="color: var(--text-mention-grey);">(optionnel)</span>
+                                    {% if documentManager.hasDocument(document, 'attestation_jdc') %}
+                                        <span class="fr-badge fr-badge--success fr-badge--sm fr-ml-1w">Fourni</span>
+                                    {% else %}
+                                        <span class="fr-badge fr-badge--info fr-badge--sm fr-ml-1w">Non fourni</span>
+                                    {% endif %}
+                                </span>
+                                {% if documentManager.hasDocument(document, 'attestation_jdc') %}
+                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-ml-1w" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                    <a href="{{ path('download_document', {eleveId: document.id, documentType: 'attestation_jdc'}) }}" 
+                                    class="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-download-line fr-btn--icon-left fr-ml-2w"
+                                    title="Télécharger le document">
+                                        Télécharger
+                                    </a>
                                 {% endif %}
                             </label>
                         </div>
+
+                        <!-- Attestation de réussite -->
                         <div class="fr-checkbox-group">
-                            <input type="checkbox" id="attestation-reussite" name="attestation-reussite" disabled {{ inscription.attestationReusite is defined and inscription.attestationReusite ? 'checked' : '' }}>
+                            <input type="checkbox" id="attestation-reussite" name="attestation-reussite" disabled 
+                                {{ documentManager.hasDocument(document, 'attestation_reusite') ? 'checked' : '' }}>
                             <label class="fr-label" for="attestation-reussite">
-                                Attestation de réussite
-                                {% if inscription.attestationReusite is defined and inscription.attestationReusite %}
-                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                <span class="document-label">
+                                    Attestation de réussite
+                                    <span class="fr-text--xs" style="color: var(--text-mention-grey);">(optionnel)</span>
+                                    {% if documentManager.hasDocument(document, 'attestation_reusite') %}
+                                        <span class="fr-badge fr-badge--success fr-badge--sm fr-ml-1w">Fourni</span>
+                                    {% else %}
+                                        <span class="fr-badge fr-badge--info fr-badge--sm fr-ml-1w">Non fourni</span>
+                                    {% endif %}
+                                </span>
+                                {% if documentManager.hasDocument(document, 'attestation_reusite') %}
+                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-ml-1w" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                    <a href="{{ path('download_document', {eleveId: document.id, documentType: 'attestation_reusite'}) }}" 
+                                    class="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-download-line fr-btn--icon-left fr-ml-2w"
+                                    title="Télécharger le document">
+                                        Télécharger
+                                    </a>
                                 {% endif %}
                             </label>
                         </div>
                     </div>
                 </div>
+
+                <!-- Résumé des documents -->
+                <div class="fr-mt-3w fr-pt-3w" style="border-top: 1px solid var(--border-default-grey);">
+                    {% if documentsStatus is defined and documentsStatus %}
+                        {% set totalDocuments = documentsStatus|length %}
+                        {% set uploadedDocuments = 0 %}
+                        {% set requiredDocuments = 0 %}
+                        {% set uploadedRequiredDocuments = 0 %}
+                        
+                        {% for type, status in documentsStatus %}
+                            {% if status.uploaded %}
+                                {% set uploadedDocuments = uploadedDocuments + 1 %}
+                            {% endif %}
+                            {% if status.required %}
+                                {% set requiredDocuments = requiredDocuments + 1 %}
+                                {% if status.uploaded %}
+                                    {% set uploadedRequiredDocuments = uploadedRequiredDocuments + 1 %}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <div class="fr-grid-row fr-grid-row--gutters">
+                            <div class="fr-col-12 fr-col-md-4">
+                                <div class="fr-text--sm">
+                                    <strong>Documents obligatoires :</strong>
+                                    <span class="fr-badge {{ uploadedRequiredDocuments == requiredDocuments ? 'fr-badge--success' : 'fr-badge--warning' }} fr-badge--sm fr-ml-1w">
+                                        {{ uploadedRequiredDocuments }}/{{ requiredDocuments }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="fr-col-12 fr-col-md-4">
+                                <div class="fr-text--sm">
+                                    <strong>Total des documents :</strong>
+                                    <span class="fr-badge fr-badge--info fr-badge--sm fr-ml-1w">
+                                        {{ uploadedDocuments }}/{{ totalDocuments }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="fr-col-12 fr-col-md-4">
+                                {% if hasAllRequiredDocuments is defined and hasAllRequiredDocuments %}
+                                    <div class="fr-text--sm">
+                                        <span class="fr-icon-checkbox-circle-fill fr-icon--sm" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                        <strong style="color: var(--success-425-625);">Dossier complet</strong>
+                                    </div>
+                                {% else %}
+                                    <div class="fr-text--sm">
+                                        <span class="fr-icon-warning-fill fr-icon--sm" style="color: var(--warning-425-625);" aria-hidden="true"></span>
+                                        <strong style="color: var(--warning-425-625);">Documents manquants</strong>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
+            {% else %}
+            <!-- Message si aucune inscription -->
+            <div class="fr-container--fluid fr-py-4w fr-px-3w fr-mb-4w" style="border: 1px solid var(--border-default-grey); border-radius: 8px; background-color: var(--background-alt-grey);">
+                <h3 class="fr-h3 fr-mb-3w">
+                    <span class="fr-icon-file-text-line fr-icon--sm" aria-hidden="true"></span>
+                    Documents à fournir
+                </h3>
+                <div class="fr-alert fr-alert--info">
+                    <p>Aucune inscription trouvée. Veuillez d'abord compléter votre inscription pour accéder à la gestion des documents.</p>
+                </div>
+            </div>
+            {% endif %}
+            
+            <style>
+            .document-label {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .fr-checkbox-group .fr-label {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+
+            @media (max-width: 768px) {
+                .fr-checkbox-group .fr-label {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                
+                .document-label {
+                    margin-bottom: 0.5rem;
+                }
+            }
+            </style>
         </div>
 
         <!-- Colonne latérale -->
@@ -577,298 +1034,6 @@
                         </div>
                     </div>
                 {% endif %}
-                </div>
-            </div>
-
-            <div class="fr-container fr-container--border fr-container--shadow fr-mb-4w">
-                <div class="fr-container__body">
-                    <div class="fr-container__content">
-                        <h3 class="fr-container__title fr-mb-3w">
-                            <span class="fr-icon-line-chart-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
-                            Progression du dossier
-                        </h3>
-                        <div class="fr-container__desc">
-                            {% set totalSteps = 69 %}
-                            {% set completedSteps = 0 %}
-                            
-                            {# Vérification des données pour chaque section #}
-                            {# Informations personnelles #}
-                            {% if inscription.nom is defined and inscription.prenom is defined and inscription.email is defined %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.dateNaissance is not null %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.sexe is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.nationalite is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.departement is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.communeNaissance is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.numSecuSocial is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-
-                            {# Contact d'urgence #}
-                            {% if inscription.numeroMobile is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.nomContacteUrgence is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.numeroContacteUrgence is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-
-                            {# Scolarité #}
-                            {% if inscription.classe is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.promotion is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.regime is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.redoublant %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.lvUn is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.lvDeux is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.dernierDiplome is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.transportScolaire is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.immatriculationVeic is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-
-                            {# Représentant légal 1 #}
-                            {% if inscription.representantLegal1Nom is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal1Prenom is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal1Courriel is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal1Telephone is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal1Adresse is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal1CodePostal is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal1Commune is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal1Poste is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal1LienEleve is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal1NomEmployeur is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal1AdresseEmployeur is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-
-                            {# Représentant légal 2 #}
-                            {% if inscription.representantLegal2Nom is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal2Prenom is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal2Courriel is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal2Telephone is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal2Adresse is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal2CodePostal is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal2Commune is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal2Poste is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal2LienEleve is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal2NomEmployeur is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.representantLegal2AdresseEmployeur is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {# Scolarité antérieure #}
-                            {% if inscription.etablissementPrecedent1 is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.classePrecedente1 is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.optionPrecedente1 is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.anneeScolairePrecedente1 is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.etablissementPrecedent2 is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.classePrecedente2 is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.optionPrecedente2 is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.anneeScolairePrecedente2 is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-
-                            {# Informations médicales #}
-                            {% if inscription.medecinTraitantNom is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.medecinTraitantTelephone is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.medecinTraitantAdresse is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.dernierRappelAntitetanique is defined and inscription.dernierRappelAntitetanique is not null %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.observations is defined and inscription.observations is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.secuSocialeNom is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.secuSocialeAdresse is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.assureurNom is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.assureurAdresse is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.assureurNumeroAssurance is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-
-                            {# Responsable financier #}
-                            {% if inscription.responsableFinancierNom is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.responsableFinancierPrenom is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.responsableFinancierNomEmployeur is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.responsableFinancierAdresseEmployeur is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-
-                            {# Documents #}
-                            {% if inscription.carteVitale %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.photoIdentite %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.bourse %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.attestationJDC %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.attestationIdentite %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.attestationReusite %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-
-                            {# Adhésion #}
-                            {% if inscription.adhesionAccepted %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.adhesionPaymentMethod is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.adhesionImageRights is not empty %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.cheque %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-                            {% if inscription.droitImage %}
-                                {% set completedSteps = completedSteps + 1 %}
-                            {% endif %}
-
-                            {% set progressPercent = (completedSteps / totalSteps * 100)|round %}
-                            
-                            <div class="fr-mb-3w">
-                                <div class="fr-text--bold fr-mb-1w">{{ completedSteps }} / {{ totalSteps }} étapes complétées</div>
-                                <div class="fr-progress">
-                                    <div class="fr-progress__bar" role="progressbar" 
-                                        aria-valuenow="{{ progressPercent }}" 
-                                        aria-valuemin="0" 
-                                        aria-valuemax="100">
-                                        <span class="fr-progress__value" style="width: {{ progressPercent }}%"></span>
-                                    </div>
-                                </div>
-                                <div class="fr-text--sm fr-text--muted fr-mt-1v">{{ progressPercent }}% complété</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contact et assistance -->
-            <div class="fr-container fr-container--border fr-container--shadow">
-                <div class="fr-container__body">
-                    <div class="fr-container__content">
-                        <h3 class="fr-container__title fr-mb-3w">
-                            <span class="fr-icon-customer-service-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
-                            Conseil ?
-                        </h3>
-                        <div class="fr-container__desc"> 
-                            <div class="fr-alert fr-alert--info fr-alert--sm">
-                                <p class="fr-alert__desc">
-                                    Pensez à sauvegarder régulièrement vos informations pour éviter toute perte de données.
-                                </p>
-                            </div>
-                        </div>
-                        <div><p></p></div>
-                    </div>
                 </div>
             </div>
         </div>

@@ -385,14 +385,6 @@ class InscriptionFlow extends FormFlow
                 'nom_employeur' => $data['responsableFinancierNomEmployeur'] ?? '',
                 'adresse_employeur' => $data['responsableFinancierAdresseEmployeur'] ?? '',
             ],
-            'documents' => [
-                'carte_vitale' => $data['carteVitale'],
-                'photo_identite' => $data['photoIdentite'],
-                'bourse' => $data['bourse'],
-                'attestation_jdc' => $data['attestationJDC'],
-                'attestation_identite' => $data['attestationIdentite'],
-                'attestation_reusite' => $data['attestationReusite'],
-            ],
             'adhesion' => [
                 'accepted' => $data['adhesionAccepted'] ?? false,
                 'payment_method' => $data['adhesionPaymentMethod'] ?? '',
@@ -500,14 +492,6 @@ class InscriptionFlow extends FormFlow
         $inscription->setResponsableFinancierPrenom($data['responsableFinancierPrenom'] ?? '');
         $inscription->setResponsableFinancierNomEmployeur($data['responsableFinancierNomEmployeur'] ?? '');
         $inscription->setResponsableFinancierAdresseEmployeur($data['responsableFinancierAdresseEmployeur'] ?? '');
-
-        // Documents
-        $inscription->setCarteVitale($data['carteVitale']);
-        $inscription->setPhotoIdentite($data['photoIdentite']);
-        $inscription->setAttestationIdentite($data['attestationIdentite']);
-        $inscription->setBourse($data['bourse']);
-        $inscription->setAttestationJDC($data['attestationJDC']);
-        $inscription->setAttestationReusite($data['attestationReusite']);
 
         // Adhésion et finalisation
         $inscription->setCheque($data['cheque'] ?? false);
