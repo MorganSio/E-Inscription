@@ -534,33 +534,97 @@
 
                 {% if flow.currentStepNumber == 10 %}
                     <fieldset class="fr-fieldset">
-                        <legend class="fr-fieldset__legend fr-text--regular">
+                        <legend class="fr-fieldsetlegend fr-text--regular">
                             <span class="fr-icon-check-line fr-icon--sm" aria-hidden="true"></span>
                             Finalisation et adhésion
                         </legend>
+
                         <div class="fr-fieldset__content">
-                            <h4 class="fr-h4">Documents complémentaires</h4>
-                            <div class="fr-grid-row fr-grid-row--gutters">
-                                <div class="fr-col-12 fr-col-md-6">
-                                    {{ form_row(form.cheque) }}
-                                </div>
-                                <div class="fr-col-12 fr-col-md-6">
-                                    {{ form_row(form.droitImage) }}
+                            <h4 class="fr-h4">À propos de la MDL</h4>
+                            <p><strong>La MDL de Fulbert</strong></p>
+                            <p>La Maison Des Lycéens (MDL) du lycée Fulbert à Chartres est un espace dynamique et collaboratif géré par et pour les élèves.</p>
+                            <p>Elle favorise le développement culturel et associatif au sein de l'établissement.</p>
+                            <ul>
+                                <li><strong>Objectifs</strong> : Responsabiliser les élèves, promouvoir la diversité culturelle et créer des espaces d'expression.</li>
+                                <li><strong>Activités</strong> : Organisation d'événements culturels, sportifs et humanitaires.</li>
+                                <li><strong>Engagement</strong> : Implication des élèves avec le soutien de l'administration.</li>
+                            </ul>
+                            <p><strong>Et cela ne coûte que 10€ par an.</strong></p>
+
+                            <h4 class="fr-h4 fr-mt-3w">Souhaitez-vous adhérer à la MDL ?</h4>
+                            <div class="fr-checkbox-group">
+                                {{ form_widget(form.adhesionAccepted, {
+                                    'id': 'adhesionAccepted'
+                                }) }}
+                                <label class="fr-label" for="adhesionAccepted">
+                                    J'accepte les conditions d'adhésion *
+                                    <span class="fr-hint-text">Vous devez cocher cette case pour adhérer à la MDL.</span>
+                                </label>
+
+                                <div class="fr-messages-group" id="adhesionAccepted-messages" aria-live="polite">
+                                    {{ form_errors(form.adhesionAccepted) }}
                                 </div>
                             </div>
-                            
-                            <h4 class="fr-h4 fr-mt-3w">Adhésion</h4>
-                            {{ form_row(form.adhesionAccepted) }}
-                            {{ form_row(form.adhesionPaymentMethod) }}
-                            {{ form_row(form.adhesionImageRights) }}
+
+                            <div id="adhesion-details" style="display: none;">
+                                <h5 class="fr-h5 fr-mt-3w">Documents complémentaires</h5>
+                                <div class="fr-grid-row fr-grid-row--gutters">
+                                    <div class="fr-grid-row fr-grid-row--gutters">
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            <div class="fr-checkbox-group fr-mb-3w">
+                                                {{ form_widget(form.cheque, { 'id': 'cheque' }) }}
+                                                <label class="fr-label" for="cheque">
+                                                    Chèque de règlement
+                                                    <span class="fr-hint-text">Je m'engage à remettre un chèque de 10€ à l'ordre de la MDL du lycée Fulbert.</span>
+                                                </label>
+                                                <div class="fr-messages-group" id="cheque-messages" aria-live="polite">
+                                                    {{ form_errors(form.cheque) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="fr-col-12 fr-col-md-6">
+                                            <div class="fr-checkbox-group fr-mb-3w">
+                                                {{ form_widget(form.adhesionImageRights, { 'id': 'droitImage' }) }}
+                                                <label class="fr-label" for="droitImage">
+                                                    Autorisation de droit à l'image
+                                                    <span class="fr-hint-text">J'autorise l'utilisation de mon image dans le cadre des activités de la MDL.</span>
+                                                </label>
+                                                <div class="fr-messages-group" id="droitImage-messages" aria-live="polite">
+                                                    {{ form_errors(form.adhesionImageRights) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h5 class="fr-h5 fr-mt-3w">Autorisation droit à l'image</h5>
+                                {# {{ form_row(form.adhesionImageRights) }} #}
+                            </div>
                         </div>
                     </fieldset>
-                    
-                    <!-- Message d'information pour l'étape finale -->
+
                     <div class="fr-alert fr-alert--info fr-mt-2w">
                         <p class="fr-alert__title">Information importante</p>
                         <p>Vous êtes sur le point de finaliser votre inscription. Vérifiez bien toutes les informations saisies avant de valider.</p>
                     </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const checkbox = document.querySelector('input[name$="[adhesionAccepted]"]');
+                            const details = document.getElementById('adhesion-details');
+
+                            function toggleDetails() {
+                                if (checkbox.checked) {
+                                    details.style.display = '';
+                                } else {
+                                    details.style.display = 'none';
+                                }
+                            }
+
+                            checkbox.addEventListener('change', toggleDetails);
+                            toggleDetails(); // État initial
+                        });
+                    </script>
                 {% endif %}
 
                     <div class="fr-mt-4w">

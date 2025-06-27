@@ -654,12 +654,14 @@ class InscriptionType extends AbstractType
                 'mapped' => false,
                 'data' => $data['cheque'] ?? false // Valeur par défaut
             ])
-            ->add('droitImage', CheckboxType::class, [
-                'label' => 'Autorisation de droit à l\'image',
-                'required' => false,
+           ->add('adhesionImageRights', CheckboxType::class, [
+                'label' => 'J\'accepte la cession des droits à l\'image *',
                 'attr' => ['class' => 'fr-checkbox'],
                 'mapped' => false,
-                'data' => $data['droitImage'] ?? false
+                'data' => $data['adhesionImageRights'] ?? false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Vous devez accepter la cession des droits à l\'image'])
+                ]
             ])
             ->add('adhesionAccepted', CheckboxType::class, [
                 'label' => 'J\'accepte les conditions d\'adhésion *',
@@ -670,32 +672,32 @@ class InscriptionType extends AbstractType
                 'constraints' => [
                     new NotBlank(['message' => 'Vous devez accepter les conditions d\'adhésion'])
                 ]
-            ])
-            ->add('adhesionPaymentMethod', ChoiceType::class, [
-                'label' => 'Mode de paiement de l\'adhésion *',
-                'choices' => [
-                    'Sélectionnez...' => null,
-                    'Chèque' => 'cheque',
-                    'Virement bancaire' => 'virement',
-                    'Espèces' => 'especes',
-                    'Carte bancaire' => 'carte'
-                ],
-                'attr' => ['class' => 'fr-select'],
-                'mapped' => false,
-                'data' => $data['adhesionPaymentMethod'] ?? null,
-                'constraints' => [
-                    new NotBlank(['message' => 'Le mode de paiement est obligatoire'])
-                ]
-            ])
-            ->add('adhesionImageRights', CheckboxType::class, [
-                'label' => 'J\'accepte la cession des droits à l\'image *',
-                'attr' => ['class' => 'fr-checkbox'],
-                'mapped' => false,
-                'data' => $data['adhesionImageRights'] ?? false,
-                'constraints' => [
-                    new NotBlank(['message' => 'Vous devez accepter la cession des droits à l\'image'])
-                ]
-            ]);
+                ]);
+            // ->add('adhesionPaymentMethod', ChoiceType::class, [
+            //     'label' => 'Mode de paiement de l\'adhésion *',
+            //     'choices' => [
+            //         'Sélectionnez...' => null,
+            //         'Chèque' => 'cheque',
+            //         'Virement bancaire' => 'virement',
+            //         'Espèces' => 'especes',
+            //         'Carte bancaire' => 'carte'
+            //     ],
+            //     'attr' => ['class' => 'fr-select'],
+            //     'mapped' => false,
+            //     'data' => $data['adhesionPaymentMethod'] ?? null,
+            //     'constraints' => [
+            //         new NotBlank(['message' => 'Le mode de paiement est obligatoire'])
+            //     ]
+            // ])
+            // ->add('adhesionImageRights', CheckboxType::class, [
+            //     'label' => 'J\'accepte la cession des droits à l\'image *',
+            //     'attr' => ['class' => 'fr-checkbox'],
+            //     'mapped' => false,
+            //     'data' => $data['adhesionImageRights'] ?? false,
+            //     'constraints' => [
+            //         new NotBlank(['message' => 'Vous devez accepter la cession des droits à l\'image'])
+            //     ]
+            // ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

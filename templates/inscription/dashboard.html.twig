@@ -245,13 +245,13 @@
                     {% endif %}
 
                     {# Adhésion #}
-                    {% if inscription.adhesionAccepted %}
+                    {% if inscription.adhesionAccepted is defined and inscription.adhesionAccepted %}
                         {% set completedSteps = completedSteps + 1 %}
                     {% endif %}
-                    {% if inscription.adhesionPaymentMethod is not empty %}
+                    {% if inscription.adhesionPaymentMethod is defined and inscription.adhesionPaymentMethod is not empty %}
                         {% set completedSteps = completedSteps + 1 %}
                     {% endif %}
-                    {% if inscription.adhesionImageRights is not empty %}
+                    {% if inscription.adhesionImageRights is defined and inscription.adhesionImageRights is not empty %}
                         {% set completedSteps = completedSteps + 1 %}
                     {% endif %}
                     {% if inscription.cheque %}
