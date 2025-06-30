@@ -359,45 +359,7 @@ sudo chmod -R 755 /var/www/E-Inscription
 ```
 
 ### 6. Créer le schéma et lancer les migrations
-modifier le UserFixtures.php pour créer un utilisateur admin
-```bash
-<?php
 
-namespace App\DataFixtures;
-
-use App\Entity\User;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-
-class UserFixtures extends Fixture
-{
-    private UserPasswordHasherInterface $passwordHasher;
-
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
-    {
-        $this->passwordHasher = $passwordHasher;
-    }
-
-    public function load(ObjectManager $manager): void
-    {
-        // Création d'un utilisateur admin
-        $admin = new User();
-        $admin->setEmail('admin@example.com'); //ceci
-        $admin->setNom('Admin'); //ceci
-        $admin->setPrenom('Super'); //ceci
-        $admin->setRoles(['ROLE_ADMIN']); // Définir le rôle admin
-        $admin->setVerified(true); // Admin vérifié par défaut
-        
-        // Hacher le mot de passe
-        $hashedPassword = $this->passwordHasher->hashPassword($admin, 'admin123'); //et trouver un mot de passe plus long et plus complexe a bien retenir
-        $admin->setPassword($hashedPassword);
-
-        $manager->persist($admin);
-    }
-}
-```
-exécuter dans la ligne de commande
 ```bash
 php bin/console doctrine:database:create
 php bin/console make:migration  
