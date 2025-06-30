@@ -420,10 +420,17 @@ class InscriptionController extends AbstractController
 
     private function mapStep2Data(InfoEleve $infoEleve, array $data): void
     {
-        if (isset($data['numeroMobile']) && !empty($data['numeroMobile'])) $infoEleve->setNumeroMobile($data['numeroMobile']);
-        if (isset($data['nomContacteUrgence']) && !empty($data['nomContacteUrgence'])) $infoEleve->setNomContacteUrgence($data['nomContacteUrgence']);
-        if (isset($data['numeroContacteUrgence']) && !empty($data['numeroContacteUrgence'])) $infoEleve->setNumeroContacteUrgence($data['numeroContacteUrgence']);
-        if (isset($data['accepterSms']) && !empty($data['accepterSms'])) {$infoEleve->setSmsSend((bool)$data['accepterSms']);}
+        if (isset($data['numeroMobile']) && !empty($data['numeroMobile'])) {
+            $infoEleve->setNumeroMobile($data['numeroMobile']);
+        }
+        if (isset($data['nomContacteUrgence']) && !empty($data['nomContacteUrgence'])) {
+            $infoEleve->setNomContacteUrgence($data['nomContacteUrgence']);
+        }
+        if (isset($data['numeroContacteUrgence']) && !empty($data['numeroContacteUrgence'])) {
+            $infoEleve->setNumeroContacteUrgence($data['numeroContacteUrgence']);
+        }
+        // Toujours setter la valeur, même si la case n'est pas cochée
+        $infoEleve->setSmsSend(!empty($data['accepterSms']));
     }
 
     private function mapStep3Data(InfoEleve $infoEleve, array $data): void
@@ -1017,6 +1024,8 @@ class InscriptionController extends AbstractController
             'numeroMobile' => $infoEleve->getNumeroMobile(),
             'nomContacteUrgence' => $infoEleve->getNomContacteUrgence(),
             'numeroContacteUrgence' => $infoEleve->getNumeroContacteUrgence(),
+            'accepterSms' => $infoEleve->getSmsSend(),
+
             
             // Scolarité
             'classe' => $infoEleve->getClasse(), // Assurez-vous que c'est un objet Classe
