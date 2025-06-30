@@ -71,7 +71,7 @@ class DocxdossierGeneratorService
             $templateProcessor->setValue('etudiant.regime', '☐ Tickets   ☐ Externe');
         }
 
-        $templateProcessor->setValue('etudiant.classe', $etudiant->getClasse() ?? 'Non renseigné');
+        $templateProcessor->setValue('etudiant.classe', $etudiant->getClasse()?->getLabel() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.specialite', $etudiant->getClasse()?->getLabel() ?? 'Non renseigné'); // À adapter
         $templateProcessor->setValue('etudiant.lv1', $etudiant->getLVUn() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.lv2', $etudiant->getLVDeux() ?? 'Non renseigné');

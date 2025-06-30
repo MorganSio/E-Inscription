@@ -48,7 +48,7 @@ class DocxUrgenceGeneratorService
         $templateProcessor->setValue('etudiant.nom', $user?->getNom() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.prenom', $user?->getPrenom() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.date_naissance', $etudiant->getDateDeNaissance()?->format('d/m/Y') ?? 'Non renseigné');
-        $templateProcessor->setValue('etudiant.classe', $etudiant->getClasse() ?? 'Non renseigné');
+        $templateProcessor->setValue('etudiant.classe', $etudiant->getClasse()?->getLabel() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.nom_contact_urgence', $etudiant->getNomContacteUrgence() ?? 'Non renseigné');
         $templateProcessor->setValue('representant.tel_contact_urgence', $etudiant->getNumeroContacteUrgence() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.dernier_rappel_antitetanique', $etudiant->getDernierRappelAntitetanique()?->format('d/m/Y') ?? 'Non renseigné');

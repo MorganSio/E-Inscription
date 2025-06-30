@@ -36,7 +36,7 @@
                     Progression du dossier
                 </h3>
                 <div class="fr-container__desc">
-                    {% set totalSteps = 69 %}
+                    {% set totalSteps = 75 %}
                     {% set completedSteps = 0 %}
                             
                     {# Vérification des données pour chaque section #}
@@ -137,7 +137,9 @@
                     {% if inscription.representantLegal1AdresseEmployeur is not empty %}
                         {% set completedSteps = completedSteps + 1 %}
                     {% endif %}
-
+                    {% if inscription.representantLegal1Sms is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
                     {# Représentant légal 2 #}
                     {% if inscription.representantLegal2Nom is not empty %}
                         {% set completedSteps = completedSteps + 1 %}
@@ -170,6 +172,9 @@
                         {% set completedSteps = completedSteps + 1 %}
                     {% endif %}
                     {% if inscription.representantLegal2AdresseEmployeur is not empty %}
+                        {% set completedSteps = completedSteps + 1 %}
+                    {% endif %}
+                    {% if inscription.representantLegal2Sms is not empty %}
                         {% set completedSteps = completedSteps + 1 %}
                     {% endif %}
                     {# Scolarité antérieure #}
@@ -208,10 +213,10 @@
                     {% if inscription.medecinTraitantAdresse is not empty %}
                         {% set completedSteps = completedSteps + 1 %}
                     {% endif %}
-                    {% if inscription.dernierRappelAntitetanique is defined and inscription.dernierRappelAntitetanique is not null %}
+                    {% if inscription.dernierRappelAntitetanique is defined and inscription.dernierRappelAntitetanique %}
                         {% set completedSteps = completedSteps + 1 %}
                     {% endif %}
-                    {% if inscription.observations is defined and inscription.observations is not empty %}
+                    {% if inscription.observations is defined and inscription.observations %}
                         {% set completedSteps = completedSteps + 1 %}
                     {% endif %}
                     {% if inscription.secuSocialeNom is not empty %}
@@ -580,11 +585,18 @@
                     </div>
                 {% endif %}
                 
-                {% if inscription.dernierRappelAntitetanique is defined and inscription.dernierRappelAntitetanique is not null %}
+                {% if inscription.dernierRappelAntitetanique is defined and inscription.dernierRappelAntitetanique %}
                     <dl class="fr-dl fr-dl--inline fr-mb-2w">
                         <dt>Dernier rappel antitétanique :</dt>
                         <dd>{{ inscription.dernierRappelAntitetanique|date('d/m/Y') }}</dd>
                     </dl>
+                {% endif %}
+
+                {% if inscription.observations is defined and inscription.observations %}
+                    <div class="fr-mb-3w">
+                        <h4 class="fr-h6">Observations médicales</h4>
+                        <p>{{ inscription.observations }}</p>
+                    </div>
                 {% endif %}
                 
                 {% if inscription.numSecuSocial is defined %}

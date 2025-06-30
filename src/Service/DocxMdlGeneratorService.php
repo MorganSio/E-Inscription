@@ -55,39 +55,27 @@ class DocxMdlGeneratorService
         $templateProcessor->setValue('etudiant.nom', $user?->getNom() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.prenom', $user?->getPrenom() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.date_naissance', $etudiant->getDateDeNaissance()?->format('d/m/Y') ?? 'Non renseigné');
-        $templateProcessor->setValue('etudiant.classe', $etudiant->getClasse() ?? 'Non renseigné');
+        $templateProcessor->setValue('etudiant.classe', $etudiant->getClasse()?->getLabel() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.mail', $user?->getEmail() ?? 'Non renseigné');
-        $templateProcessor->setValue('etudiant.autorisation', $infoEleve?->getImageRights() ?? 'Non renseigné');
-        $templateProcessor->setValue('etudiant.type_paiement', $infoEleve->getPaymentMethod() ?? 'Non renseigné');
-
-        // Téléphone & email depuis Humain (User hérite de Humain)
-        if ($user instanceof \App\Entity\Humain) {
-            $templateProcessor->setValue('etudiant.tel', $user->getTelephonePerso() ?? 'Non renseigné');
-        } else {
-            $templateProcessor->setValue('etudiant.tel', 'Non renseigné');
-        }
-
-        // === Photo de l'étudiant ===
-        if ($etudiant->getPhotoIdentite()) {
-            $photoPath = $this->convertBlobToImage($etudiant->getPhotoIdentite(), 'photo_identite.jpg');
-            $templateProcessor->setImageValue('etudiant.photo', [
-                'path' => $photoPath,
-                'width' => 120,
-                'height' => 120,
-                'ratio' => true
-            ]);
-        }
+        $adhesion = $infoEleve->getAdhesion();
+        $templateProcessor->setValue('etudiant.tel', $etudiant?->getNumeroMobile ?? 'Non renseigné');
+        $templateProcessor->setValue('etudiant.autorisation', $adhesion?->getImageRights() ?? 'Non renseigné');
+        $templateProcessor->setValue('etudiant.type_paiement', $adhesion?->getPaymentMethod() ?? 'Non renseigné');
 
         // === Choix du représentant en fonction de l'âge ===
         $aujourdHui = new \DateTimeImmutable();
         $dateNaissance = $etudiant->getDateDeNaissance();
         $age = $dateNaissance ? $dateNaissance->diff($aujourdHui)->y : null;
 
-        $representant = ($age !== null && $age >= 18)
-            ? $etudiant // majeur = lui-même
-            : ($etudiant->getResponsableUn() ?: $etudiant); // sinon représentant (ou fallback sur lui-même)
+        if ($age !== null && $age >= 18) {
+            // majeur = lui-même
+            $representant = $etudiant;
+        } else {
+            // mineur = responsable un si défini sinon lui-même
+            $representant = $infoEleve?->getResponsableUn() ?? $etudiant;
+        }
 
-        $this->setRepresentantValues($templateProcessor, 'represantant', $representant);
+        $this->setRepresentantValues($templateProcessor, 'representant', $representant);
     }
 
     private function setRepresentantValues(TemplateProcessor $templateProcessor, string $prefix, $source): void
@@ -99,21 +87,15 @@ class DocxMdlGeneratorService
                 $templateProcessor->setValue("{$prefix}.nom", $user->getNom() ?? 'Non renseigné');
                 $templateProcessor->setValue("{$prefix}.adresse", $user->getAdresse() ?? 'Non renseigné');
             } else {
+                // Valeurs par défaut si user non Humain
                 $templateProcessor->setValue("{$prefix}.nom", 'Non renseigné');
                 $templateProcessor->setValue("{$prefix}.adresse", 'Non renseigné');
             }
         } else {
+            // Ici $source est un objet représentant légal classique (ex : ResponsableUn)
             $templateProcessor->setValue("{$prefix}.nom", $source->getNom() ?? 'Non renseigné');
             $templateProcessor->setValue("{$prefix}.adresse", $source->getAdresse() ?? 'Non renseigné');
         }
-    }
-
-    private function convertBlobToImage($blobData, string $filename): string
-    {
-        $tmpDir = sys_get_temp_dir();
-        $filePath = $tmpDir . DIRECTORY_SEPARATOR . uniqid($filename);
-        file_put_contents($filePath, stream_get_contents($blobData));
-        return $filePath;
     }
 
     private function createDocxDownloadResponse(string $filePath): BinaryFileResponse

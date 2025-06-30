@@ -10,20 +10,6 @@
         .fr-alert--success {
             margin-bottom: 1rem;
         }
-        .validation-error {
-            color: var(--error-500);
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
-        .fr-btn--disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        .form-error {
-            color: var(--error-500);
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
         .fr-alert--error {
             margin-bottom: 1rem;
         }
@@ -37,21 +23,9 @@
         .fr-grid-row.fr-grid-row--gutters > * {
             margin-bottom: 1rem;
         }
-        .field-error {
+        .fr-input--error {
             border: 2px solid var(--error-500) !important;
             background-color: #fef2f2 !important;
-        }
-        .field-error-message {
-            color: var(--error-500);
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-            font-weight: 500;
-        }
-        .main-content {
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
 {% endblock %}
@@ -119,33 +93,81 @@
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.nom) }}
+                                    {% for error in form.nom.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.prenom) }}
+                                    {% for error in form.prenom.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.email) }}
+                                    {% for error in form.email.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.dateNaissance) }}
+                                    {% for error in form.dateNaissance.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.sexe) }}
+                                    {% for error in form.sexe.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.nationalite) }}
+                                    {% for error in form.nationalite.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.departement) }}
+                                    {% for error in form.departement.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.communeNaissance) }}
+                                    {% for error in form.communeNaissance.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             {{ form_row(form.numSecuSocial) }}
@@ -163,6 +185,12 @@
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-12">
                                     {{ form_row(form.numeroMobile) }}
+                                    {% for error in form.numeroMobile.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             {{ form_row(form.accepterSms) }}
@@ -171,9 +199,21 @@
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.nomContacteUrgence) }}
+                                    {% for error in form.nomContacteUrgence.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.numeroContacteUrgence) }}
+                                    {% for error in form.numeroContacteUrgence.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -190,6 +230,12 @@
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.classe) }}
+                                    {% for error in form.classe.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.promotion) }}
@@ -198,6 +244,12 @@
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.regime) }}
+                                    {% for error in form.regime.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.redoublant) }}
@@ -208,6 +260,12 @@
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.lvUn) }}
+                                    {% for error in form.lvUn.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.lvDeux) }}
@@ -238,9 +296,21 @@
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.representantLegal1Nom) }}
+                                    {% for error in form.representantLegal1Nom.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.representantLegal1Prenom) }}
+                                    {% for error in form.representantLegal1Prenom.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             
@@ -248,29 +318,71 @@
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.representantLegal1Courriel) }}
+                                    {% for error in form.representantLegal1Courriel.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.representantLegal1Telephone) }}
+                                    {% for error in form.representantLegal1Telephone.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.representantLegal1TelephoneFixe) }}
+                                    {% for error in form.representantLegal1TelephoneFixe.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.representantLegal1TelephonePro) }}
+                                    {% for error in form.representantLegal1TelephonePro.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             {{ form_row(form.representantLegal1Sms) }}
                             
                             <h4 class="fr-h4 fr-mt-3w">Adresse</h4>
                             {{ form_row(form.representantLegal1Adresse) }}
+                            {% for error in form.representantLegal1Adresse.vars.errors %}
+                                <div class="fr-alert fr-alert--error">
+                                    <p class="fr-alert__title">Erreur</p>
+                                    <p>{{ error.message }}</p>
+                                </div>
+                            {% endfor %}
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.representantLegal1CodePostal) }}
+                                    {% for error in form.representantLegal1CodePostal.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.representantLegal1Commune) }}
+                                    {% for error in form.representantLegal1Commune.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             
@@ -281,6 +393,12 @@
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.representantLegal1LienEleve) }}
+                                    {% for error in form.representantLegal1LienEleve.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="fr-grid-row fr-grid-row--gutters">
@@ -299,7 +417,7 @@
                     <fieldset class="fr-fieldset">
                         <legend class="fr-fieldset__legend fr-text--regular">
                             <span class="fr-icon-parent-line fr-icon--sm" aria-hidden="true"></span>
-                            Représentant légal 2 (optionnel)
+                            Représentant légal 2
                         </legend>
                         <div class="fr-fieldset__content">
                             <div class="fr-grid-row fr-grid-row--gutters">
@@ -315,17 +433,41 @@
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.representantLegal2Courriel) }}
+                                    {% for error in form.representantLegal2Courriel.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.representantLegal2Telephone) }}
+                                    {% for error in form.representantLegal2Telephone.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="fr-grid-row fr-grid-row--gutters">
-                                <div class="fr-col-12 fr-col-md-6">
+                                <div class="fr-col-12 fr-collg-6">
                                     {{ form_row(form.representantLegal2TelephoneFixe) }}
+                                    {% for error in form.representantLegal2TelephoneFixe.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.representantLegal2TelephonePro) }}
+                                    {% for error in form.representantLegal2TelephonePro.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             {{ form_row(form.representantLegal2Sms) }}
@@ -335,6 +477,12 @@
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.representantLegal2CodePostal) }}
+                                    {% for error in form.representantLegal2CodePostal.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.representantLegal2Commune) }}
@@ -373,14 +521,32 @@
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.etablissementPrecedent1) }}
+                                    {% for error in form.etablissementPrecedent1.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.classePrecedente1) }}
+                                    {% for error in form.classePrecedente1.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.anneeScolairePrecedente1) }}
+                                    {% for error in form.anneeScolairePrecedente1.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.lvUnPrecedente1) }}
@@ -407,6 +573,12 @@
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.anneeScolairePrecedente2) }}
+                                    {% for error in form.anneeScolairePrecedente2.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.lvUnPrecedente2) }}
@@ -438,6 +610,12 @@
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.medecinTraitantTelephone) }}
+                                    {% for error in form.medecinTraitantTelephone.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             {{ form_row(form.medecinTraitantAdresse) }}
@@ -480,9 +658,21 @@
                             <div class="fr-grid-row fr-grid-row--gutters">
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.responsableFinancierNom) }}
+                                    {% for error in form.responsableFinancierNom.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="fr-col-12 fr-col-md-6">
                                     {{ form_row(form.responsableFinancierPrenom) }}
+                                    {% for error in form.responsableFinancierPrenom.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="fr-grid-row fr-grid-row--gutters">
@@ -508,8 +698,8 @@
                             <div class="alert fr-alert fr-alert--info fr-mb-4w">
                                 <p class="fr-alert__title">Informations</p>
                                 <p>
-                                    <strong>Documents obligatoires :</strong> Carte Vitale, Photo d'identité, Attestation d'identité<br>
-                                    <small>Formats acceptés : PDF, JPG, PNG (max 5MB par fichier)</small>
+                                    <strong>Documents obligatoires:</strong> Carte Vitale, Photo d'identité, Attestation d'identité<br>
+                                    <small>Formats acceptés: PDF, JPG, PNG (max 5MB par fichier)</small>
                                 </p>
                             </div>
 
@@ -545,9 +735,9 @@
                             <p>La Maison Des Lycéens (MDL) du lycée Fulbert à Chartres est un espace dynamique et collaboratif géré par et pour les élèves.</p>
                             <p>Elle favorise le développement culturel et associatif au sein de l'établissement.</p>
                             <ul>
-                                <li><strong>Objectifs</strong> : Responsabiliser les élèves, promouvoir la diversité culturelle et créer des espaces d'expression.</li>
-                                <li><strong>Activités</strong> : Organisation d'événements culturels, sportifs et humanitaires.</li>
-                                <li><strong>Engagement</strong> : Implication des élèves avec le soutien de l'administration.</li>
+                                <li><strong>Objectifs:</strong> Responsabiliser les élèves, promouvoir la diversité culturelle et créer des espaces d'expression.</li>
+                                <li><strong>Activités:</strong> Organisation d'événements culturels, sportifs et humanitaires.</li>
+                                <li><strong>Engagement:</strong> Implication des élèves avec le soutien de l'administration.</li>
                             </ul>
                             <p><strong>Et cela ne coûte que 10€ par an.</strong></p>
 
@@ -557,14 +747,19 @@
                                     'attr': {'class': 'adhesion-choice'}
                                 }) }}
                                 <div class="fr-messages-group" id="adhesionAccepted-messages" aria-live="polite">
-                                    {{ form_errors(form.adhesionAccepted) }}
+                                    {% for error in form.adhesionAccepted.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
 
                             {# Bloc affiché uniquement si "Oui" est sélectionné #}
                             <div id="adhesion-details" class="adhesion-conditional" style="display: none;">
                                 <div class="fr-alert fr-alert--success fr-mb-3w">
-                                    <p class="fr-alert__title">Félicitations !</p>
+                                    <p class="fr-alert__title">Félicitations!</p>
                                     <p>Vous avez choisi d'adhérer à la MDL. Veuillez compléter les informations ci-dessous.</p>
                                 </div>
 
@@ -572,7 +767,12 @@
                                 <div class="fr-radio-group fr-mb-3w">
                                     {{ form_widget(form.adhesionPaymentMethod) }}
                                     <div class="fr-messages-group" aria-live="polite">
-                                        {{ form_errors(form.adhesionPaymentMethod) }}
+                                        {% for error in form.adhesionPaymentMethod.vars.errors %}
+                                            <div class="fr-alert fr-alert--error">
+                                                <p class="fr-alert__title">Erreur</p>
+                                                <p>{{ error.message }}</p>
+                                            </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
 
@@ -585,7 +785,12 @@
                                         'label_attr': {'class': 'fr-label'}
                                     }) }}
                                     <div class="fr-messages-group" id="droitImage-messages" aria-live="polite">
-                                        {{ form_errors(form.adhesionImageRights) }}
+                                        {% for error in form.adhesionImageRights.vars.errors %}
+                                            <div class="fr-alert fr-alert--error">
+                                                <p class="fr-alert__title">Erreur</p>
+                                                <p>{{ error.message }}</p>
+                                            </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
