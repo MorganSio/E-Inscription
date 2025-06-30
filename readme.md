@@ -367,6 +367,12 @@ php bin/console doctrine:migrations:migrate
 php bin/console doctrine:fixtures:load --append
 ```
 
+**Créer un utilisateur administrateur :**
+
+```bash
+php bin/console app:create-admin
+```
+
 ### 🔐 Configuration Microsoft Azure (OAuth / API Graph)
 
 Pour que l’application puisse interagir avec l’API de Microsoft, vous devez configurer une application dans Azure et récupérer les identifiants nécessaires : `clientId`, `tenantId`, `clientSecret`.
@@ -403,12 +409,6 @@ les informations se trouvent dans notre équipe teams : Master Corp, les informa
 
 ```bash
 php bin/phpunit
-```
-
-**Créer un utilisateur administrateur (si applicable) :**
-
-```bash
-php bin/console app:create-admin
 ```
 
 ## 🔍 Dépannage courant
