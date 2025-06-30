@@ -242,7 +242,10 @@
                                 </div>
                             </div>
                             <div class="fr-grid-row fr-grid-row--gutters">
-                                <div class="fr-col-12 fr-col-md-6">
+                                <div class="fr-col-12 fr-col-md-12">
+                                <p><strong>Tarif du ticket : 4,55€</strong><br>
+                                Le paiement se fait par télépaiement sur MyTurboSelf ou au niveau de l'Intendance.<br>
+                                Pour plus d'informations, veuillez consulter l'Intendance à la rentrée.</p>
                                     {{ form_row(form.regime) }}
                                     {% for error in form.regime.vars.errors %}
                                         <div class="fr-alert fr-alert--error">
@@ -251,7 +254,7 @@
                                         </div>
                                     {% endfor %}
                                 </div>
-                                <div class="fr-col-12 fr-col-md-6">
+                                <div class="fr-col-12 fr-col-md-12">
                                     {{ form_row(form.redoublant) }}
                                 </div>
                             </div>

@@ -14,6 +14,7 @@ use App\Entity\ScolariteAnterieur;
 use App\Entity\Classe;
 use App\Repository\ClasseRepository;
 use App\Form\InscriptionType;
+use App\Service\CompletionCheckerService;
 use App\Repository\InfoEleveRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\DocumentManager;
@@ -52,12 +53,11 @@ class InscriptionController extends AbstractController
 
     #[Route('/inscription/dashboard', name: 'app_inscription_dashboard')]
     #[IsGranted('ROLE_USER')]
-    public function dashboard(DocumentManager $documentManager): Response
-    {
+    public function dashboard(DocumentManager $documentManager,CompletionCheckerService $completionChecker,EntityManagerInterface $entityManager): Response {
         $user = $this->getUser();
         
-        // Récupération de l'InfoEleve avec la classe
-        $infoEleve = $this->infoEleveRepository->createQueryBuilder('i')
+        // Récupération de l'InfoEleve avec sa classe
+        $infoEleve = $entityManager->getRepository(InfoEleve::class)->createQueryBuilder('i')
             ->leftJoin('i.classe', 'c')
             ->addSelect('c')
             ->where('i.user = :user')
@@ -68,17 +68,17 @@ class InscriptionController extends AbstractController
         $inscription = null;
         $isComplete = false;
         
-        // Variables pour les documents
         $documentsStatus = [];
         $missingRequiredDocuments = [];
         $hasAllRequiredDocuments = false;
 
+        $completion = $completionChecker->analyzeStudentDataCompletion($user); // 👈 analyse complétude
+        $globalStats = $completionChecker->getGlobalStatistics();
+
         if ($infoEleve) {
-            // Traitement existant de l'inscription
+            // Traitement d'inscription
             $inscription = $this->convertEntityToArray($user, $infoEleve);
             $this->prepareInscriptionData($infoEleve, $inscription);
-            
-            $document = $infoEleve;
             
             if ($infoEleve->getClasse()) {
                 $inscription['classe'] = [
@@ -91,13 +91,12 @@ class InscriptionController extends AbstractController
             
             $inscription['isComplete'] = $this->isInscriptionComplete($infoEleve);
             $isComplete = $inscription['isComplete'];
-            
-            // Nouveau : Récupération du statut des documents
+
+            // Documents
             $documentsStatus = $documentManager->getDocumentsStatus($infoEleve);
             $missingRequiredDocuments = $documentManager->getMissingRequiredDocuments($infoEleve);
             $hasAllRequiredDocuments = $documentManager->hasAllRequiredDocuments($infoEleve);
-            
-            // Ajout des informations documents dans le tableau inscription
+
             $inscription['documents'] = [
                 'status' => $documentsStatus,
                 'missingRequired' => $missingRequiredDocuments,
@@ -109,11 +108,29 @@ class InscriptionController extends AbstractController
             'user' => $user,
             'inscription' => $inscription,
             'isComplete' => $isComplete,
-            'document' => $document,
+            'document' => $infoEleve,
             'documentManager' => $documentManager,
             'documentsStatus' => $documentsStatus,
             'missingRequiredDocuments' => $missingRequiredDocuments,
             'hasAllRequiredDocuments' => $hasAllRequiredDocuments,
+            'completion' => $completion,
+            // Add completionData in the same format as your admin controller
+            'completionData' => [
+                'completion' => [
+                    'complete' => $completion['global']['complete'],
+                    'incomplete' => $completion['global']['incomplete'],
+                ],
+                'sectionData' => array_map(fn ($sectionData) => [
+                    'complete' => $sectionData['complete'],
+                    'incomplete' => $sectionData['incomplete'],
+                ], $completion['sections']),
+                'missingFields' => array_slice($completion['missing_fields'], 0, 10),
+            ],
+            // Add globalComparison variable
+            'globalComparison' => [
+                'user_percentage' => $completion['completion_percentage'],
+                'global_average' => $globalStats['completion_average'],
+            ],
         ]);
     }
 

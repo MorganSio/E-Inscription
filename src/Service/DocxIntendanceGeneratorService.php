@@ -52,9 +52,9 @@ class DocxIntendanceGeneratorService
 
         $regime = strtolower($etudiant->getRegime() ?? '');
 
-        if ($regime === 'tickets' || $regime === 'ticket') {
+        if ($regime === 'tickets' || $regime === 'ticket' || $regime === 'Tickets' || $regime === 'Ticket') {
             $templateProcessor->setValue('etudiant.regime', '☑ Tickets   ☐ Externe');
-        } elseif ($regime === 'externe') {
+        } elseif ($regime === 'externe' || $regime === 'Externe') {
             $templateProcessor->setValue('etudiant.regime', '☐ Tickets   ☑ Externe');
         } else {
             $templateProcessor->setValue('etudiant.regime', '☐ Tickets   ☐ Externe');
