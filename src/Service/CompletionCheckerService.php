@@ -107,7 +107,7 @@ class CompletionCheckerService
         // Liste des entités à vérifier
         $entitiesToCheck = [
             'informations_personnelles' => $infoEleve,
-            'responsable_financier' => $infoEleve?->getResponsableFinancier(),
+            // 'responsable_financier' => $infoEleve?->getResponsableFinancier(),
             'responsable_1' => $infoEleve?->getResponsableUn(),
             'responsable_2' => $infoEleve?->getResponsableDeux(),
             'medecin_traitant' => $infoEleve?->getMedecinTraitant(),

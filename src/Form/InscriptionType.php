@@ -221,8 +221,7 @@ class InscriptionType extends AbstractType
                 'choices' => [
                     'Sélectionnez...' => null,
                     'Externe' => 'externe',
-                    'Demi-pensionnaire' => 'demi_pensionnaire',
-                    'Interne' => 'interne'
+                    'Tickets' => 'ticket',
                 ],
                 'attr' => ['class' => 'fr-select'],
                 'constraints' => [new NotBlank(['message' => 'Le régime scolaire est obligatoire'])]

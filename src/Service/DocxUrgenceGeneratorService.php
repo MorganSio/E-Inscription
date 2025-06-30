@@ -52,12 +52,12 @@ class DocxUrgenceGeneratorService
         $templateProcessor->setValue('etudiant.nom_contact_urgence', $etudiant->getNomContacteUrgence() ?? 'Non renseigné');
         $templateProcessor->setValue('representant.tel_contact_urgence', $etudiant->getNumeroContacteUrgence() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.dernier_rappel_antitetanique', $etudiant->getDernierRappelAntitetanique()?->format('d/m/Y') ?? 'Non renseigné');
-
+        $templateProcessor->setValue('etudiant.observations', $etudiant->getObservations() ?? 'Non renseigné');
         $sexe = strtolower($etudiant->getSexe() ?? '');
 
-        if ($sexe === 'Homme' || $sexe === 'homme' || $sexe === 'masculin' || $sexe === 'masculin') {
+        if ($sexe === 'Homme' || $sexe === 'homme' || $sexe === 'masculin' || $sexe === 'masculin' || $sexe === 'm' || $sexe === 'M') {
             $templateProcessor->setValue('etudiant.sexe_choix', '☑ Masculin   ☐ Féminin');
-        } elseif ($sexe === 'Féminin' || $sexe === 'Feminin' || $sexe === 'feminin' || $sexe === 'féminin' || $sexe === 'femme' || $sexe === 'Femme') {
+        } elseif ($sexe === 'Féminin' || $sexe === 'Feminin' || $sexe === 'feminin' || $sexe === 'féminin' || $sexe === 'femme' || $sexe === 'Femme' || $sexe === 'F' || $sexe === 'f') {
             $templateProcessor->setValue('etudiant.sexe_choix', '☐ Masculin   ☑ Féminin');
         } else {
             $templateProcessor->setValue('etudiant.sexe_choix', '☐ Masculin   ☐ Féminin');

@@ -51,51 +51,49 @@ class DocxMdlGeneratorService
     {
         $user = $etudiant->getUser();
         $infoEleve = $user ? $infoEleveRepository->findOneBy(['user' => $user]) : null;
+
+        $adhesion = $infoEleve?->getAdhesion();
+
         // Étudiant
         $templateProcessor->setValue('etudiant.nom', $user?->getNom() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.prenom', $user?->getPrenom() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.date_naissance', $etudiant->getDateDeNaissance()?->format('d/m/Y') ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.classe', $etudiant->getClasse()?->getLabel() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.mail', $user?->getEmail() ?? 'Non renseigné');
-        $adhesion = $infoEleve->getAdhesion();
-        $templateProcessor->setValue('etudiant.tel', $etudiant?->getNumeroMobile ?? 'Non renseigné');
-        $templateProcessor->setValue('etudiant.autorisation', $adhesion?->getImageRights() ?? 'Non renseigné');
+        $templateProcessor->setValue('etudiant.tel', $etudiant?->getNumeroMobile() ?? 'Non renseigné');
+        $imageRights = $adhesion?->getImageRights();
+        if ($imageRights === true) {
+            $autorisationTexte = '☑ Autorise   ☐ N’autorise pas';
+        } else {
+            // false ou null = décoché
+            $autorisationTexte = '☐ Autorise   ☑ N’autorise pas';
+        }
+        $templateProcessor->setValue('etudiant.autorisation', $autorisationTexte);
         $templateProcessor->setValue('etudiant.type_paiement', $adhesion?->getPaymentMethod() ?? 'Non renseigné');
 
-        // === Choix du représentant en fonction de l'âge ===
-        $aujourdHui = new \DateTimeImmutable();
-        $dateNaissance = $etudiant->getDateDeNaissance();
-        $age = $dateNaissance ? $dateNaissance->diff($aujourdHui)->y : null;
+        // Récupérer le représentant légal 1 (humain)
+        $representant = $infoEleve->getResponsableUn();
 
-        if ($age !== null && $age >= 18) {
-            // majeur = lui-même
-            $representant = $etudiant;
+        if ($representant) {
+            $this->setRepresentantValues($templateProcessor, 'represantant', $representant);
         } else {
-            // mineur = responsable un si défini sinon lui-même
-            $representant = $infoEleve?->getResponsableUn() ?? $etudiant;
+            // Remplir avec 'Non renseigné' si pas de représentant
+            $this->setRepresentantValues($templateProcessor, 'represantant', null);
         }
-
-        $this->setRepresentantValues($templateProcessor, 'representant', $representant);
     }
 
-    private function setRepresentantValues(TemplateProcessor $templateProcessor, string $prefix, $source): void
+    private function setRepresentantValues(TemplateProcessor $templateProcessor, string $prefix, ?\App\Entity\Humain $representant): void
     {
-        if ($source instanceof InfoEleve) {
-            $user = $source->getUser();
-
-            if ($user instanceof Humain) {
-                $templateProcessor->setValue("{$prefix}.nom", $user->getNom() ?? 'Non renseigné');
-                $templateProcessor->setValue("{$prefix}.adresse", $user->getAdresse() ?? 'Non renseigné');
-            } else {
-                // Valeurs par défaut si user non Humain
-                $templateProcessor->setValue("{$prefix}.nom", 'Non renseigné');
-                $templateProcessor->setValue("{$prefix}.adresse", 'Non renseigné');
+        if ($representant === null) {
+            $fields = ['nom', 'prenom', 'telephone', 'telephoneFixe', 'telephonePro', 'sms', 'courriel', 'adresse', 'codePostal', 'commune', 'lienEleve', 'poste', 'nomEmployeur', 'adresseEmployeur'];
+            foreach ($fields as $field) {
+                $templateProcessor->setValue("{$prefix}.{$field}", 'Non renseigné');
             }
-        } else {
-            // Ici $source est un objet représentant légal classique (ex : ResponsableUn)
-            $templateProcessor->setValue("{$prefix}.nom", $source->getNom() ?? 'Non renseigné');
-            $templateProcessor->setValue("{$prefix}.adresse", $source->getAdresse() ?? 'Non renseigné');
+            return;
         }
+
+        $templateProcessor->setValue("{$prefix}.nom", $representant->getNom() ?? 'Non renseigné');
+        $templateProcessor->setValue("{$prefix}.adresse", $representant->getAdresse() ?? 'Non renseigné');
     }
 
     private function createDocxDownloadResponse(string $filePath): BinaryFileResponse

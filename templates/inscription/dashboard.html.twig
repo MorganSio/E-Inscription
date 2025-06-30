@@ -28,258 +28,49 @@
             </div>
         </div>
     </div>
-    <div class="fr-container fr-container--border fr-container--shadow fr-mb-4w">
-        <div class="fr-container__body">
-            <div class="fr-container__content">
-                <h3 class="fr-container__title fr-mb-3w">
-                    <span class="fr-icon-line-chart-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
-                    Progression du dossier
-                </h3>
-                <div class="fr-container__desc">
-                    {% set totalSteps = 75 %}
-                    {% set completedSteps = 0 %}
-                            
-                    {# Vérification des données pour chaque section #}
-                    {# Informations personnelles #}
-                    {% if inscription.nom is defined and inscription.prenom is defined and inscription.email is defined %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.dateNaissance is not null %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.sexe is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.nationalite is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.departement is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.communeNaissance is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.numSecuSocial is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-
-                    {# Contact d'urgence #}
-                    {% if inscription.numeroMobile is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.nomContacteUrgence is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.numeroContacteUrgence is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-
-                    {# Scolarité #}
-                    {% if inscription.classe is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.promotion is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.regime is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.redoublant %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.lvUn is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.lvDeux is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.dernierDiplome is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.transportScolaire is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.immatriculationVeic is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-
-                    {# Représentant légal 1 #}
-                    {% if inscription.representantLegal1Nom is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal1Prenom is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal1Courriel is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal1Telephone is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal1Adresse is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal1CodePostal is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal1Commune is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal1Poste is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal1LienEleve is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal1NomEmployeur is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal1AdresseEmployeur is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal1Sms is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {# Représentant légal 2 #}
-                    {% if inscription.representantLegal2Nom is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal2Prenom is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal2Courriel is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal2Telephone is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal2Adresse is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal2CodePostal is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal2Commune is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal2Poste is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal2LienEleve is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal2NomEmployeur is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal2AdresseEmployeur is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.representantLegal2Sms is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {# Scolarité antérieure #}
-                    {% if inscription.etablissementPrecedent1 is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.classePrecedente1 is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.optionPrecedente1 is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.anneeScolairePrecedente1 is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.etablissementPrecedent2 is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.classePrecedente2 is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.optionPrecedente2 is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.anneeScolairePrecedente2 is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-
-                    {# Informations médicales #}
-                    {% if inscription.medecinTraitantNom is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.medecinTraitantTelephone is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.medecinTraitantAdresse is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.dernierRappelAntitetanique is defined and inscription.dernierRappelAntitetanique %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.observations is defined and inscription.observations %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.secuSocialeNom is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.secuSocialeAdresse is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.assureurNom is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.assureurAdresse is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.assureurNumeroAssurance is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-
-                    {# Responsable financier #}
-                    {% if inscription.responsableFinancierNom is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.responsableFinancierPrenom is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.responsableFinancierNomEmployeur is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.responsableFinancierAdresseEmployeur is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-
-                    {# Adhésion #}
-                    {% if inscription.adhesionAccepted is defined and inscription.adhesionAccepted %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.adhesionPaymentMethod is defined and inscription.adhesionPaymentMethod is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.adhesionImageRights is defined and inscription.adhesionImageRights is not empty %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.cheque %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-                    {% if inscription.droitImage %}
-                        {% set completedSteps = completedSteps + 1 %}
-                    {% endif %}
-
-                    {% set progressPercent = (completedSteps / totalSteps * 100)|round %}
-                    
-                    <div class="fr-mb-3w">
-                        <div class="fr-text--bold fr-mb-1w">{{ completedSteps }} / {{ totalSteps }} étapes complétées</div>
-                        <div class="fr-progress">
-                            <div class="fr-progress__bar" role="progressbar" 
-                                aria-valuenow="{{ progressPercent }}" 
-                                aria-valuemin="0" 
-                                aria-valuemax="100">
-                                <span class="fr-progress__value" style="width: {{ progressPercent }}%"></span>
-                            </div>
-                        </div>
-                        <div class="fr-text--sm fr-text--muted fr-mt-1v">{{ progressPercent }}% complété</div>
+    <div class="fr-container completion-section">
+        <h2 class="fr-h2 fr-mb-3w">Complétude du dossier</h2>
+        
+        <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--reverse-mobile">
+            <div class="fr-col-12 fr-col-md-7">
+                <div class="progress my-2" style="height: 25px;">
+                    <div class="progress-bar
+                        {% if completion.completion_percentage >= 80 %}
+                            bg-success
+                        {% elseif completion.completion_percentage >= 50 %}
+                            bg-warning
+                        {% else %}
+                            bg-danger
+                        {% endif %}"
+                        role="progressbar"
+                        style="width: {{ completion.completion_percentage }}%;"
+                        aria-valuenow="{{ completion.completion_percentage }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100">
+                        {{ completion.completion_percentage }}%
                     </div>
+                </div>
+                {% if completion.missing_fields is not empty %}
+                    <p class="mt-2"><strong>Champs manquants :</strong></p>
+                    <ul class="list-group mb-4">
+                        {% for field in completion.missing_fields %}
+                            <li class="list-group-item">
+                                <strong>{{ field.section|capitalize }}</strong> : {{ field.field }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-success mt-3">Toutes les informations requises sont complètes ✅</p>
+                {% endif %}
+            </div>
+            
+            <div class="fr-col-12 fr-col-md-5">
+                <div class="chart-container">
+                    <h3 class="fr-h6 fr-mb-2w fr-text--center">
+                        <span class="fr-icon-pie-chart-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
+                        État de complétion
+                    </h3>
+                    <div id="completionChart" style="width: 100%; height: 300px;"></div>
                 </div>
             </div>
         </div>
@@ -1000,20 +791,19 @@
                                 </div>
                             {% endif %}
                             
-                            {% if inscription.dernierDiplome is defined %}
+                            {% if inscription.immatriculationVeic is defined %}
                                 <div class="fr-py-2w fr-px-3w fr-mb-2w" style="border: 1px solid var(--border-default-grey); border-radius: 4px;">
                                     <h4 class="fr-h6">
-                                        <span class="fr-icon-award-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
-                                        Dernier diplôme
+                                        Numéro d'immatriculation
                                     </h4>
-                                    <p class="fr-text--sm">{{ inscription.dernierDiplome }}</p>
+                                    <p class="fr-text--sm">{{ inscription.immatriculationVeic }}</p>
                                 </div>
                             {% endif %}
                         </div>
                         
                         <div class="fr-col-12 fr-col-md-6">
                             {% if inscription.lvUn is defined or inscription.lvDeux is defined %}
-                                <div class="fr-container fr-container--sm fr-enlarge-link fr-mb-2w">
+                                <div class="fr-py-2w fr-px-3w fr-mb-2w" style="border: 1px solid var(--border-default-grey); border-radius: 4px;">
                                     <div class="fr-container__body">
                                         <div class="fr-container__content">
                                             <h4 class="fr-container__title">
@@ -1042,7 +832,16 @@
                                     <h4 class="fr-alert__title">Aucune information complémentaire</h4>
                                     <p>Vous pourrez ajouter ces informations en modifiant votre inscription.</p>
                                 </div>
-                            {% endif %}                            
+                            {% endif %}
+                            {% if inscription.dernierDiplome is defined %}
+                                <div class="fr-py-2w fr-px-3w fr-mb-2w" style="border: 1px solid var(--border-default-grey); border-radius: 4px;">
+                                    <h4 class="fr-h6">
+                                        <span class="fr-icon-award-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
+                                        Dernier diplôme
+                                    </h4>
+                                    <p class="fr-text--sm">{{ inscription.dernierDiplome }}</p>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 {% endif %}
@@ -1051,193 +850,182 @@
         </div>
     </div>
 </div>
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Configuration des sections et leurs champs
-    const sectionsConfig = {
-        'informations_personnelles': {
-            title: 'Informations personnelles',
-            icon: 'fr-icon-user-line',
-            fields: [
-                { key: 'nom', label: 'Nom', searchText: 'Nom :' },
-                { key: 'prenom', label: 'Prénom', searchText: 'Prénom :' },
-                { key: 'email', label: 'Email', searchText: 'Email :' },
-                { key: 'dateNaissance', label: 'Date de naissance', searchText: 'Date de naissance :' },
-                { key: 'sexe', label: 'Sexe', searchText: 'Sexe :' },
-                { key: 'nationalite', label: 'Nationalité', searchText: 'Nationalité :' },
-                { key: 'departement', label: 'Département', searchText: 'Département :' },
-                { key: 'communeNaissance', label: 'Commune de naissance', searchText: 'Commune de naissance :' },
-                { key: 'numSecuSocial', label: 'Numéro de sécurité sociale', searchText: 'Numéro de sécurité sociale :' }
-            ]
-        },
-        'contact_urgence': {
-            title: 'Contact d\'urgence',
-            icon: 'fr-icon-phone-line',
-            fields: [
-                { key: 'nomContacteUrgence', label: 'Nom du contact', searchText: 'Contact d\'urgence' },
-                { key: 'numeroContacteUrgence', label: 'Téléphone du contact', searchText: 'Contact d\'urgence' }
-            ]
-        },
-        'scolarite': {
-            title: 'Scolarité',
-            icon: 'fr-icon-school-line',
-            fields: [
-                { key: 'classe', label: 'Classe', searchText: 'Classe :' },
-                { key: 'promotion', label: 'Promotion', searchText: 'Promotion :' },
-                { key: 'regime', label: 'Régime', searchText: 'Régime :' },
-                { key: 'redoublant', label: 'Redoublant', searchText: 'Redoublant :' },
-                { key: 'lvUn', label: 'Langue vivante 1', searchText: 'Langue vivante 1 :' },
-                { key: 'lvDeux', label: 'Langue vivante 2', searchText: 'Langue vivante 2 :' },
-                { key: 'dernierDiplome', label: 'Dernier diplôme', searchText: 'Dernier diplôme :' },
-                { key: 'transportScolaire', label: 'Transport scolaire', searchText: 'Transport scolaire :' },
-                { key: 'immatriculationVeic', label: 'Immatriculation véhicule', searchText: 'Immatriculation véhicule :' }
-            ]
-        },
-        'representant_legal_1': {
-            title: 'Représentant légal 1',
-            icon: 'fr-icon-group-line',
-            fields: [
-                { key: 'nom', label: 'Nom', searchText: 'Nom :' },
-                { key: 'prenom', label: 'Prénom', searchText: 'Prénom :' },
-                { key: 'email', label: 'Email', searchText: 'Email :' },
-                { key: 'telephone', label: 'Téléphone', searchText: 'Téléphone :' },
-                { key: 'adresse', label: 'Adresse', searchText: 'Adresse :' },
-                { key: 'codePostal', label: 'Code postal', searchText: 'Code postal :' },
-                { key: 'commune', label: 'Commune', searchText: 'Commune :' },
-                { key: 'poste', label: 'Poste', searchText: 'Poste :' },
-                { key: 'lienEleve', label: 'Lien avec l\'élève', searchText: 'Lien avec l\'élève :' },
-                { key: 'nomEmployeur', label: 'Nom de l\'employeur', searchText: 'Nom de l\'employeur :' },
-                { key: 'adresseEmployeur', label: 'Adresse de l\'employeur', searchText: 'Adresse de l\'employeur :' },
-                { key: 'sms', label: 'Accepter SMS', searchText: 'Accepter SMS :' }
-            ]
-        },
-        'representant_legal_2': {
-            title: 'Représentant légal 2',
-            icon: 'fr-icon-group-line',
-            fields: [
-                { key: 'nom', label: 'Nom', searchText: 'Nom :' },
-                { key: 'prenom', label: 'Prénom', searchText: 'Prénom :' },
-                { key: 'email', label: 'Email', searchText: 'Email :' },
-                { key: 'telephone', label: 'Téléphone', searchText: 'Téléphone :' },
-                { key: 'adresse', label: 'Adresse', searchText: 'Adresse :' },
-                { key: 'codePostal', label: 'Code postal', searchText: 'Code postal :' },
-                { key: 'commune', label: 'Commune', searchText: 'Commune :' },
-                { key: 'poste', label: 'Poste', searchText: 'Poste :' },
-                { key: 'lienEleve', label: 'Lien avec l\'élève', searchText: 'Lien avec l\'élève :' },
-                { key: 'nomEmployeur', label: 'Nom de l\'employeur', searchText: 'Nom de l\'employeur :' },
-                { key: 'adresseEmployeur', label: 'Adresse de l\'employeur', searchText: 'Adresse de l\'employeur :' },
-                { key: 'sms', label: 'Accepter SMS', searchText: 'Accepter SMS :' }
-            ]
-        },
-        'scolarite_anterieure': {
-            title: 'Scolarité antérieure',
-            icon: 'fr-icon-school-line',
-            fields: [
-                { key: 'etablissementPrecedent1', label: 'Établissement 1', searchText: 'Établissement 1 :' },
-                { key: 'classePrecedente1', label: 'Classe 1', searchText: 'Classe 1 :' },
-                { key: 'anneeScolairePrecedente1', label: 'Année scolaire 1', searchText: 'Année scolaire 1 :' },
-                { key: 'etablissementPrecedent2', label: 'Établissement 2', searchText: 'Établissement 2 :' },
-                { key: 'classePrecedente2', label: 'Classe 2', searchText: 'Classe 2 :' },
-                { key: 'anneeScolairePrecedente2', label: 'Année scolaire 2', searchText: 'Année scolaire 2 :' }
-            ]
-        },
-        'informations_medicales': {
-            title: 'Informations médicales',
-            icon: 'fr-icon-heart-pulse-line',
-            fields: [
-                { key: 'medecinTraitantNom', label: 'Nom du médecin traitant', searchText: 'Médecin traitant :' },
-                { key: 'medecinTraitantTelephone', label: 'Téléphone du médecin', searchText: 'Téléphone du médecin :' },
-                { key: 'medecinTraitantAdresse', label: 'Adresse du médecin', searchText: 'Adresse du médecin :' },
-                { key: 'dernierRappelAntitetanique', label: 'Dernier rappel antitétanique', searchText: 'Dernier rappel :' },
-                { key: 'observations', label: 'Observations', searchText: 'Observations :' },
-                { key: 'secuSocialeNom', label: 'Nom de la sécurité sociale', searchText: 'Sécurité sociale :' },
-                { key: 'secuSocialeAdresse', label: 'Adresse de la sécurité sociale', searchText: 'Adresse de la sécurité sociale :' },
-                { key: 'assureurNom', label: 'Nom de l\'assureur', searchText: 'Assureur :' },
-                { key: 'assureurAdresse', label: 'Adresse de l\'assureur', searchText: 'Adresse de l\'assureur :' },
-                { key: 'assureurNumeroAssurance', label: 'Numéro d\'assurance', searchText: 'Numéro d\'assurance :' }
-            ]
-        },
-        'responsable_financier': {
-            title: 'Responsable financier',
-            icon: 'fr-icon-money-euro-circle-line',
-            fields: [
-                { key: 'responsableFinancierNom', label: 'Nom', searchText: 'Nom :' },
-                { key: 'responsableFinancierPrenom', label: 'Prénom', searchText: 'Prénom :' },
-                { key: 'responsableFinancierNomEmployeur', label: 'Nom de l\'employeur', searchText: 'Nom de l\'employeur :' },
-                { key: 'responsableFinancierAdresseEmployeur', label: 'Adresse de l\'employeur', searchText: 'Adresse de l\'employeur :' }
-            ]
-        },
-        'documents': {
-            title: 'Documents',
-            icon: 'fr-icon-file-text-line',
-            fields: [
-                { key: 'carteVitale', label: 'Carte Vitale', searchText: 'Carte Vitale :' },
-                { key: 'photoIdentite', label: 'Photo d\'identité', searchText: 'Photo d\'identité :' },
-                { key: 'bourse', label: 'Bourse', searchText: 'Bourse :' },
-                { key: 'attestationJDC', label: 'Attestation JDC', searchText: 'Attestation JDC :' },
-                { key: 'attestationIdentite', label: 'Attestation d\'identité', searchText: 'Attestation d\'identité :' },
-                { key: 'attestationReusite', label: 'Attestation de réussite', searchText: 'Attestation de réussite :' }
-            ]
-        },
-        'adhesion': {
-            title: 'Adhésion',
-            icon: 'fr-icon-checkbox-circle-line',
-            fields: [
-                { key: 'adhesionAccepted', label: 'Adhésion acceptée', searchText: 'Adhésion acceptée :' },
-                { key: 'adhesionPaymentMethod', label: 'Mode de paiement', searchText: 'Mode de paiement :' },
-                { key: 'adhesionImageRights', label: 'Droit à l\'image', searchText: 'Droit à l\'image :' }
-            ]
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fonction pour ajuster les graphiques à la taille de l'écran
+        function createResponsiveCharts() {
+            // Graphique de complétion du profil utilisateur
+            var completionOptions = {
+                series: [{{ completionData.completion.complete }}, {{ completionData.completion.incomplete }}],
+                chart: {
+                    type: 'pie',
+                    height: 350,
+                    width: '100%',
+                    redrawOnWindowResize: true
+                },
+                labels: ['Données complètes', 'Données manquantes'],
+                colors: ['#4CAF50', '#F44336'],
+                title: {
+                    text: 'Complétion du profil',
+                    align: 'center',
+                    style: {
+                        fontSize: '16px',
+                        fontWeight: 600
+                    }
+                },
+                legend: {
+                    position: 'bottom'
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return val + ' données';
+                        }
+                    }
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            height: 300
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            };
+            
+            var completionChart = new ApexCharts(document.querySelector("#completionChart"), completionOptions);
+            completionChart.render();
+            
+            // Graphique de comparaison avec la moyenne des élèves
+            var comparisonOptions = {
+                series: [{
+                    name: 'Profil de l\'élève',
+                    data: [{{ globalComparison.user_percentage }}]
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 250,
+                    toolbar: {
+                        show: false
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '55%',
+                        endingShape: 'rounded'
+                    },
+                },
+                dataLabels: {
+                    enabled: true,
+                    formatter: function(val) {
+                        return val + '%';
+                    }
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
+                xaxis: {
+                    categories: ['Taux de complétion'],
+                },
+                yaxis: {
+                    title: {
+                        text: 'Pourcentage (%)'
+                    },
+                    min: 0,
+                    max: 100
+                },
+                fill: {
+                    opacity: 1,
+                    colors: ['#2196F3', '#9E9E9E']
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return val + "%";
+                        }
+                    }
+                }
+            };
+
+            var comparisonChart = new ApexCharts(document.querySelector("#comparisonChart"), comparisonOptions);
+            comparisonChart.render();
+            
+            
+            
+            var sectionsOptions = {
+                series: [{
+                    name: 'Complétion',
+                    data: sectionsData.map(function(item) { return item.value; })
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 400
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: 4,
+                        horizontal: true,
+                        distributed: true,
+                        dataLabels: {
+                            position: 'bottom'
+                        },
+                    }
+                },
+                colors: ['#33b2df', '#546E7A', '#d4526e', '#13d8aa', '#A5978B', '#4ecdc4', '#c7f464', '#81D4FA'],
+                dataLabels: {
+                    enabled: true,
+                    textAnchor: 'start',
+                    style: {
+                        colors: ['#fff']
+                    },
+                    formatter: function(val) {
+                        return val + '%';
+                    },
+                    offsetX: 0
+                },
+                stroke: {
+                    width: 1,
+                    colors: ['#fff']
+                },
+                xaxis: {
+                    categories: sectionsData.map(function(item) { return item.section; })
+                },
+                yaxis: {
+                    labels: {
+                        show: false
+                    }
+                },
+                tooltip: {
+                    theme: 'dark',
+                    y: {
+                        formatter: function(val) {
+                            return val + '%';
+                        }
+                    }
+                }
+            };
+
+            var sectionsChart = new ApexCharts(document.querySelector("#sectionsChart"), sectionsOptions);
+            sectionsChart.render();
         }
-    };
-
-    // Fonction pour calculer la complétion par section
-    function calculateSectionCompletion(sectionKey, sectionConfig) {
-        let completedFields = 0;
-        let totalFields = sectionConfig.fields.length;
-        let completedFieldsList = [];
-        let missingFieldsList = [];
-
-        sectionConfig.fields.forEach(field => {
-            if (checkFieldCompletion(field)) {
-                completedFields++;
-                completedFieldsList.push(field);
-            } else {
-                missingFieldsList.push(field);
-            }
+        
+        // Appeler la fonction pour créer les graphiques
+        createResponsiveCharts();
+        
+        // Redimensionner les graphiques lors du redimensionnement de la fenêtre
+        window.addEventListener('resize', function() {
+            // Redessiner les graphiques si nécessaire
+            if (typeof completionChart !== 'undefined') completionChart.render();
+            if (typeof comparisonChart !== 'undefined') comparisonChart.render();
+            if (typeof sectionsChart !== 'undefined') sectionsChart.render();
         });
-
-        return {
-            completed: completedFields,
-            total: totalFields,
-            percentage: totalFields > 0 ? Math.round((completedFields / totalFields) * 100) : 0,
-            completedFields: completedFieldsList,
-            missingFields: missingFieldsList
-        };
-    }
-
-    const totalSteps = Object.keys(sectionsConfig).length;
-
-        // Fonction pour vérifier si un champ est complété
-    function checkFieldCompletion(field) {
-        // Vérifiez si le champ existe dans l'objet inscription et s'il est défini et non vide
-        return inscription[field.key] !== undefined && inscription[field.key] !== null && inscription[field.key] !== '';
-    }
-
-    // Calculer la progression totale
-    let overallCompletedSteps = 0;
-
-    // Itérer sur chaque section pour calculer la progression
-    for (const [key, config] of Object.entries(sectionsConfig)) {
-        const completion = calculateSectionCompletion(key, config);
-        overallCompletedSteps += completion.completed;
-    }
-
-    // Mettre à jour le pourcentage de progression global
-    const overallProgressPercent = (overallCompletedSteps / (totalSteps * 10) * 100).toFixed(2); // 10 est le nombre total de champs à vérifier
-
-    // Afficher la progression globale
-    console.log(`Progression globale : ${overallProgressPercent}%`);
-});
+    });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.44.0/apexcharts.min.js"></script>
 {% endblock %}
