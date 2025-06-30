@@ -385,10 +385,10 @@
                 {% endif %}
 
                 {% if inscription.observations is defined and inscription.observations %}
-                    <div class="fr-mb-3w">
-                        <h4 class="fr-h6">Observations médicales</h4>
-                        <p>{{ inscription.observations }}</p>
-                    </div>
+                    <dl class="fr-dl fr-dl--inline fr-mb-2w">
+                        <dt>Observations médicales</dt>
+                        <dd>{{ inscription.observations }}</dd>
+                    </dl>
                 {% endif %}
                 
                 {% if inscription.numSecuSocial is defined %}
