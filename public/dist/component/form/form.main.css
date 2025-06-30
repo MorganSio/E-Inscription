@@ -1,5 +1,5 @@
 /*!
- * DSFR v1.12.1 | SPDX-License-Identifier: MIT | License-Filename: LICENSE.md | restricted use (see terms and conditions)
+ * DSFR v1.13.2 | SPDX-License-Identifier: MIT | License-Filename: LICENSE.md | restricted use (see terms and conditions)
  */
 @charset "UTF-8";
 
@@ -37,7 +37,7 @@
   padding: 0 0.25rem;
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: last baseline;
   flex-wrap: wrap;
   border: 0;
 }
@@ -97,7 +97,7 @@
   flex-grow: 1;
 }
 
-.fr-fieldset__element--year {
+.fr-fieldset__element.fr-fieldset__element--year {
   flex: 0 0 8rem;
 }
 
@@ -105,7 +105,7 @@
   margin-right: calc(100% - 8rem);
 }
 
-.fr-fieldset__element--postal {
+.fr-fieldset__element.fr-fieldset__element--postal {
   flex: 0 0 16rem;
 }
 
@@ -113,7 +113,7 @@
   margin-right: calc(100% - 16rem);
 }
 
-.fr-fieldset__element--number {
+.fr-fieldset__element.fr-fieldset__element--number {
   flex: 0 0 6rem;
 }
 
@@ -184,6 +184,7 @@
 
 .fr-message--error::before,
 .fr-message--valid::before,
+.fr-message--warning::before,
 .fr-message--info::before {
   flex: 0 0 auto;
   vertical-align: calc((0.75em - var(--icon-size)) * 0.5);
@@ -212,6 +213,11 @@
 .fr-message--info::before {
   -webkit-mask-image: url("../../icons/system/fr--info-fill.svg");
   mask-image: url("../../icons/system/fr--info-fill.svg");
+}
+
+.fr-message--warning::before {
+  -webkit-mask-image: url("../../icons/system/fr--warning-fill.svg");
+  mask-image: url("../../icons/system/fr--warning-fill.svg");
 }
 
 .fr-select-group--valid label,
@@ -278,6 +284,10 @@
 
 .fr-message--info {
   color: var(--text-default-info);
+}
+
+.fr-message--warning {
+  color: var(--text-default-warning);
 }
 
 .fr-fieldset:disabled .fr-label,
@@ -488,6 +498,18 @@
   .fr-fieldset__element--inline\@md {
     flex: 0 0 auto;
   }
+
+  .fr-fieldset__element--year.fr-fieldset__element--inline\@md {
+    margin-right: 0;
+  }
+
+  .fr-fieldset__element--postal.fr-fieldset__element--inline\@md {
+    margin-right: 0;
+  }
+
+  .fr-fieldset__element--number.fr-fieldset__element--inline\@md {
+    margin-right: 0;
+  }
 }
 @media (min-width: 62em) {
   /*! media lg */
@@ -512,6 +534,8 @@
   .fr-message--error::after,
   .fr-message--valid::before,
   .fr-message--valid::after,
+  .fr-message--warning::before,
+  .fr-message--warning::after,
   .fr-message--info::before,
   .fr-message--info::after {
     forced-color-adjust: none;

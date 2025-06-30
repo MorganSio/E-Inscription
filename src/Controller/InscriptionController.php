@@ -1056,6 +1056,11 @@ class InscriptionController extends AbstractController
             'immatriculationVeic' => $infoEleve->getImmattriculationVeic(),
             'cheque' => $infoEleve->isCheque(),
             'droitImage' => $infoEleve->isDroitImage(),
+
+            // Informations médicales
+            'dernierRappelAntitetanique' => $infoEleve->getDernierRappelAntitetanique(),
+            'observations' => $infoEleve->getObservations(),
+
         ];
 
         return $data;

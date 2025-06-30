@@ -118,7 +118,7 @@
   </script>
     <span id="[url - à modifier]"></span>
     <div class="fr-container fr-mt-2v fr-mb-8w">
-        <p class="fr-text--sm" style="float:right">DSFR v1.12.1</p>
+        <p class="fr-text--sm" style="float:right">DSFR v1.13.2</p>
         <p>
             <a class="fr-icon-arrow-left-line fr-link--icon-left fr-link" href="../">Retour</a>
         </p>
@@ -149,19 +149,19 @@
         <h5>Documentation</h5>
         <ul>
             <li>
-                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-de-l-identite-de-l-etat/typographie/" target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre"> Typographie</a>
+                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-de-l-identite-de-l-etat/typographie/" rel="noopener external" target="_blank" title="${getBlankTitle(d.title)}"> Typographie</a>
             </li>
             <li>
-                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/icones" target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre"> Icônes</a>
+                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/icones" rel="noopener external" target="_blank" title="${getBlankTitle(d.title)}"> Icônes</a>
             </li>
             <li>
-                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/icone-de-favoris" target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre"> Icônes de favoris - Favicon</a>
+                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/icone-de-favoris" rel="noopener external" target="_blank" title="${getBlankTitle(d.title)}"> Icônes de favoris - Favicon</a>
             </li>
             <li>
-                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/medias" target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre"> Médias fondamentaux</a>
+                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/medias" rel="noopener external" target="_blank" title="${getBlankTitle(d.title)}"> Médias fondamentaux</a>
             </li>
             <li>
-                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/grille-et-points-de-rupture" target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre"> Grille</a>
+                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/grille-et-points-de-rupture" rel="noopener external" target="_blank" title="${getBlankTitle(d.title)}"> Grille</a>
             </li>
         </ul>
     </div>
@@ -175,12 +175,12 @@
     un bouton reduce (qui ne peut que fermer) doit avoir uniquement l'attribut aria-controls.
     -->
                     <div>
-                        <button aria-expanded="true" aria-controls="collapsed-0" id="button-10" class="fr-mb-2v fr-btn">Toggle</button>
+                        <button aria-expanded="true" aria-controls="collapsed-0" type="button" class="fr-mb-2v fr-btn">Toggle</button>
                         <ul class="fr-collapse" id="collapsed-0" data-fr-group="group-id">
                             <li>list item</li>
                             <li>list item</li>
                             <li>
-                                <button aria-expanded="false" aria-controls="collapsed-0-nested" id="button-11" class="fr-mb-2v fr-btn">Toggle nested</button>
+                                <button aria-expanded="false" aria-controls="collapsed-0-nested" type="button" class="fr-mb-2v fr-btn">Toggle nested</button>
                                 <ul class="fr-collapse" id="collapsed-0-nested">
                                     <li>list nested item</li>
                                     <li>list nested item</li>
@@ -188,17 +188,17 @@
                                 </ul>
                             </li>
                             <li>
-                                <button aria-controls="collapsed-0" id="button-12" class="fr-mb-2v fr-btn">Close</button>
+                                <button aria-controls="collapsed-0" type="button" class="fr-mb-2v fr-btn">Close</button>
                             </li>
                         </ul>
                     </div>
                     <div>
-                        <button aria-expanded="false" aria-controls="collapsed-1" id="button-13" class="fr-mb-2v fr-btn">Toggle</button>
+                        <button aria-expanded="false" aria-controls="collapsed-1" type="button" class="fr-mb-2v fr-btn">Toggle</button>
                         <ul class="fr-collapse" id="collapsed-1" data-fr-group="group-id">
                             <li>list item</li>
                             <li>list item</li>
                             <li>
-                                <button aria-expanded="false" aria-controls="collapsed-1-nested" id="button-14" class="fr-mb-2v fr-btn">Toggle nested</button>
+                                <button aria-expanded="false" aria-controls="collapsed-1-nested" type="button" class="fr-mb-2v fr-btn">Toggle nested</button>
                                 <ul class="fr-collapse" id="collapsed-1-nested">
                                     <li>list nested item</li>
                                     <li>list nested item</li>
@@ -206,17 +206,17 @@
                                 </ul>
                             </li>
                             <li>
-                                <button aria-controls="collapsed-1" id="button-15" class="fr-mb-2v fr-btn">Close</button>
+                                <button aria-controls="collapsed-1" type="button" class="fr-mb-2v fr-btn">Close</button>
                             </li>
                         </ul>
                     </div>
                     <div>
-                        <button aria-expanded="false" aria-controls="collapsed-2" id="button-16" class="fr-mb-2v fr-btn">Toggle</button>
+                        <button aria-expanded="false" aria-controls="collapsed-2" type="button" class="fr-mb-2v fr-btn">Toggle</button>
                         <ul class="fr-collapse" id="collapsed-2" data-fr-group="group-id">
                             <li>list item</li>
                             <li>list item</li>
                             <li>
-                                <button aria-expanded="false" aria-controls="collapsed-2-nested" id="button-17" class="fr-mb-2v fr-btn">Toggle nested</button>
+                                <button aria-expanded="false" aria-controls="collapsed-2-nested" type="button" class="fr-mb-2v fr-btn">Toggle nested</button>
                                 <ul class="fr-collapse" id="collapsed-2-nested">
                                     <li>list nested item</li>
                                     <li>list nested item</li>
@@ -224,7 +224,7 @@
                                 </ul>
                             </li>
                             <li>
-                                <button aria-controls="collapsed-2" id="button-18" class="fr-mb-2v fr-btn">Close</button>
+                                <button aria-controls="collapsed-2" type="button" class="fr-mb-2v fr-btn">Close</button>
                             </li>
                         </ul>
                     </div>
@@ -233,21 +233,21 @@
             <div class="fr-mb-12v">
                 <section class="fr-accordion">
                     <h3 class="fr-accordion__title">
-                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-28">Extrait de code</button>
+                        <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-7">Extrait de code</button>
                     </h3>
-                    <div class="fr-collapse" id="snippet-28">
+                    <div class="fr-collapse" id="snippet-7">
                         <pre class=" language-html"><code>&lt;div&gt;
     &lt;!--
     un bouton toggle (qui ouvre et qui ferme) doit avoir les attributs aria-expanded (qui définit son état) et l'attribut aria-controls (dont l'id détermine l'élément sur lequel agira le bouton.
     un bouton reduce (qui ne peut que fermer) doit avoir uniquement l'attribut aria-controls.
     --&gt;
     &lt;div&gt;
-        &lt;button aria-expanded="true" aria-controls="collapsed-0" id="button-19" class="fr-mb-2v fr-btn"&gt;Toggle&lt;/button&gt;
+        &lt;button aria-expanded="true" aria-controls="collapsed-0" type="button" class="fr-mb-2v fr-btn"&gt;Toggle&lt;/button&gt;
         &lt;ul class="fr-collapse" id="collapsed-0" data-fr-group="group-id"&gt;
             &lt;li&gt;list item&lt;/li&gt;
             &lt;li&gt;list item&lt;/li&gt;
             &lt;li&gt;
-                &lt;button aria-expanded="false" aria-controls="collapsed-0-nested" id="button-20" class="fr-mb-2v fr-btn"&gt;Toggle nested&lt;/button&gt;
+                &lt;button aria-expanded="false" aria-controls="collapsed-0-nested" type="button" class="fr-mb-2v fr-btn"&gt;Toggle nested&lt;/button&gt;
                 &lt;ul class="fr-collapse" id="collapsed-0-nested"&gt;
                     &lt;li&gt;list nested item&lt;/li&gt;
                     &lt;li&gt;list nested item&lt;/li&gt;
@@ -255,17 +255,17 @@
                 &lt;/ul&gt;
             &lt;/li&gt;
             &lt;li&gt;
-                &lt;button aria-controls="collapsed-0" id="button-21" class="fr-mb-2v fr-btn"&gt;Close&lt;/button&gt;
+                &lt;button aria-controls="collapsed-0" type="button" class="fr-mb-2v fr-btn"&gt;Close&lt;/button&gt;
             &lt;/li&gt;
         &lt;/ul&gt;
     &lt;/div&gt;
     &lt;div&gt;
-        &lt;button aria-expanded="false" aria-controls="collapsed-1" id="button-22" class="fr-mb-2v fr-btn"&gt;Toggle&lt;/button&gt;
+        &lt;button aria-expanded="false" aria-controls="collapsed-1" type="button" class="fr-mb-2v fr-btn"&gt;Toggle&lt;/button&gt;
         &lt;ul class="fr-collapse" id="collapsed-1" data-fr-group="group-id"&gt;
             &lt;li&gt;list item&lt;/li&gt;
             &lt;li&gt;list item&lt;/li&gt;
             &lt;li&gt;
-                &lt;button aria-expanded="false" aria-controls="collapsed-1-nested" id="button-23" class="fr-mb-2v fr-btn"&gt;Toggle nested&lt;/button&gt;
+                &lt;button aria-expanded="false" aria-controls="collapsed-1-nested" type="button" class="fr-mb-2v fr-btn"&gt;Toggle nested&lt;/button&gt;
                 &lt;ul class="fr-collapse" id="collapsed-1-nested"&gt;
                     &lt;li&gt;list nested item&lt;/li&gt;
                     &lt;li&gt;list nested item&lt;/li&gt;
@@ -273,17 +273,17 @@
                 &lt;/ul&gt;
             &lt;/li&gt;
             &lt;li&gt;
-                &lt;button aria-controls="collapsed-1" id="button-24" class="fr-mb-2v fr-btn"&gt;Close&lt;/button&gt;
+                &lt;button aria-controls="collapsed-1" type="button" class="fr-mb-2v fr-btn"&gt;Close&lt;/button&gt;
             &lt;/li&gt;
         &lt;/ul&gt;
     &lt;/div&gt;
     &lt;div&gt;
-        &lt;button aria-expanded="false" aria-controls="collapsed-2" id="button-25" class="fr-mb-2v fr-btn"&gt;Toggle&lt;/button&gt;
+        &lt;button aria-expanded="false" aria-controls="collapsed-2" type="button" class="fr-mb-2v fr-btn"&gt;Toggle&lt;/button&gt;
         &lt;ul class="fr-collapse" id="collapsed-2" data-fr-group="group-id"&gt;
             &lt;li&gt;list item&lt;/li&gt;
             &lt;li&gt;list item&lt;/li&gt;
             &lt;li&gt;
-                &lt;button aria-expanded="false" aria-controls="collapsed-2-nested" id="button-26" class="fr-mb-2v fr-btn"&gt;Toggle nested&lt;/button&gt;
+                &lt;button aria-expanded="false" aria-controls="collapsed-2-nested" type="button" class="fr-mb-2v fr-btn"&gt;Toggle nested&lt;/button&gt;
                 &lt;ul class="fr-collapse" id="collapsed-2-nested"&gt;
                     &lt;li&gt;list nested item&lt;/li&gt;
                     &lt;li&gt;list nested item&lt;/li&gt;
@@ -291,7 +291,7 @@
                 &lt;/ul&gt;
             &lt;/li&gt;
             &lt;li&gt;
-                &lt;button aria-controls="collapsed-2" id="button-27" class="fr-mb-2v fr-btn"&gt;Close&lt;/button&gt;
+                &lt;button aria-controls="collapsed-2" type="button" class="fr-mb-2v fr-btn"&gt;Close&lt;/button&gt;
             &lt;/li&gt;
         &lt;/ul&gt;
     &lt;/div&gt;
@@ -302,14 +302,14 @@
             </div>
         </div>
     </div>
-    <button aria-controls="fr-theme-modal" data-fr-opened="false" style="z-index: 1600" id="button-29" class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary">Libellé bouton</button>
+    <button aria-controls="fr-theme-modal" data-fr-opened="false" style="z-index: 1600" type="button" class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary">Libellé bouton</button>
     <dialog id="fr-theme-modal" class="fr-modal" aria-labelledby="fr-theme-modal-title">
         <div class="fr-container fr-container--fluid fr-container-md">
             <div class="fr-grid-row fr-grid-row--center">
                 <div class="fr-col-12 fr-col-md-6 fr-col-lg-4">
                     <div class="fr-modal__body">
                         <div class="fr-modal__header">
-                            <button aria-controls="fr-theme-modal" id="button-30" title="Fermer" class="fr-btn--close fr-btn">Fermer</button>
+                            <button aria-controls="fr-theme-modal" title="Fermer" type="button" id="button-8" class="fr-btn--close fr-btn">Fermer</button>
                         </div>
                         <div class="fr-modal__content">
                             <h1 id="fr-theme-modal-title" class="fr-modal__title">

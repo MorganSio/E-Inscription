@@ -118,7 +118,7 @@
   </script>
     <span id="[url - à modifier]"></span>
     <div class="fr-container fr-mt-2v fr-mb-8w">
-        <p class="fr-text--sm" style="float:right">DSFR v1.12.1</p>
+        <p class="fr-text--sm" style="float:right">DSFR v1.13.2</p>
         <p>
             <a class="fr-icon-arrow-left-line fr-link--icon-left fr-link" href="../">Retour</a>
         </p>
@@ -149,19 +149,19 @@
         <h5>Documentation</h5>
         <ul>
             <li>
-                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-de-l-identite-de-l-etat/typographie/" target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre"> Typographie</a>
+                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-de-l-identite-de-l-etat/typographie/" rel="noopener external" target="_blank" title="${getBlankTitle(d.title)}"> Typographie</a>
             </li>
             <li>
-                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/icones" target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre"> Icônes</a>
+                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/icones" rel="noopener external" target="_blank" title="${getBlankTitle(d.title)}"> Icônes</a>
             </li>
             <li>
-                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/icone-de-favoris" target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre"> Icônes de favoris - Favicon</a>
+                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/icone-de-favoris" rel="noopener external" target="_blank" title="${getBlankTitle(d.title)}"> Icônes de favoris - Favicon</a>
             </li>
             <li>
-                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/medias" target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre"> Médias fondamentaux</a>
+                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/medias" rel="noopener external" target="_blank" title="${getBlankTitle(d.title)}"> Médias fondamentaux</a>
             </li>
             <li>
-                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/grille-et-points-de-rupture" target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre"> Grille</a>
+                <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/fondamentaux-techniques/grille-et-points-de-rupture" rel="noopener external" target="_blank" title="${getBlankTitle(d.title)}"> Grille</a>
             </li>
         </ul>
     </div>
@@ -407,15 +407,15 @@
             <p>Pour adapter les espacements à la taille de l'écran, on peut ainsi combiner les classes en partant du mobile puis en surchargeant en md </p>
             <h3>exemple avec un bouton plus large en md</h3>
             <div class="fr-mb-6v">
-                <button id="button-105" class="fr-px-4v fr-px-md-16v fr-btn">4v en mobile / 16v en md</button>
+                <button type="button" class="fr-px-4v fr-px-md-16v fr-btn">4v en mobile / 16v en md</button>
             </div>
             <div class="fr-mb-12v">
                 <section class="fr-accordion">
                     <h3 class="fr-accordion__title">
-                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-107">Extrait de code</button>
+                        <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-73">Extrait de code</button>
                     </h3>
-                    <div class="fr-collapse" id="snippet-107">
-                        <pre class=" language-html"><code>&lt;button id="button-106" class="fr-px-4v fr-px-md-16v fr-btn fr-btn"&gt;4v en mobile / 16v en md&lt;/button&gt;
+                    <div class="fr-collapse" id="snippet-73">
+                        <pre class=" language-html"><code>&lt;button type="button" class="fr-px-4v fr-px-md-16v fr-btn fr-btn"&gt;4v en mobile / 16v en md&lt;/button&gt;
 </code></pre>
                     </div>
                 </section>
@@ -990,14 +990,14 @@
             </div>
         </div>
     </div>
-    <button aria-controls="fr-theme-modal" data-fr-opened="false" style="z-index: 1600" id="button-108" class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary">Libellé bouton</button>
+    <button aria-controls="fr-theme-modal" data-fr-opened="false" style="z-index: 1600" type="button" class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary">Libellé bouton</button>
     <dialog id="fr-theme-modal" class="fr-modal" aria-labelledby="fr-theme-modal-title">
         <div class="fr-container fr-container--fluid fr-container-md">
             <div class="fr-grid-row fr-grid-row--center">
                 <div class="fr-col-12 fr-col-md-6 fr-col-lg-4">
                     <div class="fr-modal__body">
                         <div class="fr-modal__header">
-                            <button aria-controls="fr-theme-modal" id="button-109" title="Fermer" class="fr-btn--close fr-btn">Fermer</button>
+                            <button aria-controls="fr-theme-modal" title="Fermer" type="button" id="button-74" class="fr-btn--close fr-btn">Fermer</button>
                         </div>
                         <div class="fr-modal__content">
                             <h1 id="fr-theme-modal-title" class="fr-modal__title">

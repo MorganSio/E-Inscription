@@ -1,24 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PlanSiteController!{% endblock %}
+{% block title %}Plan du site{% endblock %}
 
 {% block body %}
 <div class="fr-container">
     <h1>Plan du site</h1>
-        <ul>
-            <li><a href="{{ path('index') }}">Accueil</a></li>
-            <li><a href="{{ path('politique_confidentialite') }}">Politique de confidentialité</a></li>
-            <li><a href="{{ path('mentions_legales') }}">Mentions légales</a></li>
-            <li><a href="{{ path('cgu') }}">Conditions générales d'utilisation</a></li>
-            <li><a href="{{ path('cookies') }}">Cookies</a></li>
-            <li><a href="{{ path('app_login') }}">Connexion</a></li>
-            <li><a href="{{ path('app_register') }}">Inscription</a></li>
-            <li><a href="{{ path('fiche-etudiant') }}">Fiche étudiant</a></li>
-            <li><a href="{{ path('fiche-intendance') }}">Fiche intendance</a></li>
-            <li><a href="{{ path('fiche-urgence') }}">Fiche urgence</a></li>
-            <li><a href="{{ path('fiche-mdl') }}">Fiche MDL</a></li>
-            <li><a href="{{ path('fiche-representant-legal') }}">Fiche représentant légal</a></li>
-        </ul>
+    <ul>
+        <li><a href="{{ path('index') }}">Accueil</a></li>
+        <li><a href="{{ path('politique_confidentialite') }}">Politique de confidentialité</a></li>
+        <li><a href="{{ path('mentions_legales') }}">Mentions légales</a></li>
+        <li><a href="{{ path('cgu') }}">Conditions générales d'utilisation</a></li>
+        <li><a href="{{ path('cookies') }}">Cookies</a></li>
+        <li><a href="{{ path('app_login') }}">Connexion</a></li>
+        <li><a href="{{ path('app_register') }}">Inscription</a></li>
+        <li><a href="{{ path('app_inscription_dashboard') }}">Tableau de bord inscription</a></li>
+        <li><a href="{{ path('app_inscription_form', {'step': 1}) }}">Formulaire d'inscription</a></li>
+    </ul>
 </div>
-
 {% endblock %}

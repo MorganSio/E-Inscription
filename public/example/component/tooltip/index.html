@@ -124,12 +124,12 @@
   </script>
     <span id="[url - à modifier]"></span>
     <div class="fr-container fr-mt-2v fr-mb-8w">
-        <p class="fr-text--sm" style="float:right">DSFR v1.12.1</p>
+        <p class="fr-text--sm" style="float:right">DSFR v1.13.2</p>
         <p>
             <a class="fr-icon-arrow-left-line fr-link--icon-left fr-link" href="../">Retour</a>
         </p>
         <h1>Information contextuelle et Infobulle (tooltip)</h1>
-        <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/infobulle" target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre">Documentation</a>
+        <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/infobulle" rel="noopener external" target="_blank" title="${getBlankTitle('Documentation')}">Documentation</a>
     </div>
     <div class="fr-mb-12w">
         <div class="fr-container">
@@ -138,17 +138,17 @@
                     <h3>Information contextuelle</h3>
                     <p class="fr-text--sm fr-text-mention-grey">Ouverture du tooltip au survol</p>
                     <div class="fr-mb-6v">
-                        <a aria-describedby="tooltip-4594" id="link-4595" href="#" class="fr-link">Exemple</a>
-                        <span class="fr-tooltip fr-placement" id="tooltip-4594" role="tooltip">Lorem ipsum dolor sit amet, consectetur adipiscing, incididunt, ut labore et dolore magna aliqua. Vitae sapien pellentesque habitant morbi tristique senectus et. Diam maecenas sed enim ut. Accumsan lacus vel facilisis volutpat est. Ut aliquam purus sit amet luctus. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</span>
+                        <a aria-describedby="tooltip-4151" id="link-4152" href="#" class="fr-link">Exemple</a>
+                        <span class="fr-tooltip fr-placement" id="tooltip-4151" role="tooltip">Lorem ipsum dolor sit amet, consectetur adipiscing, incididunt, ut labore et dolore magna aliqua. Vitae sapien pellentesque habitant morbi tristique senectus et. Diam maecenas sed enim ut. Accumsan lacus vel facilisis volutpat est. Ut aliquam purus sit amet luctus. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</span>
                     </div>
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-4598">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-4155">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-4598">
-                                <pre class=" language-html"><code>&lt;a aria-describedby="tooltip-4596" id="link-4597" href="#" class="fr-link"&gt;Exemple&lt;/a&gt;
-&lt;span class="fr-tooltip fr-placement" id="tooltip-4596" role="tooltip"&gt;Lorem [...] elit ut.&lt;/span&gt;
+                            <div class="fr-collapse" id="snippet-4155">
+                                <pre class=" language-html"><code>&lt;a aria-describedby="tooltip-4153" id="link-4154" href="#" class="fr-link"&gt;Exemple&lt;/a&gt;
+&lt;span class="fr-tooltip fr-placement" id="tooltip-4153" role="tooltip"&gt;Lorem [...] elit ut.&lt;/span&gt;
 </code></pre>
                             </div>
                         </section>
@@ -156,17 +156,17 @@
                     <h3>Infobulle</h3>
                     <p class="fr-text--sm fr-text-mention-grey">L'ajout de la classe '<code>fr-btn--tooltip</code>' déclenche l'ouverture du tooltip au click.</p>
                     <div class="fr-mb-6v">
-                        <button id="button-4600" aria-describedby="tooltip-4599" class="fr-btn--tooltip fr-btn">Information contextuelle</button>
-                        <span class="fr-tooltip fr-placement" id="tooltip-4599" role="tooltip">Lorem ipsum dolor sit amet, consectetur adipiscing, incididunt, ut labore et dolore magna aliqua. Vitae sapien pellentesque habitant morbi tristique senectus et. Diam maecenas sed enim ut. Accumsan lacus vel facilisis volutpat est. Ut aliquam purus sit amet luctus. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</span>
+                        <button aria-describedby="tooltip-4156" type="button" class="fr-btn--tooltip fr-btn">Information contextuelle</button>
+                        <span class="fr-tooltip fr-placement" id="tooltip-4156" role="tooltip">Lorem ipsum dolor sit amet, consectetur adipiscing, incididunt, ut labore et dolore magna aliqua. Vitae sapien pellentesque habitant morbi tristique senectus et. Diam maecenas sed enim ut. Accumsan lacus vel facilisis volutpat est. Ut aliquam purus sit amet luctus. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</span>
                     </div>
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-4603">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-4158">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-4603">
-                                <pre class=" language-html"><code>&lt;button id="button-4602" aria-describedby="tooltip-4601" class="fr-btn--tooltip fr-btn"&gt;Information contextuelle&lt;/button&gt;
-&lt;span class="fr-tooltip fr-placement" id="tooltip-4601" role="tooltip"&gt;Lorem [...] elit ut.&lt;/span&gt;
+                            <div class="fr-collapse" id="snippet-4158">
+                                <pre class=" language-html"><code>&lt;button aria-describedby="tooltip-4157" type="button" class="fr-btn--tooltip fr-btn"&gt;Information contextuelle&lt;/button&gt;
+&lt;span class="fr-tooltip fr-placement" id="tooltip-4157" role="tooltip"&gt;Lorem [...] elit ut.&lt;/span&gt;
 </code></pre>
                             </div>
                         </section>
@@ -175,8 +175,8 @@
                     <div class="fr-mb-6v">
                         <div class="fr-grid-row fr-grid-row--gutters">
                             <div class="fr-col-4 fr-col-sm-2">
-                                <a class="fr-link" href="#" aria-describedby="tooltip-4604">Exemple</a>
-                                <span class="fr-tooltip fr-placement" id="tooltip-4604" role="tooltip">Lorem ipsum dolor sit amet, consectetur adipiscing, incididunt, ut labore et dolore magna aliqua. Vitae sapien pellentesque habitant morbi tristique senectus et. Diam maecenas sed enim ut. Accumsan lacus vel facilisis volutpat est. Ut aliquam purus sit amet luctus. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</span>
+                                <a class="fr-link" href="#" aria-describedby="tooltip-4159">Exemple</a>
+                                <span class="fr-tooltip fr-placement" id="tooltip-4159" role="tooltip">Lorem ipsum dolor sit amet, consectetur adipiscing, incididunt, ut labore et dolore magna aliqua. Vitae sapien pellentesque habitant morbi tristique senectus et. Diam maecenas sed enim ut. Accumsan lacus vel facilisis volutpat est. Ut aliquam purus sit amet luctus. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</span>
                             </div>
                             <div class="fr-col-8 fr-col-sm-10">
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing, incididunt, ut labore et dolore magna aliqua. Vitae sapien pellentesque habitant morbi tristique senectus et. Diam maecenas sed enim ut. Accumsan lacus vel facilisis volutpat est. Ut aliquam purus sit amet luctus. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</p>
@@ -186,13 +186,13 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-4606">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-4161">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-4606">
+                            <div class="fr-collapse" id="snippet-4161">
                                 <pre class=" language-html"><code>&lt;div class="fr-grid-row fr-grid-row--gutters"&gt;
     &lt;div class="fr-col-4 fr-col-sm-2"&gt;
-        &lt;a class="fr-link" href="#" aria-describedby="tooltip-4605"&gt;Exemple&lt;/a&gt;
-        &lt;span class="fr-tooltip fr-placement" id="tooltip-4605" role="tooltip"&gt;Lorem [...] elit ut.&lt;/span&gt;
+        &lt;a class="fr-link" href="#" aria-describedby="tooltip-4160"&gt;Exemple&lt;/a&gt;
+        &lt;span class="fr-tooltip fr-placement" id="tooltip-4160" role="tooltip"&gt;Lorem [...] elit ut.&lt;/span&gt;
     &lt;/div&gt;
     &lt;div class="fr-col-8 fr-col-sm-10"&gt;
         &lt;p&gt;Lorem [...] elit ut.&lt;/p&gt;
@@ -209,24 +209,24 @@
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing, incididunt, ut labore et dolore magna aliqua. Vitae sapien pellentesque habitant morbi tristique senectus et. Diam maecenas sed enim ut. Accumsan lacus vel facilisis volutpat est. Ut aliquam purus sit amet luctus. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</p>
                             </div>
                             <div class="fr-col-4 fr-col-sm-2">
-                                <a class="fr-link" href="#" aria-describedby="tooltip-4607">Exemple</a>
-                                <span class="fr-tooltip fr-placement" id="tooltip-4607" role="tooltip">Lorem ipsum dolor sit amet, consectetur adipiscing, incididunt, ut labore et dolore magna aliqua. Vitae sapien pellentesque habitant morbi tristique senectus et. Diam maecenas sed enim ut. Accumsan lacus vel facilisis volutpat est. Ut aliquam purus sit amet luctus. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</span>
+                                <a class="fr-link" href="#" aria-describedby="tooltip-4162">Exemple</a>
+                                <span class="fr-tooltip fr-placement" id="tooltip-4162" role="tooltip">Lorem ipsum dolor sit amet, consectetur adipiscing, incididunt, ut labore et dolore magna aliqua. Vitae sapien pellentesque habitant morbi tristique senectus et. Diam maecenas sed enim ut. Accumsan lacus vel facilisis volutpat est. Ut aliquam purus sit amet luctus. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</span>
                             </div>
                         </div>
                     </div>
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-4609">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-4164">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-4609">
+                            <div class="fr-collapse" id="snippet-4164">
                                 <pre class=" language-html"><code>&lt;div class="fr-grid-row fr-grid-row--gutters"&gt;
     &lt;div class="fr-col-8 fr-col-sm-10"&gt;
         &lt;p&gt;Lorem [...] elit ut.&lt;/p&gt;
     &lt;/div&gt;
     &lt;div class="fr-col-4 fr-col-sm-2"&gt;
-        &lt;a class="fr-link" href="#" aria-describedby="tooltip-4608"&gt;Exemple&lt;/a&gt;
-        &lt;span class="fr-tooltip fr-placement" id="tooltip-4608" role="tooltip"&gt;Lorem [...] elit ut.&lt;/span&gt;
+        &lt;a class="fr-link" href="#" aria-describedby="tooltip-4163"&gt;Exemple&lt;/a&gt;
+        &lt;span class="fr-tooltip fr-placement" id="tooltip-4163" role="tooltip"&gt;Lorem [...] elit ut.&lt;/span&gt;
     &lt;/div&gt;
 &lt;/div&gt;
 </code></pre>
@@ -235,25 +235,29 @@
                     </div>
                     <h3>Information contextuelle dans une liste</h3>
                     <div class="fr-mb-6v">
-                        <div class="fr-share" id="share-4611">
+                        <div class="fr-share" id="share-4166">
                             <p class="fr-share__title">Partager la page</p>
                             <ul class="fr-btns-group">
                                 <li>
-                                    <a target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre" id="share-4612" onclick="window.open(this.href,'Partager sur Facebook','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=450'); event.preventDefault();" aria-describedby="tooltip-4610" href="https://www.facebook.com/sharer.php?u=[À MODIFIER - url de la page]" class="fr-btn--facebook fr-btn">Partager sur Facebook</a>
-                                    <span class="fr-tooltip fr-placement" id="tooltip-4610" role="tooltip">Lorem ipsum dolor sit amet, consectetur adipiscing, incididunt, ut labore et dolore magna aliqua. Vitae sapien pellentesque habitant morbi tristique senectus et. Diam maecenas sed enim ut. Accumsan lacus vel facilisis volutpat est. Ut aliquam purus sit amet luctus. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</span>
+                                    <a onclick="window.open(this.href,'Partager sur Facebook','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=450'); event.preventDefault();" aria-describedby="tooltip-4165" id="share-4167" href="https://www.facebook.com/sharer.php?u=[À MODIFIER - url de la page]" target="_blank" rel="noopener external" class="fr-btn--facebook fr-btn">Partager sur Facebook</a>
+                                    <span class="fr-tooltip fr-placement" id="tooltip-4165" role="tooltip">Lorem ipsum dolor sit amet, consectetur adipiscing, incididunt, ut labore et dolore magna aliqua. Vitae sapien pellentesque habitant morbi tristique senectus et. Diam maecenas sed enim ut. Accumsan lacus vel facilisis volutpat est. Ut aliquam purus sit amet luctus. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</span>
                                 </li>
                                 <li>
                                     <!-- Les paramètres de la reqûete doivent être URI-encodés (ex: encodeURIComponent() en js) -->
-                                    <a target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre" id="share-4613" onclick="window.open(this.href,'Partager sur X (anciennement Twitter)','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=420'); event.preventDefault();" href="https://twitter.com/intent/tweet?url=[À MODIFIER - url de la page]&text=[À MODIFIER - titre ou texte descriptif de la page]&via=[À MODIFIER - via]&hashtags=[À MODIFIER - hashtags]" class="fr-btn--twitter-x fr-btn">Partager sur X (anciennement Twitter)</a>
+                                    <a onclick="window.open(this.href,'Partager sur X (anciennement Twitter)','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=420'); event.preventDefault();" id="share-4168" href="https://twitter.com/intent/tweet?url=[À MODIFIER - url de la page]&text=[À MODIFIER - titre ou texte descriptif de la page]&via=[À MODIFIER - via]&hashtags=[À MODIFIER - hashtags]" target="_blank" rel="noopener external" class="fr-btn--twitter-x fr-btn">Partager sur X (anciennement Twitter)</a>
                                 </li>
                                 <li>
-                                    <a target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre" id="share-4614" onclick="window.open(this.href,'Partager sur LinkedIn','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=550,height=550'); event.preventDefault();" href="https://www.linkedin.com/shareArticle?url=[À MODIFIER - url de la page]&title=[À MODIFIER - titre ou texte descriptif de la page]" class="fr-btn--linkedin fr-btn">Partager sur LinkedIn</a>
+                                    <!-- Les paramètres de la reqûete doivent être URI-encodés (ex: encodeURIComponent() en js) -->
+                                    <a onclick="window.open(this.href,'Partager sur Bluesky','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=430'); event.preventDefault();" id="share-4169" href="https://bsky.app/intent/compose?text=[À MODIFIER - titre ou texte descriptif de la page]+[À MODIFIER - url de la page]" target="_blank" rel="noopener external" class="fr-btn--bluesky fr-btn">Partager sur Bluesky</a>
                                 </li>
                                 <li>
-                                    <a target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre" id="share-4615" href="mailto:?subject=[À MODIFIER - objet du mail]&body=[À MODIFIER - titre ou texte descriptif de la page] [À MODIFIER - url de la page]" class="fr-btn--mail fr-btn">Partager par email</a>
+                                    <a onclick="window.open(this.href,'Partager sur LinkedIn','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=550,height=550'); event.preventDefault();" id="share-4170" href="https://www.linkedin.com/shareArticle?url=[À MODIFIER - url de la page]&title=[À MODIFIER - titre ou texte descriptif de la page]" target="_blank" rel="noopener external" class="fr-btn--linkedin fr-btn">Partager sur LinkedIn</a>
                                 </li>
                                 <li>
-                                    <button id="share-4616" onclick="navigator.clipboard.writeText(window.location).then(function() {alert('Adresse copiée dans le presse papier.')});" class="fr-btn--copy fr-btn">Copier dans le presse-papier</button>
+                                    <a id="share-4171" href="mailto:?subject=[À MODIFIER - objet du mail]&body=[À MODIFIER - titre ou texte descriptif de la page] [À MODIFIER - url de la page]" target="_blank" rel="noopener external" class="fr-btn--mail fr-btn">Partager par email</a>
+                                </li>
+                                <li>
+                                    <button onclick="navigator.clipboard.writeText(window.location).then(function() {alert('Adresse copiée dans le presse papier.')});" type="button" id="share-4172" class="fr-btn--copy fr-btn">Copier dans le presse-papier</button>
                                 </li>
                             </ul>
                         </div>
@@ -261,28 +265,32 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-4624">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-4181">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-4624">
-                                <pre class=" language-html"><code>&lt;div class="fr-share" id="share-4618"&gt;
+                            <div class="fr-collapse" id="snippet-4181">
+                                <pre class=" language-html"><code>&lt;div class="fr-share" id="share-4174"&gt;
     &lt;p class="fr-share__title"&gt;Partager la page&lt;/p&gt;
     &lt;ul class="fr-btns-group"&gt;
         &lt;li&gt;
-            &lt;a target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre" id="share-4619" onclick="window.open(this.href,'Partager sur Facebook','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=450'); event.preventDefault();" aria-describedby="tooltip-4617" href="https://www.facebook.com/sharer.php?u=[À MODIFIER - url de la page]" class="fr-btn--facebook fr-btn"&gt;Partager sur Facebook&lt;/a&gt;
-            &lt;span class="fr-tooltip fr-placement" id="tooltip-4617" role="tooltip"&gt;Lorem [...] elit ut.&lt;/span&gt;
+            &lt;a onclick="window.open(this.href,'Partager sur Facebook','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=450'); event.preventDefault();" aria-describedby="tooltip-4173" id="share-4175" href="https://www.facebook.com/sharer.php?u=[À MODIFIER - url de la page]" target="_blank" rel="noopener external" class="fr-btn--facebook fr-btn"&gt;Partager sur Facebook&lt;/a&gt;
+            &lt;span class="fr-tooltip fr-placement" id="tooltip-4173" role="tooltip"&gt;Lorem [...] elit ut.&lt;/span&gt;
         &lt;/li&gt;
         &lt;li&gt;
             &lt;!-- Les paramètres de la reqûete doivent être URI-encodés (ex: encodeURIComponent() en js) --&gt;
-            &lt;a target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre" id="share-4620" onclick="window.open(this.href,'Partager sur X (anciennement Twitter)','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=420'); event.preventDefault();" href="https://twitter.com/intent/tweet?url=[À MODIFIER - url de la page]&amp;text=[À MODIFIER - titre ou texte descriptif de la page]&amp;via=[À MODIFIER - via]&amp;hashtags=[À MODIFIER - hashtags]" class="fr-btn--twitter-x fr-btn"&gt;Partager sur X (anciennement Twitter)&lt;/a&gt;
+            &lt;a onclick="window.open(this.href,'Partager sur X (anciennement Twitter)','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=420'); event.preventDefault();" id="share-4176" href="https://twitter.com/intent/tweet?url=[À MODIFIER - url de la page]&amp;text=[À MODIFIER - titre ou texte descriptif de la page]&amp;via=[À MODIFIER - via]&amp;hashtags=[À MODIFIER - hashtags]" target="_blank" rel="noopener external" class="fr-btn--twitter-x fr-btn"&gt;Partager sur X (anciennement Twitter)&lt;/a&gt;
         &lt;/li&gt;
         &lt;li&gt;
-            &lt;a target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre" id="share-4621" onclick="window.open(this.href,'Partager sur LinkedIn','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=550,height=550'); event.preventDefault();" href="https://www.linkedin.com/shareArticle?url=[À MODIFIER - url de la page]&amp;title=[À MODIFIER - titre ou texte descriptif de la page]" class="fr-btn--linkedin fr-btn"&gt;Partager sur LinkedIn&lt;/a&gt;
+            &lt;!-- Les paramètres de la reqûete doivent être URI-encodés (ex: encodeURIComponent() en js) --&gt;
+            &lt;a onclick="window.open(this.href,'Partager sur Bluesky','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=430'); event.preventDefault();" id="share-4177" href="https://bsky.app/intent/compose?text=[À MODIFIER - titre ou texte descriptif de la page]+[À MODIFIER - url de la page]" target="_blank" rel="noopener external" class="fr-btn--bluesky fr-btn"&gt;Partager sur Bluesky&lt;/a&gt;
         &lt;/li&gt;
         &lt;li&gt;
-            &lt;a target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre" id="share-4622" href="mailto:?subject=[À MODIFIER - objet du mail]&amp;body=[À MODIFIER - titre ou texte descriptif de la page] [À MODIFIER - url de la page]" class="fr-btn--mail fr-btn"&gt;Partager par email&lt;/a&gt;
+            &lt;a onclick="window.open(this.href,'Partager sur LinkedIn','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=550,height=550'); event.preventDefault();" id="share-4178" href="https://www.linkedin.com/shareArticle?url=[À MODIFIER - url de la page]&amp;title=[À MODIFIER - titre ou texte descriptif de la page]" target="_blank" rel="noopener external" class="fr-btn--linkedin fr-btn"&gt;Partager sur LinkedIn&lt;/a&gt;
         &lt;/li&gt;
         &lt;li&gt;
-            &lt;button id="share-4623" onclick="navigator.clipboard.writeText(window.location).then(function() {alert('Adresse copiée dans le presse papier.')});" class="fr-btn--copy fr-btn"&gt;Copier dans le presse-papier&lt;/button&gt;
+            &lt;a id="share-4179" href="mailto:?subject=[À MODIFIER - objet du mail]&amp;body=[À MODIFIER - titre ou texte descriptif de la page] [À MODIFIER - url de la page]" target="_blank" rel="noopener external" class="fr-btn--mail fr-btn"&gt;Partager par email&lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            &lt;button onclick="navigator.clipboard.writeText(window.location).then(function() {alert('Adresse copiée dans le presse papier.')});" type="button" id="share-4180" class="fr-btn--copy fr-btn"&gt;Copier dans le presse-papier&lt;/button&gt;
         &lt;/li&gt;
     &lt;/ul&gt;
 &lt;/div&gt;
@@ -336,8 +344,8 @@
                                                         Lorem ipsum dolor sit ame
                                                     </td>
                                                     <td>
-                                                        <button id="button-4626" aria-describedby="tooltip-4625" class="fr-btn--tooltip fr-btn">Information contextuelle</button>
-                                                        <span class="fr-tooltip fr-placement" id="tooltip-4625" role="tooltip">Lorem ipsum dolor sit amet, consectetur adipiscing, incididunt, ut labore et dolore magna aliqua. Vitae sapien pellentesque habitant morbi tristique senectus et. Diam maecenas sed enim ut. Accumsan lacus vel facilisis volutpat est. Ut aliquam purus sit amet luctus. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</span>
+                                                        <button aria-describedby="tooltip-4182" type="button" class="fr-btn--tooltip fr-btn">Information contextuelle</button>
+                                                        <span class="fr-tooltip fr-placement" id="tooltip-4182" role="tooltip">Lorem ipsum dolor sit amet, consectetur adipiscing, incididunt, ut labore et dolore magna aliqua. Vitae sapien pellentesque habitant morbi tristique senectus et. Diam maecenas sed enim ut. Accumsan lacus vel facilisis volutpat est. Ut aliquam purus sit amet luctus. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.</span>
                                                     </td>
                                                     <td>
                                                         Lorem ipsum dolor sit ame
@@ -381,9 +389,9 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-4629">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-4184">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-4629">
+                            <div class="fr-collapse" id="snippet-4184">
                                 <pre class=" language-html"><code>&lt;div class="fr-table" id="tootltip-table-component"&gt;
     &lt;div class="fr-table__wrapper"&gt;
         &lt;div class="fr-table__container"&gt;
@@ -428,8 +436,8 @@
                                 Lorem [...] elit ut.
                             &lt;/td&gt;
                             &lt;td&gt;
-                                &lt;button id="button-4628" aria-describedby="tooltip-4627" class="fr-btn--tooltip fr-btn"&gt;Information contextuelle&lt;/button&gt;
-                                &lt;span class="fr-tooltip fr-placement" id="tooltip-4627" role="tooltip"&gt;Lorem [...] elit ut.&lt;/span&gt;
+                                &lt;button aria-describedby="tooltip-4183" type="button" class="fr-btn--tooltip fr-btn"&gt;Information contextuelle&lt;/button&gt;
+                                &lt;span class="fr-tooltip fr-placement" id="tooltip-4183" role="tooltip"&gt;Lorem [...] elit ut.&lt;/span&gt;
                             &lt;/td&gt;
                             &lt;td&gt;
                                 Lorem [...] elit ut.
@@ -477,14 +485,14 @@
             </div>
         </div>
     </div>
-    <button aria-controls="fr-theme-modal" data-fr-opened="false" style="z-index: 1600" id="button-4630" class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary">Libellé bouton</button>
+    <button aria-controls="fr-theme-modal" data-fr-opened="false" style="z-index: 1600" type="button" class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary">Libellé bouton</button>
     <dialog id="fr-theme-modal" class="fr-modal" aria-labelledby="fr-theme-modal-title">
         <div class="fr-container fr-container--fluid fr-container-md">
             <div class="fr-grid-row fr-grid-row--center">
                 <div class="fr-col-12 fr-col-md-6 fr-col-lg-4">
                     <div class="fr-modal__body">
                         <div class="fr-modal__header">
-                            <button aria-controls="fr-theme-modal" id="button-4631" title="Fermer" class="fr-btn--close fr-btn">Fermer</button>
+                            <button aria-controls="fr-theme-modal" title="Fermer" type="button" id="button-4185" class="fr-btn--close fr-btn">Fermer</button>
                         </div>
                         <div class="fr-modal__content">
                             <h1 id="fr-theme-modal-title" class="fr-modal__title">

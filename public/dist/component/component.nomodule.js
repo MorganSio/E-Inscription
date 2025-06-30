@@ -1,4 +1,4 @@
-/*! DSFR v1.12.1 | SPDX-License-Identifier: MIT | License-Filename: LICENSE.md | restricted use (see terms and conditions) */
+/*! DSFR v1.13.2 | SPDX-License-Identifier: MIT | License-Filename: LICENSE.md | restricted use (see terms and conditions) */
 
 (function () {
   'use strict';
@@ -7,7 +7,7 @@
     prefix: 'fr',
     namespace: 'dsfr',
     organisation: '@gouvfr',
-    version: '1.12.1'
+    version: '1.13.2'
   };
 
   var api = window[config.namespace];
@@ -401,6 +401,7 @@
   var TooltipSelector = {
     TOOLTIP: api.internals.ns.selector('tooltip'),
     SHOWN: api.internals.ns.selector('tooltip--shown'),
+    HIDDING: api.internals.ns.selector('tooltip--hidding'),
     BUTTON: api.internals.ns.selector('btn--tooltip')
   };
 
@@ -552,6 +553,8 @@
 
     Tooltip.prototype.transitionEnd = function transitionEnd () {
       if (this._state === TooltipState.HIDING) {
+        this.removeClass(TooltipSelector.SHOWN);
+        this.removeClass(TooltipSelector.HIDDING);
         this._state = TooltipState.HIDDEN;
         this.isShown = false;
       }
@@ -567,17 +570,19 @@
         case value:
           this._state = TooltipState.SHOWN;
           this.addClass(TooltipSelector.SHOWN);
+          this.removeClass(TooltipSelector.HIDDING);
           this.dispatch(TooltipEvent.SHOW);
           superclass.prototype.isShown = true;
           break;
 
         case this.isShown && !value && this._state === TooltipState.SHOWN:
           this._state = TooltipState.HIDING;
-          this.removeClass(TooltipSelector.SHOWN);
+          this.addClass(TooltipSelector.HIDDING);
           break;
 
         case this.isShown && !value && this._state === TooltipState.HIDDEN:
           this.dispatch(TooltipEvent.HIDE);
+          this.removeClass(TooltipSelector.HIDDING);
           superclass.prototype.isShown = false;
           break;
       }
@@ -585,6 +590,7 @@
 
     Tooltip.prototype.render = function render () {
       superclass.prototype.render.call(this);
+      this.rect = this.getRect();
       var x = this.referentRect.center - this.rect.center;
       var limit = this.rect.width * 0.5 - 8;
       if (x < -limit) { x = -limit; }
@@ -809,7 +815,7 @@
   var Modal = /*@__PURE__*/(function (superclass) {
     function Modal () {
       superclass.call(this, api.core.DisclosureType.OPENED, ModalSelector.MODAL, ModalButton, 'ModalsGroup');
-      this._isActive = false;
+      this._isDecorated = false;
       this.scrolling = this.resize.bind(this, false);
       this.resizing = this.resize.bind(this, true);
     }
@@ -818,7 +824,7 @@
     Modal.prototype = Object.create( superclass && superclass.prototype );
     Modal.prototype.constructor = Modal;
 
-    var prototypeAccessors = { body: { configurable: true },isDialog: { configurable: true } };
+    var prototypeAccessors = { body: { configurable: true },isDialog: { configurable: true },isActive: { configurable: true } };
     var staticAccessors = { instanceClassName: { configurable: true } };
 
     staticAccessors.instanceClassName.get = function () {
@@ -828,7 +834,6 @@
     Modal.prototype.init = function init () {
       superclass.prototype.init.call(this);
       this._isDialog = this.node.tagName === 'DIALOG';
-      this.isScrolling = false;
       this.listenClick();
       this.addEmission(api.core.RootEmission.KEYDOWN, this._keydown.bind(this));
     };
@@ -876,12 +881,15 @@
 
     Modal.prototype.disclose = function disclose (withhold) {
       if (!superclass.prototype.disclose.call(this, withhold)) { return false; }
-      if (this.body) { this.body.activate(); }
+      if (this.body) {
+        this.body.isResizing = true;
+        this.body.resize();
+      }
       this.isScrollLocked = true;
       this.setAttribute('aria-modal', 'true');
       this.setAttribute('open', 'true');
       if (!this._isDialog) {
-        this.activateModal();
+        this.decorateDialog();
       }
       return true;
     };
@@ -891,9 +899,9 @@
       this.isScrollLocked = false;
       this.removeAttribute('aria-modal');
       this.removeAttribute('open');
-      if (this.body) { this.body.deactivate(); }
+      if (this.body) { this.body.isResizing = false; }
       if (!this._isDialog) {
-        this.deactivateModal();
+        this.stripDialog();
       }
       return true;
     };
@@ -906,16 +914,25 @@
       this._isDialog = value;
     };
 
-    Modal.prototype.activateModal = function activateModal () {
-      if (this._isActive) { return; }
-      this._isActive = true;
+    prototypeAccessors.isActive.get = function () {
+      return superclass.prototype.isActive;
+    };
+
+    prototypeAccessors.isActive.set = function (value) {
+      superclass.prototype.isActive = value;
+      if (value) { this._ensureAccessibleName(); }
+    };
+
+    Modal.prototype.decorateDialog = function decorateDialog () {
+      if (this._isDecorated) { return; }
+      this._isDecorated = true;
       this._hasDialogRole = this.getAttribute('role') === 'dialog';
       if (!this._hasDialogRole) { this.setAttribute('role', 'dialog'); }
     };
 
-    Modal.prototype.deactivateModal = function deactivateModal () {
-      if (!this._isActive) { return; }
-      this._isActive = false;
+    Modal.prototype.stripDialog = function stripDialog () {
+      if (!this._isDecorated) { return; }
+      this._isDecorated = false;
       if (!this._hasDialogRole) { this.removeAttribute('role'); }
     };
 
@@ -926,7 +943,7 @@
     };
 
     Modal.prototype._ensureAccessibleName = function _ensureAccessibleName () {
-      if (this.hasAttribute('aria-labelledby') || this.hasAttribute('aria-label')) { return; }
+      if (!this.isActive || !this.isEnabled || (this.isEnabled && (this.hasAttribute('aria-labelledby') || this.hasAttribute('aria-label')))) { return; }
       this.warn('missing accessible name');
       var title = this.node.querySelector(ModalSelector.TITLE);
       var primary = this.primaryButtons[0];
@@ -1106,7 +1123,7 @@
       }
 
       unordereds = unordereds.filter(function (unordered) {
-        if (unordered.tagName.toLowerCase() !== 'input' || unordered.getAttribute('type').toLowerCase() !== 'radio') { return true; }
+        if (unordered.tagName.toLowerCase() !== 'input' || (unordered.getAttribute('type') && unordered.getAttribute('type').toLowerCase() !== 'radio')) { return true; }
         var name = unordered.getAttribute('name');
         return groups[name].keep(unordered);
       });
@@ -1219,15 +1236,6 @@
 
     ModalBody.prototype.init = function init () {
       this.listen('scroll', this.divide.bind(this));
-    };
-
-    ModalBody.prototype.activate = function activate () {
-      this.isResizing = true;
-      this.resize();
-    };
-
-    ModalBody.prototype.deactivate = function deactivate () {
-      this.isResizing = false;
     };
 
     ModalBody.prototype.divide = function divide () {
@@ -1550,7 +1558,7 @@
     Navigation.prototype = Object.create( superclass && superclass.prototype );
     Navigation.prototype.constructor = Navigation;
 
-    var prototypeAccessors = { index: { configurable: true },canUngroup: { configurable: true } };
+    var prototypeAccessors = { hasOpenedMenu: { configurable: true },index: { configurable: true },canUngroup: { configurable: true } };
     var staticAccessors = { instanceClassName: { configurable: true } };
 
     staticAccessors.instanceClassName.get = function () {
@@ -1563,6 +1571,7 @@
       this.out = false;
       this.addEmission(api.core.RootEmission.CLICK, this._handleRootClick.bind(this));
       this.listen('mousedown', this.handleMouseDown.bind(this));
+      this.addEmission(api.core.RootEmission.KEYDOWN, this._keydown.bind(this));
       this.listenClick({ capture: true });
       this.isResizing = true;
     };
@@ -1571,8 +1580,31 @@
       return superclass.prototype.validate.call(this, member) && member.element.node.matches(api.internals.legacy.isLegacy ? NavigationSelector.COLLAPSE_LEGACY : NavigationSelector.COLLAPSE);
     };
 
+    prototypeAccessors.hasOpenedMenu.get = function () {
+      return this.isBreakpoint(api.core.Breakpoints.LG) && this.index > -1;
+    };
+
+    Navigation.prototype._keydown = function _keydown (keyCode) {
+      var this$1$1 = this;
+
+      switch (keyCode) {
+        case api.core.KeyCodes.ESCAPE:
+          if (!this.hasOpenedMenu) { return; }
+          this.index = -1;
+          break;
+
+        case api.core.KeyCodes.TAB:
+          if (!this.hasOpenedMenu) { return; }
+          this.request(function () {
+            if (this$1$1.current.node.contains(document.activeElement)) { return; }
+            this$1$1.index = -1;
+          });
+          break;
+      }
+    };
+
     Navigation.prototype.handleMouseDown = function handleMouseDown (e) {
-      if (!this.isBreakpoint(api.core.Breakpoints.LG) || this.index === -1 || !this.current) { return; }
+      if (!this.hasOpenedMenu) { return; }
       this.position = this.current.node.contains(e.target) ? NavigationMousePosition.INSIDE : NavigationMousePosition.OUTSIDE;
       this.requestPosition();
     };
@@ -2038,12 +2070,11 @@
 
     /* ajoute la classe fr-table__shadow-left ou fr-table__shadow-right sur fr-table en fonction d'une valeur de scroll et du sens (right, left) */
     TabsList.prototype.scroll = function scroll () {
-      var scrollLeft = this.node.scrollLeft;
+      var scrollLeft = Math.abs(this.node.scrollLeft);
       var isMin = scrollLeft <= SCROLL_OFFSET$1;
       var max = this.node.scrollWidth - this.node.clientWidth - SCROLL_OFFSET$1;
-
       var isMax = Math.abs(scrollLeft) >= max;
-      var isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+      var isRtl = getComputedStyle(this.node).direction === 'rtl';
       var minSelector = isRtl ? TabSelector.SHADOW_RIGHT : TabSelector.SHADOW_LEFT;
       var maxSelector = isRtl ? TabSelector.SHADOW_LEFT : TabSelector.SHADOW_RIGHT;
 
@@ -2745,6 +2776,7 @@
     RangeInput.prototype = Object.create( superclass && superclass.prototype );
     RangeInput.prototype.constructor = RangeInput;
 
+    var prototypeAccessors = { proxy: { configurable: true },value: { configurable: true } };
     var staticAccessors = { instanceClassName: { configurable: true } };
 
     staticAccessors.instanceClassName.get = function () {
@@ -2753,11 +2785,9 @@
 
     RangeInput.prototype.init = function init () {
       this._init();
-      this.node.value = this.getAttribute('value');
-      this._changing = this.change.bind(this);
-      this._listenerType = this.isLegacy ? 'change' : 'input';
-      this.listen(this._listenerType, this._changing);
+      this._value = parseFloat(this.node.getAttribute('value'));
       if (this.isLegacy) { this.addDescent(RangeEmission.ENABLE_POINTER, this._enablePointer.bind(this)); }
+      this.isRendering = true;
       this.change();
     };
 
@@ -2774,6 +2804,21 @@
       this.addDescent(RangeEmission.VALUE2, this.setValue.bind(this));
     };
 
+    prototypeAccessors.proxy.get = function () {
+      var scope = this;
+
+      var proxyAccessors = {
+        get value () {
+          return scope.value;
+        },
+        set value (value) {
+          scope.value = value;
+        }
+      };
+
+      return api.internals.property.completeAssign.call(this, superclass.prototype.proxy, proxyAccessors);
+    };
+
     RangeInput.prototype._enablePointer = function _enablePointer (pointerId) {
       var isEnabled = pointerId === this._pointerId;
       if (this._isPointerEnabled === isEnabled) { return; }
@@ -2782,16 +2827,32 @@
       else { this.style.setProperty('pointer-events', 'none'); }
     };
 
+    prototypeAccessors.value.get = function () {
+      return parseFloat(this.node.value);
+    };
+
+    prototypeAccessors.value.set = function (value) {
+      var parsedValue = parseFloat(value);
+      if (parsedValue === this._value) { return; }
+      this._value = parsedValue;
+      this.node.value = parsedValue;
+      this.dispatch('change');
+      this.change();
+    };
+
     RangeInput.prototype.setValue = function setValue (value) {
       if (parseFloat(this.node.value) > value) {
-        this.node.value = value;
-        this.dispatch('change', undefined, true);
-        this.change();
+        this.value = value;
       }
     };
 
     RangeInput.prototype.change = function change () {
-      this.ascend(RangeEmission.VALUE, parseFloat(this.node.value));
+      this.ascend(RangeEmission.VALUE, this._value);
+    };
+
+    RangeInput.prototype.render = function render () {
+      var parsedValue = parseFloat(this.node.value);
+      if (parsedValue !== this._value) { this.value = parsedValue; }
     };
 
     RangeInput.prototype.mutate = function mutate (attributesNames) {
@@ -2806,6 +2867,7 @@
       if (this._listenerType) { this.unlisten(this._listenerType, this._changing); }
     };
 
+    Object.defineProperties( RangeInput.prototype, prototypeAccessors );
     Object.defineProperties( RangeInput, staticAccessors );
 
     return RangeInput;
@@ -2834,9 +2896,7 @@
 
     RangeInput2.prototype.setValue = function setValue (value) {
       if (parseFloat(this.node.value) < value) {
-        this.node.value = value;
-        this.dispatch('change', undefined, true);
-        this.change();
+        this.value = value;
       }
     };
 
@@ -2942,6 +3002,7 @@
 
   var HeaderSelector = {
     HEADER: api.internals.ns.selector('header'),
+    BRAND_LINK: api.internals.ns.selector('header__brand a'),
     TOOLS_LINKS: api.internals.ns.selector('header__tools-links'),
     MENU_LINKS: api.internals.ns.selector('header__menu-links'),
     BUTTONS: ((api.internals.ns.selector('header__tools-links')) + " " + (api.internals.ns.selector('btns-group')) + ", " + (api.internals.ns.selector('header__tools-links')) + " " + (api.internals.ns.selector('links-group'))),
@@ -2978,16 +3039,23 @@
       // eslint-disable-next-line no-useless-escape
       toolsHtmlIdList = toolsHtmlIdList.map(function (element) { return element.replace('id=\"', '').replace('\"', ''); });
 
-      var toolsHtmlAriaControlList = toolsHtml.match(/aria-controls="(.*?)"/gm);
-      var toolsHtmlDuplicateId = toolsHtml.replace(/id="(.*?)"/gm, 'id="$1' + copySuffix + '"');
-      if (toolsHtmlAriaControlList) {
-        for (var i = 0, list = toolsHtmlAriaControlList; i < list.length; i += 1) {
-          var element = list[i];
+      var dupplicateAttributes = ['aria-controls', 'aria-describedby', 'aria-labelledby'];
 
-          var ariaControlsValue = element.replace('aria-controls="', '').replace('"', '');
-          if (toolsHtmlIdList.includes(ariaControlsValue)) {
-            toolsHtmlDuplicateId = toolsHtmlDuplicateId.replace(("aria-controls=\"" + ariaControlsValue + "\""), ("aria-controls=\"" + (ariaControlsValue + copySuffix) + "\""));
-          }      }
+      var toolsHtmlDuplicateId = toolsHtml.replace(/id="(.*?)"/gm, ("id=\"$1" + copySuffix + "\""));
+
+      for (var i$1 = 0, list$1 = dupplicateAttributes; i$1 < list$1.length; i$1 += 1) {
+        var attribute = list$1[i$1];
+
+        var toolsHtmlAttributeList = toolsHtml.match(new RegExp((attribute + "=\"(.*?)\""), 'gm'));
+        if (toolsHtmlAttributeList) {
+          for (var i = 0, list = toolsHtmlAttributeList; i < list.length; i += 1) {
+            var element = list[i];
+
+            var attributeValue = element.replace((attribute + "=\""), '').replace('"', '');
+            if (toolsHtmlIdList.includes(attributeValue)) {
+              toolsHtmlDuplicateId = toolsHtmlDuplicateId.replace((attribute + "=\"" + attributeValue + "\""), (attribute + "=\"" + (attributeValue + copySuffix) + "\""));
+            }        }
+        }
       }
 
       if (toolsHtmlDuplicateId === menuHtml) { return; }
@@ -3025,6 +3093,7 @@
     };
 
     HeaderModal.prototype.init = function init () {
+      this.storeAria();
       this.isResizing = true;
     };
 
@@ -3035,17 +3104,37 @@
 
     HeaderModal.prototype.activateModal = function activateModal () {
       var modal = this.element.getInstance('Modal');
-      if (!modal) { return; }
-      modal.isEnabled = true;
+      if (!modal) {
+        this.request(this.activateModal.bind(this));
+        return;
+      }
+      this.restoreAria();
+      modal.isActive = true;
       this.listenClick({ capture: true });
     };
 
     HeaderModal.prototype.deactivateModal = function deactivateModal () {
       var modal = this.element.getInstance('Modal');
-      if (!modal) { return; }
+      if (!modal) {
+        this.request(this.deactivateModal.bind(this));
+        return;
+      }
       modal.conceal();
-      modal.isEnabled = false;
+      modal.isActive = false;
+      this.storeAria();
       this.unlistenClick({ capture: true });
+    };
+
+    HeaderModal.prototype.storeAria = function storeAria () {
+      if (this.hasAttribute('aria-labelledby')) { this._ariaLabelledby = this.getAttribute('aria-labelledby'); }
+      if (this.hasAttribute('aria-label')) { this._ariaLabel = this.getAttribute('aria-label'); }
+      this.removeAttribute('aria-labelledby');
+      this.removeAttribute('aria-label');
+    };
+
+    HeaderModal.prototype.restoreAria = function restoreAria () {
+      if (this._ariaLabelledby) { this.setAttribute('aria-labelledby', this._ariaLabelledby); }
+      if (this._ariaLabel) { this.setAttribute('aria-label', this._ariaLabel); }
     };
 
     HeaderModal.prototype.handleClick = function handleClick (e) {
@@ -3380,7 +3469,8 @@
     };
 
     TableRow.prototype._handleCheckboxChange = function _handleCheckboxChange (node) {
-      if (node.name === 'row-select') {
+      if (node.name === 'row-select' ||
+        node.getAttribute(api.internals.ns.attr('row-select')) === 'true') {
         this.isSelected = node.checked === true;
       }
     };

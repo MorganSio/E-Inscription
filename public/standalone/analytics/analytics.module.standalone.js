@@ -1,10 +1,10 @@
-/*! DSFR v1.12.1 | SPDX-License-Identifier: MIT | License-Filename: LICENSE.md | restricted use (see terms and conditions) */
+/*! DSFR v1.13.2 | SPDX-License-Identifier: MIT | License-Filename: LICENSE.md | restricted use (see terms and conditions) */
 
 const config = {
   prefix: 'fr',
   namespace: 'dsfr',
   organisation: '@gouvfr',
-  version: '1.12.1'
+  version: '1.13.2'
 };
 
 const ns = name => `${config.prefix}-${name}`;
@@ -489,7 +489,7 @@ class Queue {
       case ActionRegulation.ENFORCE:
         return true;
       default:
-        return this._collector.isActionEnabled;
+        return this._collector.isActionEnabled === true;
     }
   }
 
@@ -1849,6 +1849,24 @@ const ActioneeEmission = {
   REWIND: api.internals.ns.emission('analytics', 'rewind')
 };
 
+const ActionEnable = {
+  ENABLE: {
+    entries: ['enable', 'enabled', 'true', 'yes', '1', true],
+    value: true,
+    output: true
+  },
+  DISABLE: {
+    entries: ['disable', 'disabled', 'false', 'no', '0', false],
+    value: false,
+    output: false
+  },
+  REDUCE: {
+    entries: ['reduce'],
+    value: 'reduce',
+    output: false
+  }
+};
+
 class Collector {
   constructor (config) {
     switch (config.collection) {
@@ -1887,7 +1905,7 @@ class Collector {
         }
     }
 
-    this._isActionEnabled = config.isActionEnabled === 'false' || config.isActionEnabled;
+    this.isActionEnabled = config.isActionEnabled;
 
     this._user = new User(config.user);
     this._site = new Site(config.site);
@@ -1985,11 +2003,15 @@ class Collector {
   }
 
   get isActionEnabled () {
-    return this._isActionEnabled;
+    return this._isActionEnabled.value;
   }
 
   set isActionEnabled (value) {
-    this._isActionEnabled = value;
+    this._isActionEnabled = Object.values(ActionEnable).find(enable => enable.entries.includes(value)) || ActionEnable.DISABLE;
+  }
+
+  get isActionReduced () {
+    return this._isActionEnabled === ActionEnable.REDUCE;
   }
 
   get layer () {
