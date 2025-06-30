@@ -292,7 +292,7 @@
   </script>
     <span id="[url - à modifier]"></span>
     <div class="fr-container fr-mt-2v fr-mb-8w">
-        <p class="fr-text--sm" style="float:right">DSFR v1.12.1</p>
+        <p class="fr-text--sm" style="float:right">DSFR v1.13.2</p>
         <p>
             <a class="fr-icon-arrow-left-line fr-link--icon-left" href="../">Retour</a>
         </p>
@@ -302,24 +302,28 @@
         <div class="fr-container">
             <h3>Boutons de partage actifs</h3>
             <div class="fr-mb-6v">
-                <div class="fr-share" id="share-443">
+                <div class="fr-share" id="share-356">
                     <p class="fr-share__title">Partager la page</p>
                     <ul class="fr-btns-group">
                         <li>
-                            <a target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre" id="share-444" onclick="window.open(this.href,'Partager sur Facebook','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=450'); event.preventDefault();" href="https://www.facebook.com/sharer.php?u=[À MODIFIER - url de la page]" class="fr-btn--facebook fr-btn">Partager sur Facebook</a>
+                            <a onclick="window.open(this.href,'Partager sur Facebook','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=450'); event.preventDefault();" id="share-357" href="https://www.facebook.com/sharer.php?u=[À MODIFIER - url de la page]" target="_blank" rel="noopener external" class="fr-btn--facebook fr-btn">Partager sur Facebook</a>
                         </li>
                         <li>
                             <!-- Les paramètres de la reqûete doivent être URI-encodés (ex: encodeURIComponent() en js) -->
-                            <a target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre" id="share-445" onclick="window.open(this.href,'Partager sur X (anciennement Twitter)','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=420'); event.preventDefault();" href="https://twitter.com/intent/tweet?url=[À MODIFIER - url de la page]&text=[À MODIFIER - titre ou texte descriptif de la page]&via=[À MODIFIER - via]&hashtags=[À MODIFIER - hashtags]" class="fr-btn--twitter-x fr-btn">Partager sur X (anciennement Twitter)</a>
+                            <a onclick="window.open(this.href,'Partager sur X (anciennement Twitter)','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=420'); event.preventDefault();" id="share-358" href="https://twitter.com/intent/tweet?url=[À MODIFIER - url de la page]&text=[À MODIFIER - titre ou texte descriptif de la page]&via=[À MODIFIER - via]&hashtags=[À MODIFIER - hashtags]" target="_blank" rel="noopener external" class="fr-btn--twitter-x fr-btn">Partager sur X (anciennement Twitter)</a>
                         </li>
                         <li>
-                            <a target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre" id="share-446" onclick="window.open(this.href,'Partager sur LinkedIn','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=550,height=550'); event.preventDefault();" href="https://www.linkedin.com/shareArticle?url=[À MODIFIER - url de la page]&title=[À MODIFIER - titre ou texte descriptif de la page]" class="fr-btn--linkedin fr-btn">Partager sur LinkedIn</a>
+                            <!-- Les paramètres de la reqûete doivent être URI-encodés (ex: encodeURIComponent() en js) -->
+                            <a onclick="window.open(this.href,'Partager sur Bluesky','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=430'); event.preventDefault();" id="share-359" href="https://bsky.app/intent/compose?text=[À MODIFIER - titre ou texte descriptif de la page]+[À MODIFIER - url de la page]" target="_blank" rel="noopener external" class="fr-btn--bluesky fr-btn">Partager sur Bluesky</a>
                         </li>
                         <li>
-                            <a target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre" id="share-447" href="mailto:?subject=[À MODIFIER - objet du mail]&body=[À MODIFIER - titre ou texte descriptif de la page] [À MODIFIER - url de la page]" class="fr-btn--mail fr-btn">Partager par email</a>
+                            <a onclick="window.open(this.href,'Partager sur LinkedIn','toolbar=no,location=yes,status=no,menubar=no,scrollbars=yes,resizable=yes,width=550,height=550'); event.preventDefault();" id="share-360" href="https://www.linkedin.com/shareArticle?url=[À MODIFIER - url de la page]&title=[À MODIFIER - titre ou texte descriptif de la page]" target="_blank" rel="noopener external" class="fr-btn--linkedin fr-btn">Partager sur LinkedIn</a>
                         </li>
                         <li>
-                            <button id="share-448" onclick="navigator.clipboard.writeText(window.location).then(function() {alert('Adresse copiée dans le presse papier.')});" class="fr-btn--copy fr-btn">Copier dans le presse-papier</button>
+                            <a id="share-361" href="mailto:?subject=[À MODIFIER - objet du mail]&body=[À MODIFIER - titre ou texte descriptif de la page] [À MODIFIER - url de la page]" target="_blank" rel="noopener external" class="fr-btn--mail fr-btn">Partager par email</a>
+                        </li>
+                        <li>
+                            <button onclick="navigator.clipboard.writeText(window.location).then(function() {alert('Adresse copiée dans le presse papier.')});" type="button" id="share-362" class="fr-btn--copy fr-btn">Copier dans le presse-papier</button>
                         </li>
                     </ul>
                 </div>

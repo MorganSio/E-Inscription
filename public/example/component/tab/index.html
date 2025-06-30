@@ -115,13 +115,13 @@
   </script>
     <span id="[url - à modifier]"></span>
     <div class="fr-container fr-mt-2v fr-mb-8w">
-        <p class="fr-text--sm" style="float:right">DSFR v1.12.1</p>
+        <p class="fr-text--sm" style="float:right">DSFR v1.13.2</p>
         <p>
             <a class="fr-icon-arrow-left-line fr-link--icon-left fr-link" href="../">Retour</a>
         </p>
         <h1>Onglets (tab)</h1>
         <p>Le composant onglet permet aux utilisateurs de naviguer dans différentes sections de contenu au sein d’une même page.</p>
-        <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/onglet" target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre">Documentation</a>
+        <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/onglet" rel="noopener external" target="_blank" title="${getBlankTitle('Documentation')}">Documentation</a>
     </div>
     <div class="fr-mb-12w">
         <div class="fr-container">
@@ -132,19 +132,19 @@
                         <div class="fr-tabs">
                             <ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
                                 <li role="presentation">
-                                    <button id="tabpanel-6830" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6830-panel">Libellé onglet 1</button>
+                                    <button type="button" id="tab-6460" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6460-panel">Libellé onglet 1</button>
                                 </li>
                                 <li role="presentation">
-                                    <button id="tabpanel-6831" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6831-panel">Libellé onglet 2</button>
+                                    <button type="button" id="tab-6461" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6461-panel">Libellé onglet 2</button>
                                 </li>
                                 <li role="presentation">
-                                    <button id="tabpanel-6832" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6832-panel">Libellé onglet 3</button>
+                                    <button type="button" id="tab-6462" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6462-panel">Libellé onglet 3</button>
                                 </li>
                                 <li role="presentation">
-                                    <button id="tabpanel-6833" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6833-panel">Libellé onglet 4</button>
+                                    <button type="button" id="tab-6463" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6463-panel">Libellé onglet 4</button>
                                 </li>
                             </ul>
-                            <div id="tabpanel-6830-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6830" tabindex="0">
+                            <div id="tab-6460-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6460" tabindex="0">
                                 <!-- données de test -->
                                 <div>
                                     <h4 class="fr-h4">Contenu 1</h4>
@@ -158,7 +158,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div id="tabpanel-6831-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6831" tabindex="0">
+                            <div id="tab-6461-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6461" tabindex="0">
                                 <!-- données de test -->
                                 <div>
                                     <h4 class="fr-h4">Contenu 2</h4>
@@ -170,7 +170,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div id="tabpanel-6832-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6832" tabindex="0">
+                            <div id="tab-6462-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6462" tabindex="0">
                                 <!-- données de test -->
                                 <div>
                                     <h4 class="fr-h4">Contenu 3</h4>
@@ -185,7 +185,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div id="tabpanel-6833-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6833" tabindex="0">
+                            <div id="tab-6463-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6463" tabindex="0">
                                 <!-- données de test -->
                                 <div>
                                     <h4 class="fr-h4">Contenu 4</h4>
@@ -200,34 +200,34 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6838">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6468">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-6838">
+                            <div class="fr-collapse" id="snippet-6468">
                                 <pre class=" language-html"><code>&lt;div class="fr-tabs"&gt;
     &lt;ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]"&gt;
         &lt;li role="presentation"&gt;
-            &lt;button id="tabpanel-6834" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6834-panel"&gt;Libellé onglet 1&lt;/button&gt;
+            &lt;button type="button" id="tab-6464" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6464-panel"&gt;Libellé onglet 1&lt;/button&gt;
         &lt;/li&gt;
         &lt;li role="presentation"&gt;
-            &lt;button id="tabpanel-6835" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6835-panel"&gt;Libellé onglet 2&lt;/button&gt;
+            &lt;button type="button" id="tab-6465" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6465-panel"&gt;Libellé onglet 2&lt;/button&gt;
         &lt;/li&gt;
         &lt;li role="presentation"&gt;
-            &lt;button id="tabpanel-6836" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6836-panel"&gt;Libellé onglet 3&lt;/button&gt;
+            &lt;button type="button" id="tab-6466" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6466-panel"&gt;Libellé onglet 3&lt;/button&gt;
         &lt;/li&gt;
         &lt;li role="presentation"&gt;
-            &lt;button id="tabpanel-6837" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6837-panel"&gt;Libellé onglet 4&lt;/button&gt;
+            &lt;button type="button" id="tab-6467" class="fr-tabs__tab fr-icon-checkbox-circle-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6467-panel"&gt;Libellé onglet 4&lt;/button&gt;
         &lt;/li&gt;
     &lt;/ul&gt;
-    &lt;div id="tabpanel-6834-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6834" tabindex="0"&gt;
+    &lt;div id="tab-6464-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6464" tabindex="0"&gt;
         &lt;!-- données de test --&gt;
     &lt;/div&gt;
-    &lt;div id="tabpanel-6835-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6835" tabindex="0"&gt;
+    &lt;div id="tab-6465-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6465" tabindex="0"&gt;
         &lt;!-- données de test --&gt;
     &lt;/div&gt;
-    &lt;div id="tabpanel-6836-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6836" tabindex="0"&gt;
+    &lt;div id="tab-6466-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6466" tabindex="0"&gt;
         &lt;!-- données de test --&gt;
     &lt;/div&gt;
-    &lt;div id="tabpanel-6837-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6837" tabindex="0"&gt;
+    &lt;div id="tab-6467-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6467" tabindex="0"&gt;
         &lt;!-- données de test --&gt;
     &lt;/div&gt;
 &lt;/div&gt;
@@ -240,13 +240,13 @@
                         <div class="fr-tabs">
                             <ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
                                 <li role="presentation">
-                                    <button id="tabpanel-6839" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6839-panel">Libellé onglet 1</button>
+                                    <button type="button" id="tab-6469" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6469-panel">Libellé onglet 1</button>
                                 </li>
                                 <li role="presentation">
-                                    <button id="tabpanel-6840" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6840-panel">Libellé onglet 2</button>
+                                    <button type="button" id="tab-6470" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6470-panel">Libellé onglet 2</button>
                                 </li>
                             </ul>
-                            <div id="tabpanel-6839-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6839" tabindex="0">
+                            <div id="tab-6469-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6469" tabindex="0">
                                 <!-- données de test -->
                                 <div>
                                     <h4 class="fr-h4">Contenu 1</h4>
@@ -260,7 +260,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div id="tabpanel-6840-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6840" tabindex="0">
+                            <div id="tab-6470-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6470" tabindex="0">
                                 <!-- données de test -->
                                 <div>
                                     <h4 class="fr-h4">Contenu 2</h4>
@@ -280,22 +280,22 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6843">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6473">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-6843">
+                            <div class="fr-collapse" id="snippet-6473">
                                 <pre class=" language-html"><code>&lt;div class="fr-tabs"&gt;
     &lt;ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]"&gt;
         &lt;li role="presentation"&gt;
-            &lt;button id="tabpanel-6841" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6841-panel"&gt;Libellé onglet 1&lt;/button&gt;
+            &lt;button type="button" id="tab-6471" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6471-panel"&gt;Libellé onglet 1&lt;/button&gt;
         &lt;/li&gt;
         &lt;li role="presentation"&gt;
-            &lt;button id="tabpanel-6842" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6842-panel"&gt;Libellé onglet 2&lt;/button&gt;
+            &lt;button type="button" id="tab-6472" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6472-panel"&gt;Libellé onglet 2&lt;/button&gt;
         &lt;/li&gt;
     &lt;/ul&gt;
-    &lt;div id="tabpanel-6841-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6841" tabindex="0"&gt;
+    &lt;div id="tab-6471-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6471" tabindex="0"&gt;
         &lt;!-- données de test --&gt;
     &lt;/div&gt;
-    &lt;div id="tabpanel-6842-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6842" tabindex="0"&gt;
+    &lt;div id="tab-6472-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6472" tabindex="0"&gt;
         &lt;!-- données de test --&gt;
     &lt;/div&gt;
 &lt;/div&gt;
@@ -308,36 +308,36 @@
                         <div class="fr-tabs">
                             <ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
                                 <li role="presentation">
-                                    <button id="tabpanel-6863" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6863-panel">Onglet principal 0</button>
+                                    <button type="button" id="tabs-in-tabs-6486" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabs-in-tabs-6486-panel">Onglet principal 0</button>
                                 </li>
                                 <li role="presentation">
-                                    <button id="tabpanel-6864" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6864-panel">Onglet principal 1</button>
+                                    <button type="button" id="tabs-in-tabs-6497" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabs-in-tabs-6497-panel">Onglet principal 1</button>
                                 </li>
                             </ul>
-                            <div id="tabpanel-6863-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6863" tabindex="0">
+                            <div id="tabs-in-tabs-6486-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabs-in-tabs-6486" tabindex="0">
                                 <div class="fr-tabs">
                                     <ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
                                         <li role="presentation">
-                                            <button id="tabpanel-6853" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6853-panel">Onglet imbriqué 0</button>
+                                            <button type="button" id="tab-6487" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6487-panel">Onglet imbriqué 0</button>
                                         </li>
                                         <li role="presentation">
-                                            <button id="tabpanel-6854" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6854-panel">Onglet imbriqué 1</button>
+                                            <button type="button" id="tab-6488" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6488-panel">Onglet imbriqué 1</button>
                                         </li>
                                         <li role="presentation">
-                                            <button id="tabpanel-6855" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6855-panel">Onglet imbriqué 2</button>
+                                            <button type="button" id="tab-6489" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6489-panel">Onglet imbriqué 2</button>
                                         </li>
                                     </ul>
-                                    <div id="tabpanel-6853-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6853" tabindex="0">
+                                    <div id="tab-6487-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6487" tabindex="0">
                                         <div class="fr-tabs">
                                             <ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
                                                 <li role="presentation">
-                                                    <button id="tabpanel-6844" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6844-panel">Libellé onglet 1</button>
+                                                    <button type="button" id="tab-6475" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6475-panel">Libellé onglet 1</button>
                                                 </li>
                                                 <li role="presentation">
-                                                    <button id="tabpanel-6845" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6845-panel">Libellé onglet 2</button>
+                                                    <button type="button" id="tab-6476" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6476-panel">Libellé onglet 2</button>
                                                 </li>
                                             </ul>
-                                            <div id="tabpanel-6844-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6844" tabindex="0">
+                                            <div id="tab-6475-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6475" tabindex="0">
                                                 <!-- données de test -->
                                                 <div>
                                                     <h4 class="fr-h4">Contenu 1</h4>
@@ -349,7 +349,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div id="tabpanel-6845-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6845" tabindex="0">
+                                            <div id="tab-6476-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6476" tabindex="0">
                                                 <!-- données de test -->
                                                 <div>
                                                     <h4 class="fr-h4">Contenu 2</h4>
@@ -365,20 +365,20 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="tabpanel-6854-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6854" tabindex="0">
+                                    <div id="tab-6488-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6488" tabindex="0">
                                         <div class="fr-tabs">
                                             <ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
                                                 <li role="presentation">
-                                                    <button id="tabpanel-6846" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6846-panel">Libellé onglet 1</button>
+                                                    <button type="button" id="tab-6478" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6478-panel">Libellé onglet 1</button>
                                                 </li>
                                                 <li role="presentation">
-                                                    <button id="tabpanel-6847" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6847-panel">Libellé onglet 2</button>
+                                                    <button type="button" id="tab-6479" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6479-panel">Libellé onglet 2</button>
                                                 </li>
                                                 <li role="presentation">
-                                                    <button id="tabpanel-6848" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6848-panel">Libellé onglet 3</button>
+                                                    <button type="button" id="tab-6480" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6480-panel">Libellé onglet 3</button>
                                                 </li>
                                             </ul>
-                                            <div id="tabpanel-6846-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6846" tabindex="0">
+                                            <div id="tab-6478-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6478" tabindex="0">
                                                 <!-- données de test -->
                                                 <div>
                                                     <h4 class="fr-h4">Contenu 1</h4>
@@ -391,7 +391,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div id="tabpanel-6847-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6847" tabindex="0">
+                                            <div id="tab-6479-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6479" tabindex="0">
                                                 <!-- données de test -->
                                                 <div>
                                                     <h4 class="fr-h4">Contenu 2</h4>
@@ -405,7 +405,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div id="tabpanel-6848-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6848" tabindex="0">
+                                            <div id="tab-6480-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6480" tabindex="0">
                                                 <!-- données de test -->
                                                 <div>
                                                     <h4 class="fr-h4">Contenu 3</h4>
@@ -418,23 +418,23 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="tabpanel-6855-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6855" tabindex="0">
+                                    <div id="tab-6489-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6489" tabindex="0">
                                         <div class="fr-tabs">
                                             <ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
                                                 <li role="presentation">
-                                                    <button id="tabpanel-6849" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6849-panel">Libellé onglet 1</button>
+                                                    <button type="button" id="tab-6482" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6482-panel">Libellé onglet 1</button>
                                                 </li>
                                                 <li role="presentation">
-                                                    <button id="tabpanel-6850" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6850-panel">Libellé onglet 2</button>
+                                                    <button type="button" id="tab-6483" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6483-panel">Libellé onglet 2</button>
                                                 </li>
                                                 <li role="presentation">
-                                                    <button id="tabpanel-6851" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6851-panel">Libellé onglet 3</button>
+                                                    <button type="button" id="tab-6484" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6484-panel">Libellé onglet 3</button>
                                                 </li>
                                                 <li role="presentation">
-                                                    <button id="tabpanel-6852" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6852-panel">Libellé onglet 4</button>
+                                                    <button type="button" id="tab-6485" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6485-panel">Libellé onglet 4</button>
                                                 </li>
                                             </ul>
-                                            <div id="tabpanel-6849-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6849" tabindex="0">
+                                            <div id="tab-6482-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6482" tabindex="0">
                                                 <!-- données de test -->
                                                 <div>
                                                     <h4 class="fr-h4">Contenu 1</h4>
@@ -449,7 +449,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div id="tabpanel-6850-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6850" tabindex="0">
+                                            <div id="tab-6483-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6483" tabindex="0">
                                                 <!-- données de test -->
                                                 <div>
                                                     <h4 class="fr-h4">Contenu 2</h4>
@@ -460,7 +460,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div id="tabpanel-6851-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6851" tabindex="0">
+                                            <div id="tab-6484-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6484" tabindex="0">
                                                 <!-- données de test -->
                                                 <div>
                                                     <h4 class="fr-h4">Contenu 3</h4>
@@ -478,7 +478,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div id="tabpanel-6852-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6852" tabindex="0">
+                                            <div id="tab-6485-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6485" tabindex="0">
                                                 <!-- données de test -->
                                                 <div>
                                                     <h4 class="fr-h4">Contenu 4</h4>
@@ -493,27 +493,27 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="tabpanel-6864-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6864" tabindex="0">
+                            <div id="tabs-in-tabs-6497-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabs-in-tabs-6497" tabindex="0">
                                 <div class="fr-tabs">
                                     <ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
                                         <li role="presentation">
-                                            <button id="tabpanel-6861" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6861-panel">Onglet imbriqué 0</button>
+                                            <button type="button" id="tab-6498" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6498-panel">Onglet imbriqué 0</button>
                                         </li>
                                         <li role="presentation">
-                                            <button id="tabpanel-6862" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6862-panel">Onglet imbriqué 1</button>
+                                            <button type="button" id="tab-6499" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6499-panel">Onglet imbriqué 1</button>
                                         </li>
                                     </ul>
-                                    <div id="tabpanel-6861-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6861" tabindex="0">
+                                    <div id="tab-6498-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6498" tabindex="0">
                                         <div class="fr-tabs">
                                             <ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
                                                 <li role="presentation">
-                                                    <button id="tabpanel-6856" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6856-panel">Libellé onglet 1</button>
+                                                    <button type="button" id="tab-6491" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6491-panel">Libellé onglet 1</button>
                                                 </li>
                                                 <li role="presentation">
-                                                    <button id="tabpanel-6857" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6857-panel">Libellé onglet 2</button>
+                                                    <button type="button" id="tab-6492" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6492-panel">Libellé onglet 2</button>
                                                 </li>
                                             </ul>
-                                            <div id="tabpanel-6856-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6856" tabindex="0">
+                                            <div id="tab-6491-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6491" tabindex="0">
                                                 <!-- données de test -->
                                                 <div>
                                                     <h4 class="fr-h4">Contenu 1</h4>
@@ -528,7 +528,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div id="tabpanel-6857-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6857" tabindex="0">
+                                            <div id="tab-6492-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6492" tabindex="0">
                                                 <!-- données de test -->
                                                 <div>
                                                     <h4 class="fr-h4">Contenu 2</h4>
@@ -541,20 +541,20 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="tabpanel-6862-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6862" tabindex="0">
+                                    <div id="tab-6499-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6499" tabindex="0">
                                         <div class="fr-tabs">
                                             <ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
                                                 <li role="presentation">
-                                                    <button id="tabpanel-6858" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6858-panel">Libellé onglet 1</button>
+                                                    <button type="button" id="tab-6494" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6494-panel">Libellé onglet 1</button>
                                                 </li>
                                                 <li role="presentation">
-                                                    <button id="tabpanel-6859" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6859-panel">Libellé onglet 2</button>
+                                                    <button type="button" id="tab-6495" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6495-panel">Libellé onglet 2</button>
                                                 </li>
                                                 <li role="presentation">
-                                                    <button id="tabpanel-6860" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6860-panel">Libellé onglet 3</button>
+                                                    <button type="button" id="tab-6496" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6496-panel">Libellé onglet 3</button>
                                                 </li>
                                             </ul>
-                                            <div id="tabpanel-6858-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6858" tabindex="0">
+                                            <div id="tab-6494-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6494" tabindex="0">
                                                 <!-- données de test -->
                                                 <div>
                                                     <h4 class="fr-h4">Contenu 1</h4>
@@ -564,7 +564,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div id="tabpanel-6859-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6859" tabindex="0">
+                                            <div id="tab-6495-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6495" tabindex="0">
                                                 <!-- données de test -->
                                                 <div>
                                                     <h4 class="fr-h4">Contenu 2</h4>
@@ -584,7 +584,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div id="tabpanel-6860-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6860" tabindex="0">
+                                            <div id="tab-6496-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6496" tabindex="0">
                                                 <!-- données de test -->
                                                 <div>
                                                     <h4 class="fr-h4">Contenu 3</h4>
@@ -602,153 +602,153 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6886">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6526">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-6886">
+                            <div class="fr-collapse" id="snippet-6526">
                                 <pre class=" language-html"><code>&lt;div class="fr-tabs"&gt;
     &lt;ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]"&gt;
         &lt;li role="presentation"&gt;
-            &lt;button id="tabpanel-6884" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6884-panel"&gt;Onglet principal 0&lt;/button&gt;
+            &lt;button type="button" id="tabs-in-tabs-6512" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabs-in-tabs-6512-panel"&gt;Onglet principal 0&lt;/button&gt;
         &lt;/li&gt;
         &lt;li role="presentation"&gt;
-            &lt;button id="tabpanel-6885" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6885-panel"&gt;Onglet principal 1&lt;/button&gt;
+            &lt;button type="button" id="tabs-in-tabs-6523" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabs-in-tabs-6523-panel"&gt;Onglet principal 1&lt;/button&gt;
         &lt;/li&gt;
     &lt;/ul&gt;
-    &lt;div id="tabpanel-6884-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6884" tabindex="0"&gt;
+    &lt;div id="tabs-in-tabs-6512-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabs-in-tabs-6512" tabindex="0"&gt;
         &lt;div class="fr-tabs"&gt;
             &lt;ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]"&gt;
                 &lt;li role="presentation"&gt;
-                    &lt;button id="tabpanel-6874" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6874-panel"&gt;Onglet imbriqué 0&lt;/button&gt;
+                    &lt;button type="button" id="tab-6513" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6513-panel"&gt;Onglet imbriqué 0&lt;/button&gt;
                 &lt;/li&gt;
                 &lt;li role="presentation"&gt;
-                    &lt;button id="tabpanel-6875" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6875-panel"&gt;Onglet imbriqué 1&lt;/button&gt;
+                    &lt;button type="button" id="tab-6514" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6514-panel"&gt;Onglet imbriqué 1&lt;/button&gt;
                 &lt;/li&gt;
                 &lt;li role="presentation"&gt;
-                    &lt;button id="tabpanel-6876" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6876-panel"&gt;Onglet imbriqué 2&lt;/button&gt;
+                    &lt;button type="button" id="tab-6515" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6515-panel"&gt;Onglet imbriqué 2&lt;/button&gt;
                 &lt;/li&gt;
             &lt;/ul&gt;
-            &lt;div id="tabpanel-6874-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6874" tabindex="0"&gt;
+            &lt;div id="tab-6513-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6513" tabindex="0"&gt;
                 &lt;div class="fr-tabs"&gt;
                     &lt;ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]"&gt;
                         &lt;li role="presentation"&gt;
-                            &lt;button id="tabpanel-6865" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6865-panel"&gt;Libellé onglet 1&lt;/button&gt;
+                            &lt;button type="button" id="tab-6501" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6501-panel"&gt;Libellé onglet 1&lt;/button&gt;
                         &lt;/li&gt;
                         &lt;li role="presentation"&gt;
-                            &lt;button id="tabpanel-6866" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6866-panel"&gt;Libellé onglet 2&lt;/button&gt;
+                            &lt;button type="button" id="tab-6502" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6502-panel"&gt;Libellé onglet 2&lt;/button&gt;
                         &lt;/li&gt;
                     &lt;/ul&gt;
-                    &lt;div id="tabpanel-6865-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6865" tabindex="0"&gt;
+                    &lt;div id="tab-6501-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6501" tabindex="0"&gt;
                         &lt;!-- données de test --&gt;
                     &lt;/div&gt;
-                    &lt;div id="tabpanel-6866-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6866" tabindex="0"&gt;
+                    &lt;div id="tab-6502-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6502" tabindex="0"&gt;
                         &lt;!-- données de test --&gt;
                     &lt;/div&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
-            &lt;div id="tabpanel-6875-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6875" tabindex="0"&gt;
+            &lt;div id="tab-6514-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6514" tabindex="0"&gt;
                 &lt;div class="fr-tabs"&gt;
                     &lt;ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]"&gt;
                         &lt;li role="presentation"&gt;
-                            &lt;button id="tabpanel-6867" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6867-panel"&gt;Libellé onglet 1&lt;/button&gt;
+                            &lt;button type="button" id="tab-6504" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6504-panel"&gt;Libellé onglet 1&lt;/button&gt;
                         &lt;/li&gt;
                         &lt;li role="presentation"&gt;
-                            &lt;button id="tabpanel-6868" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6868-panel"&gt;Libellé onglet 2&lt;/button&gt;
+                            &lt;button type="button" id="tab-6505" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6505-panel"&gt;Libellé onglet 2&lt;/button&gt;
                         &lt;/li&gt;
                         &lt;li role="presentation"&gt;
-                            &lt;button id="tabpanel-6869" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6869-panel"&gt;Libellé onglet 3&lt;/button&gt;
+                            &lt;button type="button" id="tab-6506" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6506-panel"&gt;Libellé onglet 3&lt;/button&gt;
                         &lt;/li&gt;
                     &lt;/ul&gt;
-                    &lt;div id="tabpanel-6867-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6867" tabindex="0"&gt;
+                    &lt;div id="tab-6504-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6504" tabindex="0"&gt;
                         &lt;!-- données de test --&gt;
                     &lt;/div&gt;
-                    &lt;div id="tabpanel-6868-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6868" tabindex="0"&gt;
+                    &lt;div id="tab-6505-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6505" tabindex="0"&gt;
                         &lt;!-- données de test --&gt;
                     &lt;/div&gt;
-                    &lt;div id="tabpanel-6869-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6869" tabindex="0"&gt;
+                    &lt;div id="tab-6506-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6506" tabindex="0"&gt;
                         &lt;!-- données de test --&gt;
                     &lt;/div&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
-            &lt;div id="tabpanel-6876-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6876" tabindex="0"&gt;
+            &lt;div id="tab-6515-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6515" tabindex="0"&gt;
                 &lt;div class="fr-tabs"&gt;
                     &lt;ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]"&gt;
                         &lt;li role="presentation"&gt;
-                            &lt;button id="tabpanel-6870" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6870-panel"&gt;Libellé onglet 1&lt;/button&gt;
+                            &lt;button type="button" id="tab-6508" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6508-panel"&gt;Libellé onglet 1&lt;/button&gt;
                         &lt;/li&gt;
                         &lt;li role="presentation"&gt;
-                            &lt;button id="tabpanel-6871" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6871-panel"&gt;Libellé onglet 2&lt;/button&gt;
+                            &lt;button type="button" id="tab-6509" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6509-panel"&gt;Libellé onglet 2&lt;/button&gt;
                         &lt;/li&gt;
                         &lt;li role="presentation"&gt;
-                            &lt;button id="tabpanel-6872" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6872-panel"&gt;Libellé onglet 3&lt;/button&gt;
+                            &lt;button type="button" id="tab-6510" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6510-panel"&gt;Libellé onglet 3&lt;/button&gt;
                         &lt;/li&gt;
                         &lt;li role="presentation"&gt;
-                            &lt;button id="tabpanel-6873" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6873-panel"&gt;Libellé onglet 4&lt;/button&gt;
+                            &lt;button type="button" id="tab-6511" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6511-panel"&gt;Libellé onglet 4&lt;/button&gt;
                         &lt;/li&gt;
                     &lt;/ul&gt;
-                    &lt;div id="tabpanel-6870-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6870" tabindex="0"&gt;
+                    &lt;div id="tab-6508-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6508" tabindex="0"&gt;
                         &lt;!-- données de test --&gt;
                     &lt;/div&gt;
-                    &lt;div id="tabpanel-6871-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6871" tabindex="0"&gt;
+                    &lt;div id="tab-6509-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6509" tabindex="0"&gt;
                         &lt;!-- données de test --&gt;
                     &lt;/div&gt;
-                    &lt;div id="tabpanel-6872-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6872" tabindex="0"&gt;
+                    &lt;div id="tab-6510-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6510" tabindex="0"&gt;
                         &lt;!-- données de test --&gt;
                     &lt;/div&gt;
-                    &lt;div id="tabpanel-6873-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6873" tabindex="0"&gt;
+                    &lt;div id="tab-6511-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6511" tabindex="0"&gt;
                         &lt;!-- données de test --&gt;
                     &lt;/div&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
         &lt;/div&gt;
     &lt;/div&gt;
-    &lt;div id="tabpanel-6885-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6885" tabindex="0"&gt;
+    &lt;div id="tabs-in-tabs-6523-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabs-in-tabs-6523" tabindex="0"&gt;
         &lt;div class="fr-tabs"&gt;
             &lt;ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]"&gt;
                 &lt;li role="presentation"&gt;
-                    &lt;button id="tabpanel-6882" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6882-panel"&gt;Onglet imbriqué 0&lt;/button&gt;
+                    &lt;button type="button" id="tab-6524" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6524-panel"&gt;Onglet imbriqué 0&lt;/button&gt;
                 &lt;/li&gt;
                 &lt;li role="presentation"&gt;
-                    &lt;button id="tabpanel-6883" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6883-panel"&gt;Onglet imbriqué 1&lt;/button&gt;
+                    &lt;button type="button" id="tab-6525" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6525-panel"&gt;Onglet imbriqué 1&lt;/button&gt;
                 &lt;/li&gt;
             &lt;/ul&gt;
-            &lt;div id="tabpanel-6882-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6882" tabindex="0"&gt;
+            &lt;div id="tab-6524-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6524" tabindex="0"&gt;
                 &lt;div class="fr-tabs"&gt;
                     &lt;ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]"&gt;
                         &lt;li role="presentation"&gt;
-                            &lt;button id="tabpanel-6877" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6877-panel"&gt;Libellé onglet 1&lt;/button&gt;
+                            &lt;button type="button" id="tab-6517" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6517-panel"&gt;Libellé onglet 1&lt;/button&gt;
                         &lt;/li&gt;
                         &lt;li role="presentation"&gt;
-                            &lt;button id="tabpanel-6878" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6878-panel"&gt;Libellé onglet 2&lt;/button&gt;
+                            &lt;button type="button" id="tab-6518" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6518-panel"&gt;Libellé onglet 2&lt;/button&gt;
                         &lt;/li&gt;
                     &lt;/ul&gt;
-                    &lt;div id="tabpanel-6877-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6877" tabindex="0"&gt;
+                    &lt;div id="tab-6517-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6517" tabindex="0"&gt;
                         &lt;!-- données de test --&gt;
                     &lt;/div&gt;
-                    &lt;div id="tabpanel-6878-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6878" tabindex="0"&gt;
+                    &lt;div id="tab-6518-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6518" tabindex="0"&gt;
                         &lt;!-- données de test --&gt;
                     &lt;/div&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
-            &lt;div id="tabpanel-6883-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6883" tabindex="0"&gt;
+            &lt;div id="tab-6525-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6525" tabindex="0"&gt;
                 &lt;div class="fr-tabs"&gt;
                     &lt;ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]"&gt;
                         &lt;li role="presentation"&gt;
-                            &lt;button id="tabpanel-6879" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6879-panel"&gt;Libellé onglet 1&lt;/button&gt;
+                            &lt;button type="button" id="tab-6520" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6520-panel"&gt;Libellé onglet 1&lt;/button&gt;
                         &lt;/li&gt;
                         &lt;li role="presentation"&gt;
-                            &lt;button id="tabpanel-6880" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6880-panel"&gt;Libellé onglet 2&lt;/button&gt;
+                            &lt;button type="button" id="tab-6521" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6521-panel"&gt;Libellé onglet 2&lt;/button&gt;
                         &lt;/li&gt;
                         &lt;li role="presentation"&gt;
-                            &lt;button id="tabpanel-6881" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6881-panel"&gt;Libellé onglet 3&lt;/button&gt;
+                            &lt;button type="button" id="tab-6522" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6522-panel"&gt;Libellé onglet 3&lt;/button&gt;
                         &lt;/li&gt;
                     &lt;/ul&gt;
-                    &lt;div id="tabpanel-6879-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6879" tabindex="0"&gt;
+                    &lt;div id="tab-6520-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6520" tabindex="0"&gt;
                         &lt;!-- données de test --&gt;
                     &lt;/div&gt;
-                    &lt;div id="tabpanel-6880-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6880" tabindex="0"&gt;
+                    &lt;div id="tab-6521-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6521" tabindex="0"&gt;
                         &lt;!-- données de test --&gt;
                     &lt;/div&gt;
-                    &lt;div id="tabpanel-6881-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6881" tabindex="0"&gt;
+                    &lt;div id="tab-6522-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6522" tabindex="0"&gt;
                         &lt;!-- données de test --&gt;
                     &lt;/div&gt;
                 &lt;/div&gt;
@@ -765,18 +765,18 @@
                         <div class="fr-tabs">
                             <ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
                                 <li role="presentation">
-                                    <button id="tabpanel-6889" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6889-panel">Libellé onglet 1</button>
+                                    <button type="button" id="tab-accordion-6527" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-accordion-6527-panel">Libellé onglet 1</button>
                                 </li>
                                 <li role="presentation">
-                                    <button id="tabpanel-6890" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6890-panel">Libellé onglet 2</button>
+                                    <button type="button" id="tab-accordion-6529" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-accordion-6529-panel">Libellé onglet 2</button>
                                 </li>
                             </ul>
-                            <div id="tabpanel-6889-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6889" tabindex="0">
+                            <div id="tab-accordion-6527-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-accordion-6527" tabindex="0">
                                 <section class="fr-accordion">
                                     <h3 class="fr-accordion__title">
-                                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-6887">Libellé accordéon</button>
+                                        <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-6528">Libellé accordéon</button>
                                     </h3>
-                                    <div class="fr-collapse" id="accordion-6887">
+                                    <div class="fr-collapse" id="accordion-6528">
                                         <!-- données de test -->
                                         <div>
                                             <h4 class="fr-h4">Contenu </h4>
@@ -790,12 +790,12 @@
                                     </div>
                                 </section>
                             </div>
-                            <div id="tabpanel-6890-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6890" tabindex="0">
+                            <div id="tab-accordion-6529-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-accordion-6529" tabindex="0">
                                 <section class="fr-accordion">
                                     <h3 class="fr-accordion__title">
-                                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-6888">Libellé accordéon</button>
+                                        <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-6530">Libellé accordéon</button>
                                     </h3>
-                                    <div class="fr-collapse" id="accordion-6888">
+                                    <div class="fr-collapse" id="accordion-6530">
                                         <!-- données de test -->
                                         <div>
                                             <h4 class="fr-h4">Contenu </h4>
@@ -813,34 +813,34 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6895">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6535">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-6895">
+                            <div class="fr-collapse" id="snippet-6535">
                                 <pre class=" language-html"><code>&lt;div class="fr-tabs"&gt;
     &lt;ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]"&gt;
         &lt;li role="presentation"&gt;
-            &lt;button id="tabpanel-6893" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6893-panel"&gt;Libellé onglet 1&lt;/button&gt;
+            &lt;button type="button" id="tab-accordion-6531" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-accordion-6531-panel"&gt;Libellé onglet 1&lt;/button&gt;
         &lt;/li&gt;
         &lt;li role="presentation"&gt;
-            &lt;button id="tabpanel-6894" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6894-panel"&gt;Libellé onglet 2&lt;/button&gt;
+            &lt;button type="button" id="tab-accordion-6533" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-accordion-6533-panel"&gt;Libellé onglet 2&lt;/button&gt;
         &lt;/li&gt;
     &lt;/ul&gt;
-    &lt;div id="tabpanel-6893-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6893" tabindex="0"&gt;
+    &lt;div id="tab-accordion-6531-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-accordion-6531" tabindex="0"&gt;
         &lt;section class="fr-accordion"&gt;
             &lt;h3 class="fr-accordion__title"&gt;
-                &lt;button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-6891"&gt;Libellé accordéon&lt;/button&gt;
+                &lt;button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-6532"&gt;Libellé accordéon&lt;/button&gt;
             &lt;/h3&gt;
-            &lt;div class="fr-collapse" id="accordion-6891"&gt;
+            &lt;div class="fr-collapse" id="accordion-6532"&gt;
                 &lt;!-- données de test --&gt;
             &lt;/div&gt;
         &lt;/section&gt;
     &lt;/div&gt;
-    &lt;div id="tabpanel-6894-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6894" tabindex="0"&gt;
+    &lt;div id="tab-accordion-6533-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-accordion-6533" tabindex="0"&gt;
         &lt;section class="fr-accordion"&gt;
             &lt;h3 class="fr-accordion__title"&gt;
-                &lt;button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-6892"&gt;Libellé accordéon&lt;/button&gt;
+                &lt;button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-6534"&gt;Libellé accordéon&lt;/button&gt;
             &lt;/h3&gt;
-            &lt;div class="fr-collapse" id="accordion-6892"&gt;
+            &lt;div class="fr-collapse" id="accordion-6534"&gt;
                 &lt;!-- données de test --&gt;
             &lt;/div&gt;
         &lt;/section&gt;
@@ -855,13 +855,13 @@
                         <div class="fr-tabs fr-tabs--viewport-width">
                             <ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
                                 <li role="presentation">
-                                    <button id="tabpanel-6896" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6896-panel">Libellé onglet 1</button>
+                                    <button type="button" id="tab-6536" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6536-panel">Libellé onglet 1</button>
                                 </li>
                                 <li role="presentation">
-                                    <button id="tabpanel-6897" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6897-panel">Libellé onglet 2</button>
+                                    <button type="button" id="tab-6537" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6537-panel">Libellé onglet 2</button>
                                 </li>
                             </ul>
-                            <div id="tabpanel-6896-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6896" tabindex="0">
+                            <div id="tab-6536-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6536" tabindex="0">
                                 <!-- données de test -->
                                 <div>
                                     <h4 class="fr-h4">Contenu 1</h4>
@@ -873,7 +873,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div id="tabpanel-6897-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6897" tabindex="0">
+                            <div id="tab-6537-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6537" tabindex="0">
                                 <!-- données de test -->
                                 <div>
                                     <h4 class="fr-h4">Contenu 2</h4>
@@ -888,22 +888,22 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6900">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6540">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-6900">
+                            <div class="fr-collapse" id="snippet-6540">
                                 <pre class=" language-html"><code>&lt;div class="fr-tabs fr-tabs--viewport-width"&gt;
     &lt;ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]"&gt;
         &lt;li role="presentation"&gt;
-            &lt;button id="tabpanel-6898" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tabpanel-6898-panel"&gt;Libellé onglet 1&lt;/button&gt;
+            &lt;button type="button" id="tab-6538" class="fr-tabs__tab" tabindex="0" role="tab" aria-selected="true" aria-controls="tab-6538-panel"&gt;Libellé onglet 1&lt;/button&gt;
         &lt;/li&gt;
         &lt;li role="presentation"&gt;
-            &lt;button id="tabpanel-6899" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-6899-panel"&gt;Libellé onglet 2&lt;/button&gt;
+            &lt;button type="button" id="tab-6539" class="fr-tabs__tab" tabindex="-1" role="tab" aria-selected="false" aria-controls="tab-6539-panel"&gt;Libellé onglet 2&lt;/button&gt;
         &lt;/li&gt;
     &lt;/ul&gt;
-    &lt;div id="tabpanel-6898-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tabpanel-6898" tabindex="0"&gt;
+    &lt;div id="tab-6538-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="tab-6538" tabindex="0"&gt;
         &lt;!-- données de test --&gt;
     &lt;/div&gt;
-    &lt;div id="tabpanel-6899-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-6899" tabindex="0"&gt;
+    &lt;div id="tab-6539-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tab-6539" tabindex="0"&gt;
         &lt;!-- données de test --&gt;
     &lt;/div&gt;
 &lt;/div&gt;
@@ -915,14 +915,14 @@
             </div>
         </div>
     </div>
-    <button aria-controls="fr-theme-modal" data-fr-opened="false" style="z-index: 1600" id="button-6901" class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary">Libellé bouton</button>
+    <button aria-controls="fr-theme-modal" data-fr-opened="false" style="z-index: 1600" type="button" class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary">Libellé bouton</button>
     <dialog id="fr-theme-modal" class="fr-modal" aria-labelledby="fr-theme-modal-title">
         <div class="fr-container fr-container--fluid fr-container-md">
             <div class="fr-grid-row fr-grid-row--center">
                 <div class="fr-col-12 fr-col-md-6 fr-col-lg-4">
                     <div class="fr-modal__body">
                         <div class="fr-modal__header">
-                            <button aria-controls="fr-theme-modal" id="button-6902" title="Fermer" class="fr-btn--close fr-btn">Fermer</button>
+                            <button aria-controls="fr-theme-modal" title="Fermer" type="button" id="button-6541" class="fr-btn--close fr-btn">Fermer</button>
                         </div>
                         <div class="fr-modal__content">
                             <h1 id="fr-theme-modal-title" class="fr-modal__title">

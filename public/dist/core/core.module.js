@@ -1,4 +1,4 @@
-/*! DSFR v1.12.1 | SPDX-License-Identifier: MIT | License-Filename: LICENSE.md | restricted use (see terms and conditions) */
+/*! DSFR v1.13.2 | SPDX-License-Identifier: MIT | License-Filename: LICENSE.md | restricted use (see terms and conditions) */
 
 class State {
   constructor () {
@@ -59,7 +59,7 @@ const config = {
   prefix: 'fr',
   namespace: 'dsfr',
   organisation: '@gouvfr',
-  version: '1.12.1'
+  version: '1.13.2'
 };
 
 class LogLevel {
@@ -202,6 +202,45 @@ const Modes = {
   REACT: 'react'
 };
 
+const dispatch = (node, type, detail = null, bubbles = true, cancelable = false) => {
+  const options = { bubbles: bubbles === true, cancelable: cancelable === true };
+  if (detail) options.detail = detail;
+  const event = new CustomEvent(type, options);
+  node.dispatchEvent(event);
+};
+
+const rootDispatch = (type, detail = null, bubbles = false, cancelable = false) => dispatch(document.documentElement, type, detail, bubbles, cancelable);
+
+const ns = name => `${config.prefix}-${name}`;
+
+ns.selector = (name, notation) => {
+  if (notation === undefined) notation = '.';
+  return `${notation}${ns(name)}`;
+};
+
+ns.attr = (name) => `data-${ns(name)}`;
+
+ns.attr.selector = (name, value) => {
+  let result = ns.attr(name);
+  if (value !== undefined) result += `="${value}"`;
+  return `[${result}]`;
+};
+
+ns.event = (type) => `${config.namespace}.${type}`;
+
+ns.emission = (domain, type) => `emission:${domain}.${type}`;
+
+const RootEvent = {
+  READY: ns.event('ready'),
+  START: ns.event('start'),
+  STOP: ns.event('stop'),
+  RENDER: ns.event('render'),
+  RESIZE: ns.event('resize'),
+  BREAKPOINT: ns.event('breakpoint'),
+  SCROLL_LOCK: ns.event('scroll-lock'),
+  SCROLL_UNLOCK: ns.event('scroll-unlock')
+};
+
 class Options {
   constructor () {
     this._mode = Modes.AUTO;
@@ -231,6 +270,7 @@ class Options {
         break;
     }
     inspector.info(`version ${config.version}`);
+    rootDispatch(RootEvent.READY);
     this.mode = settings.mode || Modes.AUTO;
   }
 
@@ -350,25 +390,6 @@ class Module extends Collection {
   activate () {}
   deactivate () {}
 }
-
-const ns = name => `${config.prefix}-${name}`;
-
-ns.selector = (name, notation) => {
-  if (notation === undefined) notation = '.';
-  return `${notation}${ns(name)}`;
-};
-
-ns.attr = (name) => `data-${ns(name)}`;
-
-ns.attr.selector = (name, value) => {
-  let result = ns.attr(name);
-  if (value !== undefined) result += `="${value}"`;
-  return `[${result}]`;
-};
-
-ns.event = (type) => `${config.namespace}.${type}`;
-
-ns.emission = (domain, type) => `emission:${domain}.${type}`;
 
 const querySelectorAllArray = (element, selectors) => Array.prototype.slice.call(element.querySelectorAll(selectors));
 
@@ -895,6 +916,7 @@ class Renderer extends Module {
     const nexts = this.nexts.clone();
     this.nexts.clear();
     nexts.forEach((instance) => instance.next());
+    rootDispatch(RootEvent.RENDER);
   }
 }
 
@@ -925,6 +947,7 @@ class Resizer extends Module {
     if (!this.requireResize) return;
     this.forEach((instance) => instance.resize());
     this.requireResize = false;
+    rootDispatch(RootEvent.RESIZE);
   }
 }
 
@@ -953,6 +976,7 @@ class ScrollLocker extends Module {
       if (scrollBarGap > 0) {
         document.documentElement.style.setProperty('--scrollbar-width', `${scrollBarGap}px`);
       }
+      rootDispatch(RootEvent.SCROLL_LOCK);
     }
   }
 
@@ -964,6 +988,7 @@ class ScrollLocker extends Module {
       window.scrollTo(0, this._scrollY);
       if (this.behavior === 'smooth') document.documentElement.style.removeProperty('scroll-behavior');
       document.documentElement.style.removeProperty('--scrollbar-width');
+      rootDispatch(RootEvent.SCROLL_UNLOCK);
     }
   }
 
@@ -1116,11 +1141,13 @@ class Engine {
   start () {
     inspector.debug('START');
     state.isActive = true;
+    rootDispatch(RootEvent.START);
   }
 
   stop () {
     inspector.debug('STOP');
     state.isActive = false;
+    rootDispatch(RootEvent.STOP);
   }
 }
 
@@ -1222,7 +1249,8 @@ const dom = {
   queryParentSelector: queryParentSelector,
   querySelectorAllArray: querySelectorAllArray,
   queryActions: queryActions,
-  uniqueId: uniqueId
+  uniqueId: uniqueId,
+  dispatch: dispatch
 };
 
 class DataURISVG {
@@ -1456,6 +1484,55 @@ class Emitter {
   }
 }
 
+class FocusManager {
+  constructor () {
+    this._activeElements = [];
+    window.document.addEventListener('focusin', this._onFocusIn.bind(this));
+  }
+
+  _onFocusIn (e) {
+    this._activeElements.push(e.target);
+  }
+
+  get index () {
+    return this._activeElements.length - 1;
+  }
+
+  focus (index) {
+    const element = this._activeElements[index];
+    switch (true) {
+      case index < 0:
+      case this._activeElements.length === 0:
+        this.focusOnLogo();
+        return;
+      case !element:
+      case !document.documentElement.contains(element):
+      case !this._isDisplayed(element):
+        this.focus(index - 1);
+        return;
+    }
+
+    element.focus();
+  }
+
+  focusOnLogo () {
+    const logo = document.querySelector(api$1.header.HeaderSelector.BRAND_LINK);
+    if (logo) logo.focus();
+  }
+
+  _isDisplayed (element) {
+    while (element && element !== document.documentElement) {
+      if (element === document.body) return true;
+      const style = window.getComputedStyle(element);
+      if (style.display === 'none' || style.visibility === 'hidden') return false;
+      element = element.parentElement;
+    }
+    return true;
+  }
+}
+
+const focusManager = new FocusManager();
+
 class Breakpoint {
   constructor (id, minWidth) {
     this.id = id;
@@ -1475,6 +1552,10 @@ const Breakpoints = {
   XL: new Breakpoint('xl', 78)
 };
 
+const InstanceEvent = {
+  CLICK: ns.event('click')
+};
+
 class Instance {
   constructor (jsAttribute = true) {
     this.jsAttribute = jsAttribute;
@@ -1486,7 +1567,7 @@ class Instance {
     this._isEnabled = true;
     this._isDisposed = false;
     this._listeners = {};
-    this._handlingClick = this.handleClick.bind(this);
+    this._handlingClick = this._handleClick.bind(this);
     this._hashes = [];
     this._hash = '';
     this._keyListenerTypes = [];
@@ -1523,7 +1604,7 @@ class Instance {
 
     const proxyAccessors = {
       get node () {
-        return this.node;
+        return scope.node;
       },
       get isEnabled () {
         return scope.isEnabled;
@@ -1571,9 +1652,8 @@ class Instance {
     return [];
   }
 
-  dispatch (type, detail, bubbles, cancelable) {
-    const event = new CustomEvent(type, { detail: detail, bubble: bubbles === true, cancelable: cancelable === true });
-    this.node.dispatchEvent(event);
+  dispatch (type, detail = null, bubbles = true, cancelable = false) {
+    dispatch(this.node, type, detail, bubbles, cancelable);
   }
 
   // TODO v2 => listener au niveau des éléments qui redistribuent aux instances.
@@ -1612,6 +1692,11 @@ class Instance {
 
   unlistenClick (options) {
     this.unlisten('click', this._handlingClick, options);
+  }
+
+  _handleClick (e) {
+    this.handleClick(e);
+    this.dispatch(InstanceEvent.CLICK, this);
   }
 
   handleClick (e) {}
@@ -1912,6 +1997,14 @@ class Instance {
     this.node.blur();
   }
 
+  retainFocus () {
+    this._focusIndex = focusManager.index;
+  }
+
+  focusBack () {
+    focusManager.focus(this._focusIndex);
+  }
+
   focusClosest () {
     const closest = this._focusClosest(this.node.parentNode);
     if (closest) closest.focus();
@@ -2048,7 +2141,8 @@ class HashAction {
 
 const DisclosureEvent = {
   DISCLOSE: ns.event('disclose'),
-  CONCEAL: ns.event('conceal')
+  CONCEAL: ns.event('conceal'),
+  CURRENT: ns.event('current')
 };
 
 const DisclosureEmission = {
@@ -2070,6 +2164,7 @@ class Disclosure extends Instance {
     this.disclosuresGroupInstanceClassName = disclosuresGroupInstanceClassName;
     this.modifier = this._selector + '--' + this.type.id;
     this._isPristine = true;
+    this._isActive = true;
     this._isRetrievingPrimaries = false;
     this._hasRetrieved = false;
     this._primaryButtons = [];
@@ -2099,6 +2194,20 @@ class Disclosure extends Instance {
     else this.ascend(DisclosureEmission.REMOVED);
   }
 
+  get isActive () {
+    return this._isActive;
+  }
+
+  set isActive (value) {
+    if (this._isActive === value) return;
+    this._isActive = value;
+    if (value) this.ascend(DisclosureEmission.ADDED);
+    else {
+      this.ascend(DisclosureEmission.REMOVED);
+      if (this.isDisclosed) this.conceal();
+    }
+  }
+
   get isPristine () {
     return this._isPristine;
   }
@@ -2122,6 +2231,12 @@ class Disclosure extends Instance {
       },
       get isDisclosed () {
         return scope.isDisclosed;
+      },
+      get isEnabled () {
+        return scope.isEnabled;
+      },
+      get isActive () {
+        return scope.isActive;
       }
     };
 
@@ -2157,7 +2272,8 @@ class Disclosure extends Instance {
   }
 
   disclose (withhold) {
-    if (this.isDisclosed === true || !this.isEnabled) return false;
+    if (this.isDisclosed === true || !this.isEnabled || !this._isActive) return false;
+    this.retainFocus();
     this._isPristine = false;
     this.isDisclosed = true;
     if (!withhold && this.group) this.group.current = this;
@@ -2180,7 +2296,7 @@ class Disclosure extends Instance {
 
   set isDisclosed (value) {
     if (this._isDisclosed === value || (!this.isEnabled && value === true)) return;
-    this.dispatch(value ? DisclosureEvent.DISCLOSE : DisclosureEvent.CONCEAL, this.type);
+    if (!this._isPristine) this.dispatch(value ? DisclosureEvent.DISCLOSE : DisclosureEvent.CONCEAL, this);
     this._isDisclosed = value;
     if (value) this.addClass(this.modifier);
     else this.removeClass(this.modifier);
@@ -2224,6 +2340,7 @@ class Disclosure extends Instance {
 
   focus () {
     if (this._primaryButtons.length > 0) this._primaryButtons[0].focus();
+    else this.focusBack();
   }
 
   get primaryButtons () {
@@ -2240,7 +2357,7 @@ class Disclosure extends Instance {
     this._isRetrievingPrimaries = false;
     this._primaryButtons = this._electPrimaries(this.buttons);
 
-    if (this._hasRetrieved || this._primaryButtons.length === 0) return;
+    if (this._hasRetrieved || (this._primaryButtons.length === 0 && this.type.requirePrimary)) return;
     this.retrieved();
     this._hasRetrieved = true;
 
@@ -2251,7 +2368,7 @@ class Disclosure extends Instance {
       return;
     }
 
-    if (this._isPristine && this.isEnabled && !this.group) {
+    if (this._isPristine && this.isEnabled && this.isActive && !this.group) {
       switch (true) {
         case this.hash === this.id:
           this._spotlight();
@@ -2276,7 +2393,7 @@ class Disclosure extends Instance {
   }
 
   applyAbility (withhold = false) {
-    const isEnabled = !this._primaryButtons.every(button => button.isDisabled);
+    const isEnabled = !this.type.requirePrimary || this._primaryButtons.some(button => !button.isDisabled);
 
     if (this.isEnabled === isEnabled) return;
 
@@ -2462,7 +2579,7 @@ class DisclosuresGroup extends Instance {
 
   getMembers () {
     const members = this.element.getDescendantInstances(this.disclosureInstanceClassName, this.constructor.instanceClassName, true);
-    this._members = members.filter(this.validate.bind(this)).filter(member => member.isEnabled);
+    this._members = members.filter(this.validate.bind(this)).filter(member => member.isEnabled && member.isActive);
     const invalids = members.filter(member => !this._members.includes(member));
     invalids.forEach(invalid => invalid.conceal());
   }
@@ -2477,6 +2594,17 @@ class DisclosuresGroup extends Instance {
     this.getMembers();
     this._isRetrieving = false;
     this._hasRetrieved = true;
+
+    if (!this.isGrouped) {
+      for (let i = 0; i < this.length; i++) {
+        const member = this.members[i];
+        if (member.isInitiallyDisclosed) {
+          member.disclose(true);
+        }
+      }
+      return;
+    }
+
     if (this.hash) {
       for (let i = 0; i < this.length; i++) {
         const member = this.members[i];
@@ -2501,7 +2629,9 @@ class DisclosuresGroup extends Instance {
 
   update () {
     this.getMembers();
-    if (this._hasRetrieved) this.getIndex();
+    if (this._hasRetrieved) {
+      if (this.isGrouped) this.getIndex();
+    }
   }
 
   get members () {
@@ -2538,10 +2668,11 @@ class DisclosuresGroup extends Instance {
       if (value === i) {
         if (!member.isDisclosed) member.disclose(true);
       } else {
-        if ((this.isGrouped || !this.canUngroup) && member.isDisclosed) member.conceal(true);
+        if ((this.isGrouped || !this.canUngroup) && member.isDisclosed !== false) member.conceal(true);
       }
     }
     this.apply();
+    this.dispatch(DisclosureEvent.CURRENT, this.current);
   }
 
   get current () {
@@ -2596,21 +2727,24 @@ const DisclosureType = {
     ariaState: true,
     ariaControls: true,
     canConceal: true,
-    canDisable: true
+    canDisable: true,
+    requirePrimary: true
   },
   SELECT: {
     id: 'selected',
     ariaState: true,
     ariaControls: true,
     canConceal: false,
-    canDisable: true
+    canDisable: true,
+    requirePrimary: true
   },
   OPENED: {
     id: 'opened',
     ariaState: false,
     ariaControls: true,
     canConceal: true,
-    canDisable: false
+    canDisable: false,
+    requirePrimary: false
   }
 };
 
@@ -2779,10 +2913,6 @@ class EquisizedsGroup extends Instance {
   }
 }
 
-const ToggleEvent = {
-  TOGGLE: ns.event('toggle')
-};
-
 class Toggle extends Instance {
   static get instanceClassName () {
     return 'Toggle';
@@ -2807,7 +2937,6 @@ class Toggle extends Instance {
 
   set pressed (value) {
     this.setAttribute('aria-pressed', value ? 'true' : 'false');
-    this.dispatch(ToggleEvent.TOGGLE, value);
   }
 
   get proxy () {
@@ -3021,11 +3150,19 @@ class AssessFile extends Instance {
     }
 
     fetch(this.href, { method: 'HEAD', mode: 'cors' }).then(response => {
-      this.length = response.headers.get('content-length') || -1;
-      if (this.length === -1) {
-        inspector.warn('File size unknown: ' + this.href + '\nUnable to get HTTP header: "content-length"');
+      if (response.ok) {
+        this.length = response.headers.get('content-length') || -1;
+        if (this.length && this.length === -1) {
+          throw new Error('File size unknown' + '\n Unable to get HTTP header: "content-length"');
+        }
+        this.gather();
+      } else {
+        throw new Error('Unable to access the resource : Status ' + response.status);
       }
+    }).catch((error) => {
+      this.length = -1;
       this.gather();
+      inspector.warn('Fetch error on assess file : ' + this.href + '\n ' + error);
     });
   }
 
@@ -3047,7 +3184,6 @@ class AssessFile extends Instance {
 
     if (!this.length) {
       this.getFileLength();
-      return;
     }
 
     this.details = [];
@@ -3057,7 +3193,7 @@ class AssessFile extends Instance {
       if (extension) this.details.push(extension.toUpperCase());
     }
 
-    if (this.length !== -1) {
+    if (this.length && this.length !== -1) {
       this.details.push(this.bytesToSize(this.length));
     }
 
@@ -3213,6 +3349,7 @@ class Placement extends Instance {
     this._aligns = aligns;
     this._safeAreaMargin = safeAreaMargin;
     this._isShown = false;
+    this._x = this._y = 0;
   }
 
   static get instanceClassName () {
@@ -3368,21 +3505,11 @@ class Placement extends Instance {
     this._referent = referent;
   }
 
-  resize () {
-    this.safeArea = {
-      top: this._safeAreaMargin,
-      right: window.innerWidth - this._safeAreaMargin,
-      bottom: window.innerHeight - this._safeAreaMargin,
-      left: this._safeAreaMargin,
-      center: window.innerWidth * 0.5,
-      middle: window.innerHeight * 0.5
-    };
-  }
-
   render () {
     if (!this._referent) return;
-    this.rect = this.getRect();
     this.referentRect = this._referent.getRect();
+    this.rect = this.getRect();
+    this.safeArea = this.getSafeArea();
 
     if (this.mode === PlacementMode.AUTO) {
       this.place = this.getPlace();
@@ -3402,19 +3529,19 @@ class Placement extends Instance {
 
     switch (this.place) {
       case PlacementPosition.TOP:
-        y = this.referentRect.top - this.rect.height;
+        y = this.referentRect.top - this.rect.top - this.rect.height;
         break;
 
       case PlacementPosition.RIGHT:
-        x = this.referentRect.right;
+        x = this.referentRect.left - this.rect.left + this.referentRect.width;
         break;
 
       case PlacementPosition.BOTTOM:
-        y = this.referentRect.bottom;
+        y = this.referentRect.top - this.rect.top + this.referentRect.height;
         break;
 
       case PlacementPosition.LEFT:
-        x = this.referentRect.left - this.rect.width;
+        x = this.referentRect.left - this.rect.left - this.rect.width;
         break;
     }
 
@@ -3423,15 +3550,15 @@ class Placement extends Instance {
       case PlacementPosition.BOTTOM:
         switch (this.align) {
           case PlacementAlign.CENTER:
-            x = this.referentRect.center - this.rect.width * 0.5;
+            x = this.referentRect.left - this.rect.left + this.referentRect.width * 0.5 - this.rect.width * 0.5;
             break;
 
           case PlacementAlign.START:
-            x = this.referentRect.left;
+            x = this.referentRect.left - this.rect.left;
             break;
 
           case PlacementAlign.END:
-            x = this.referentRect.right - this.rect.width;
+            x = this.referentRect.left - this.rect.left + this.referentRect.width - this.rect.width;
             break;
         }
         break;
@@ -3440,25 +3567,23 @@ class Placement extends Instance {
       case PlacementPosition.LEFT:
         switch (this.align) {
           case PlacementAlign.CENTER:
-            y = this.referentRect.middle - this.rect.height * 0.5;
+            y = this.referentRect.top - this.rect.top + this.referentRect.height * 0.5 - this.rect.height * 0.5;
             break;
 
           case PlacementAlign.START:
-            y = this.referentRect.top;
+            y = this.referentRect.top - this.rect.top;
             break;
 
           case PlacementAlign.END:
-            y = this.referentRect.bottom - this.rect.height;
+            y = this.referentRect.top - this.rect.top - this.rect.height;
             break;
         }
         break;
     }
 
-    if (this._x !== x || this._y !== y) {
-      this._x = (x + 0.5) | 0;
-      this._y = (y + 0.5) | 0;
-      this.node.style.transform = `translate(${this._x}px,${this._y}px)`;
-    }
+    this._x += (x + 0.5) | 0;
+    this._y += (y + 0.5) | 0;
+    this.node.style.transform = `translate(${this._x}px,${this._y}px)`;
   }
 
   getPlace () {
@@ -3523,6 +3648,46 @@ class Placement extends Instance {
     }
 
     return this._aligns[0];
+  }
+
+  getSafeArea () {
+    let element = this.node;
+    let isX, isY;
+    let top = this._safeAreaMargin;
+    let right = window.innerWidth - this._safeAreaMargin;
+    let bottom = window.innerHeight - this._safeAreaMargin;
+    let left = this._safeAreaMargin;
+
+    while (element) {
+      if (element === document.body) break;
+      element = element.parentElement;
+      const style = window.getComputedStyle(element);
+
+      const overflow = /(visible|(\w+))(\s(visible|(\w+)))?/.exec(style.overflow);
+      isX = overflow[2] !== undefined;
+      isY = overflow[3] !== undefined ? overflow[5] !== undefined : overflow[2] !== undefined;
+
+      if (!isX && !isY) continue;
+      const rect = element.getBoundingClientRect();
+
+      if (isX) {
+        if (rect.left > left) left = rect.left;
+        if (rect.right < right) right = rect.right;
+      }
+      if (isY) {
+        if (rect.top > top) top = rect.top;
+        if (rect.bottom < bottom) bottom = rect.bottom;
+      }
+    }
+
+    return {
+      top: top,
+      right: right,
+      bottom: bottom,
+      left: left,
+      center: left + (right - left) * 0.5,
+      middle: top + (bottom - top) * 0.5
+    };
   }
 
   dispose () {

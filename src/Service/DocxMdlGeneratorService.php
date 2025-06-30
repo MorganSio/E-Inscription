@@ -51,69 +51,49 @@ class DocxMdlGeneratorService
     {
         $user = $etudiant->getUser();
         $infoEleve = $user ? $infoEleveRepository->findOneBy(['user' => $user]) : null;
+
+        $adhesion = $infoEleve?->getAdhesion();
+
         // Étudiant
         $templateProcessor->setValue('etudiant.nom', $user?->getNom() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.prenom', $user?->getPrenom() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.date_naissance', $etudiant->getDateDeNaissance()?->format('d/m/Y') ?? 'Non renseigné');
-        $templateProcessor->setValue('etudiant.classe', $etudiant->getClasse() ?? 'Non renseigné');
+        $templateProcessor->setValue('etudiant.classe', $etudiant->getClasse()?->getLabel() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.mail', $user?->getEmail() ?? 'Non renseigné');
-        $templateProcessor->setValue('etudiant.autorisation', $infoEleve?->getImageRights() ?? 'Non renseigné');
-        $templateProcessor->setValue('etudiant.type_paiement', $infoEleve->getPaymentMethod() ?? 'Non renseigné');
-
-        // Téléphone & email depuis Humain (User hérite de Humain)
-        if ($user instanceof \App\Entity\Humain) {
-            $templateProcessor->setValue('etudiant.tel', $user->getTelephonePerso() ?? 'Non renseigné');
+        $templateProcessor->setValue('etudiant.tel', $etudiant?->getNumeroMobile() ?? 'Non renseigné');
+        $imageRights = $adhesion?->getImageRights();
+        if ($imageRights === true) {
+            $autorisationTexte = '☑ Autorise   ☐ N’autorise pas';
         } else {
-            $templateProcessor->setValue('etudiant.tel', 'Non renseigné');
+            // false ou null = décoché
+            $autorisationTexte = '☐ Autorise   ☑ N’autorise pas';
         }
+        $templateProcessor->setValue('etudiant.autorisation', $autorisationTexte);
+        $templateProcessor->setValue('etudiant.type_paiement', $adhesion?->getPaymentMethod() ?? 'Non renseigné');
 
-        // === Photo de l'étudiant ===
-        if ($etudiant->getPhotoIdentite()) {
-            $photoPath = $this->convertBlobToImage($etudiant->getPhotoIdentite(), 'photo_identite.jpg');
-            $templateProcessor->setImageValue('etudiant.photo', [
-                'path' => $photoPath,
-                'width' => 120,
-                'height' => 120,
-                'ratio' => true
-            ]);
+        // Récupérer le représentant légal 1 (humain)
+        $representant = $infoEleve->getResponsableUn();
+
+        if ($representant) {
+            $this->setRepresentantValues($templateProcessor, 'represantant', $representant);
+        } else {
+            // Remplir avec 'Non renseigné' si pas de représentant
+            $this->setRepresentantValues($templateProcessor, 'represantant', null);
         }
-
-        // === Choix du représentant en fonction de l'âge ===
-        $aujourdHui = new \DateTimeImmutable();
-        $dateNaissance = $etudiant->getDateDeNaissance();
-        $age = $dateNaissance ? $dateNaissance->diff($aujourdHui)->y : null;
-
-        $representant = ($age !== null && $age >= 18)
-            ? $etudiant // majeur = lui-même
-            : ($etudiant->getResponsableUn() ?: $etudiant); // sinon représentant (ou fallback sur lui-même)
-
-        $this->setRepresentantValues($templateProcessor, 'represantant', $representant);
     }
 
-    private function setRepresentantValues(TemplateProcessor $templateProcessor, string $prefix, $source): void
+    private function setRepresentantValues(TemplateProcessor $templateProcessor, string $prefix, ?\App\Entity\Humain $representant): void
     {
-        if ($source instanceof InfoEleve) {
-            $user = $source->getUser();
-
-            if ($user instanceof Humain) {
-                $templateProcessor->setValue("{$prefix}.nom", $user->getNom() ?? 'Non renseigné');
-                $templateProcessor->setValue("{$prefix}.adresse", $user->getAdresse() ?? 'Non renseigné');
-            } else {
-                $templateProcessor->setValue("{$prefix}.nom", 'Non renseigné');
-                $templateProcessor->setValue("{$prefix}.adresse", 'Non renseigné');
+        if ($representant === null) {
+            $fields = ['nom', 'prenom', 'telephone', 'telephoneFixe', 'telephonePro', 'sms', 'courriel', 'adresse', 'codePostal', 'commune', 'lienEleve', 'poste', 'nomEmployeur', 'adresseEmployeur'];
+            foreach ($fields as $field) {
+                $templateProcessor->setValue("{$prefix}.{$field}", 'Non renseigné');
             }
-        } else {
-            $templateProcessor->setValue("{$prefix}.nom", $source->getNom() ?? 'Non renseigné');
-            $templateProcessor->setValue("{$prefix}.adresse", $source->getAdresse() ?? 'Non renseigné');
+            return;
         }
-    }
 
-    private function convertBlobToImage($blobData, string $filename): string
-    {
-        $tmpDir = sys_get_temp_dir();
-        $filePath = $tmpDir . DIRECTORY_SEPARATOR . uniqid($filename);
-        file_put_contents($filePath, stream_get_contents($blobData));
-        return $filePath;
+        $templateProcessor->setValue("{$prefix}.nom", $representant->getNom() ?? 'Non renseigné');
+        $templateProcessor->setValue("{$prefix}.adresse", $representant->getAdresse() ?? 'Non renseigné');
     }
 
     private function createDocxDownloadResponse(string $filePath): BinaryFileResponse

@@ -114,13 +114,13 @@
   </script>
     <span id="[url - à modifier]"></span>
     <div class="fr-container fr-mt-2v fr-mb-8w">
-        <p class="fr-text--sm" style="float:right">DSFR v1.12.1</p>
+        <p class="fr-text--sm" style="float:right">DSFR v1.13.2</p>
         <p>
             <a class="fr-icon-arrow-left-line fr-link--icon-left fr-link" href="../">Retour</a>
         </p>
         <h1>Ajout de fichier (upload)</h1>
         <p>Ce composant permet aux utilisateurs de sélectionner et envoyer un ou plusieurs fichiers.</p>
-        <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/ajout-de-fichier" target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre">Documentation</a>
+        <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/ajout-de-fichier" rel="noopener external" target="_blank" title="${getBlankTitle('Documentation')}">Documentation</a>
     </div>
     <div class="fr-mb-12w">
         <div class="fr-container">
@@ -128,7 +128,7 @@
                 <div class="fr-col-md-8 fr-col-12">
                     <h3>Bouton upload 1 seul fichier</h3>
                     <div class="fr-mb-6v">
-                        <div class="fr-upload-group" id="upload-group-1166">
+                        <div class="fr-upload-group">
                             <label class="fr-label" for="file-upload">
                                 Ajouter un fichier
                                 <span class="fr-hint-text">Indication : taille maximale : 500 Mo. Formats supportés : jpg, png, pdf. Plusieurs fichiers possibles. Lorem ipsum dolor sit amet, consectetur adipiscing.</span>
@@ -141,10 +141,10 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-1168">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-1089">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-1168">
-                                <pre class=" language-html"><code>&lt;div class="fr-upload-group" id="upload-group-1167"&gt;
+                            <div class="fr-collapse" id="snippet-1089">
+                                <pre class=" language-html"><code>&lt;div class="fr-upload-group"&gt;
     &lt;label class="fr-label" for="file-upload"&gt;
         Ajouter un fichier
         &lt;span class="fr-hint-text"&gt;Indication : taille maximale : 500 Mo. Formats supportés : jpg, png, pdf. Plusieurs fichiers possibles. Lorem ipsum dolor sit amet, consectetur adipiscing.&lt;/span&gt;
@@ -159,7 +159,7 @@
                     </div>
                     <h3>Bouton upload avec erreur</h3>
                     <div class="fr-mb-6v">
-                        <div class="fr-upload-group fr-upload-group--error" id="upload-group-1169">
+                        <div class="fr-upload-group fr-upload-group--error">
                             <label class="fr-label" for="file-upload-with-error">
                                 Ajouter un fichier
                                 <span class="fr-hint-text">Indication : taille maximale : 500 Mo. Formats supportés : jpg, png, pdf. Plusieurs fichiers possibles. Lorem ipsum dolor sit amet, consectetur adipiscing.</span>
@@ -173,10 +173,10 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-1171">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-1090">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-1171">
-                                <pre class=" language-html"><code>&lt;div class="fr-upload-group fr-upload-group--error" id="upload-group-1170"&gt;
+                            <div class="fr-collapse" id="snippet-1090">
+                                <pre class=" language-html"><code>&lt;div class="fr-upload-group fr-upload-group--error"&gt;
     &lt;label class="fr-label" for="file-upload-with-error"&gt;
         Ajouter un fichier
         &lt;span class="fr-hint-text"&gt;Indication : taille maximale : 500 Mo. Formats supportés : jpg, png, pdf. Plusieurs fichiers possibles. Lorem ipsum dolor sit amet, consectetur adipiscing.&lt;/span&gt;
@@ -192,7 +192,7 @@
                     </div>
                     <h3>Bouton upload fichiers multiples</h3>
                     <div class="fr-mb-6v">
-                        <div class="fr-upload-group" id="upload-group-1172">
+                        <div class="fr-upload-group">
                             <label class="fr-label" for="file-upload-multiple">
                                 Ajouter des fichiers
                                 <span class="fr-hint-text">Indication : taille maximale : 500 Mo. Formats supportés : jpg, png, pdf. Plusieurs fichiers possibles. Lorem ipsum dolor sit amet, consectetur adipiscing.</span>
@@ -205,10 +205,10 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-1174">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-1091">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-1174">
-                                <pre class=" language-html"><code>&lt;div class="fr-upload-group" id="upload-group-1173"&gt;
+                            <div class="fr-collapse" id="snippet-1091">
+                                <pre class=" language-html"><code>&lt;div class="fr-upload-group"&gt;
     &lt;label class="fr-label" for="file-upload-multiple"&gt;
         Ajouter des fichiers
         &lt;span class="fr-hint-text"&gt;Indication : taille maximale : 500 Mo. Formats supportés : jpg, png, pdf. Plusieurs fichiers possibles. Lorem ipsum dolor sit amet, consectetur adipiscing.&lt;/span&gt;
@@ -223,7 +223,7 @@
                     </div>
                     <h3>Bouton upload désactivé</h3>
                     <div class="fr-mb-6v">
-                        <div class="fr-upload-group fr-upload-group--disabled" id="upload-group-1175">
+                        <div class="fr-upload-group fr-upload-group--disabled">
                             <label class="fr-label" for="file-upload-disabled">
                                 Ajouter un fichier
                                 <span class="fr-hint-text">Indication : taille maximale : 500 Mo. Formats supportés : jpg, png, pdf. Plusieurs fichiers possibles. Lorem ipsum dolor sit amet, consectetur adipiscing.</span>
@@ -236,10 +236,10 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-1177">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-1092">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-1177">
-                                <pre class=" language-html"><code>&lt;div class="fr-upload-group fr-upload-group--disabled" id="upload-group-1176"&gt;
+                            <div class="fr-collapse" id="snippet-1092">
+                                <pre class=" language-html"><code>&lt;div class="fr-upload-group fr-upload-group--disabled"&gt;
     &lt;label class="fr-label" for="file-upload-disabled"&gt;
         Ajouter un fichier
         &lt;span class="fr-hint-text"&gt;Indication : taille maximale : 500 Mo. Formats supportés : jpg, png, pdf. Plusieurs fichiers possibles. Lorem ipsum dolor sit amet, consectetur adipiscing.&lt;/span&gt;
@@ -256,14 +256,14 @@
             </div>
         </div>
     </div>
-    <button aria-controls="fr-theme-modal" data-fr-opened="false" style="z-index: 1600" id="button-1178" class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary">Libellé bouton</button>
+    <button aria-controls="fr-theme-modal" data-fr-opened="false" style="z-index: 1600" type="button" class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary">Libellé bouton</button>
     <dialog id="fr-theme-modal" class="fr-modal" aria-labelledby="fr-theme-modal-title">
         <div class="fr-container fr-container--fluid fr-container-md">
             <div class="fr-grid-row fr-grid-row--center">
                 <div class="fr-col-12 fr-col-md-6 fr-col-lg-4">
                     <div class="fr-modal__body">
                         <div class="fr-modal__header">
-                            <button aria-controls="fr-theme-modal" id="button-1179" title="Fermer" class="fr-btn--close fr-btn">Fermer</button>
+                            <button aria-controls="fr-theme-modal" title="Fermer" type="button" id="button-1093" class="fr-btn--close fr-btn">Fermer</button>
                         </div>
                         <div class="fr-modal__content">
                             <h1 id="fr-theme-modal-title" class="fr-modal__title">

@@ -1,0 +1,260 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - E-Inscription{% endblock %}
+
+{% block body %}
+<div class="fr-container">
+    <div class="fr-grid-row fr-grid-row--center">
+        <div class="fr-col-12">
+            <!-- En-tête principal -->
+            <header class="fr-py-6w">
+                <h1 class="fr-h1 fr-mb-2w">
+                    <span class="fr-icon-home-4-line fr-icon--lg fr-mr-2w" aria-hidden="true"></span>
+                    Bienvenue sur E-Inscription
+                </h1>
+                <p class="fr-text--lead">
+                    Plateforme d'inscription en ligne pour le Lycée Fulbert
+                </p>
+            </header>
+
+            <!-- Actions principales -->
+            <section class="fr-mb-8w" aria-labelledby="actions-title">
+                <h2 id="actions-title" class="fr-sr-only">Actions disponibles</h2>
+                <div class="fr-grid-row fr-grid-row--gutters">
+                    <div class="fr-col-12 fr-col-md-6">
+                        <div class="fr-card fr-enlarge-link">
+                            <div class="fr-card__body">
+                                <div class="fr-card__content">
+                                    <h3 class="fr-card__title">
+                                        <a href="{{ path('app_inscription_form') }}" class="fr-card__link">Nouvelle inscription</a>
+                                    </h3>
+                                    <p class="fr-card__desc">
+                                        Vous êtes un nouvel élève ? Créez votre compte et complétez votre dossier d'inscription.
+                                    </p>
+                                    <div class="fr-card__start">
+                                        <span class="fr-badge fr-badge--blue-ecume">
+                                            <span class="fr-icon-user-add-line fr-mr-1w" aria-hidden="true"></span>
+                                            Nouveau
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fr-card__header">
+                                <div class="fr-card__img">
+                                    <span class="fr-icon-user-add-line fr-icon--lg" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fr-col-12 fr-col-md-6">
+                        <div class="fr-card fr-enlarge-link">
+                            <div class="fr-card__body">
+                                <div class="fr-card__content">
+                                    <h3 class="fr-card__title">
+                                        <a href="{{ path('app_inscription_form') }}" class="fr-card__link">Compléter mon dossier</a>
+                                    </h3>
+                                    <p class="fr-card__desc">
+                                        Vous avez déjà un compte ? Connectez-vous pour compléter ou modifier votre dossier.
+                                    </p>
+                                    <div class="fr-card__start">
+                                        <span class="fr-badge fr-badge--green-emeraude">
+                                            <span class="fr-icon-edit-line fr-mr-1w" aria-hidden="true"></span>
+                                            Existant
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fr-card__header">
+                                <div class="fr-card__img">
+                                    <span class="fr-icon-edit-line fr-icon--lg" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Présentation générale -->
+            <section class="fr-mb-8w" aria-labelledby="presentation-title">
+                <h2 id="presentation-title" class="fr-h2 fr-mb-4w">
+                    Bienvenue sur la plateforme d'inscription aux BTS du lycée Fulbert
+                </h2>
+                
+                <p class="fr-text--lg fr-mb-4w">
+                    Le lycée Fulbert, établissement public d'enseignement, vous propose plusieurs formations en Brevet de Technicien Supérieur (BTS) adaptées aux exigences du monde professionnel et de la poursuite d'études.
+                </p>
+
+                <div class="fr-mb-4w">
+                    <p class="fr-mb-2w">Ce site a pour objectif de vous guider dans votre démarche d'inscription. Vous y trouverez :</p>
+                    <ul class="fr-mb-0">
+                        <li>Une présentation des BTS proposés au sein de l'établissement</li>
+                        <li>Les conditions et procédures d'admission</li>
+                        <li>Les documents nécessaires à la constitution de votre dossier</li>
+                        <li>Un suivi de votre candidature</li>
+                    </ul>
+                </div>
+
+                <p class="fr-mb-4w">
+                    Nous vous invitons à consulter attentivement les informations mises à disposition afin de préparer au mieux votre inscription. Pour toute question complémentaire, notre équipe administrative reste à votre disposition.
+                </p>
+
+                <div class="fr-callout fr-callout--blue-ecume">
+                    <h3 class="fr-callout__title">
+                        <span class="fr-icon-star-line fr-mr-1w" aria-hidden="true"></span>
+                        Préparez votre avenir avec le lycée Fulbert
+                    </h3>
+                    <p class="fr-callout__text fr-mb-0">
+                        Intégrez une formation d'excellence et donnez-vous toutes les chances de réussir dans le secteur qui vous passionne !
+                    </p>
+                </div>
+            </section>
+
+<!-- Formations BTS -->
+            <section class="fr-mb-8w" aria-labelledby="formations-title">
+                <h2 id="formations-title" class="fr-h2 fr-mb-6w">
+                    Découvrez nos BTS proposés au lycée Fulbert
+                </h2>
+
+                <div class="fr-grid-row fr-grid-row--gutters">
+                    <!-- BTS SIO -->
+                    <div class="fr-col-12 fr-mb-4w">
+                        <div class="fr-card fr-enlarge-link">
+                            <div class="fr-card__body">
+                                <div class="fr-card__content">
+                                    <h3 class="fr-card__title">
+                                        <span class="fr-icon-computer-line fr-icon--lg fr-mr-2w" aria-hidden="true"></span>
+                                        <a href="https://btssio-fulbert.fr/" target="_blank" rel="noopener" class="fr-card__link">
+                                            BTS SIO - Services Informatiques aux Organisations
+                                        </a>
+                                    </h3>
+                                    <p class="fr-card__desc fr-mb-3w">
+                                        Le BTS SIO forme des techniciens capables de gérer des projets informatiques, de développer des applications ou d'administrer des réseaux. Deux options sont possibles : SISR (réseaux) et SLAM (développement).
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BTS CG -->
+                    <div class="fr-col-12 fr-mb-4w">
+                        <div class="fr-card fr-enlarge-link">
+                            <div class="fr-card__body">
+                                <div class="fr-card__content">
+                                    <h3 class="fr-card__title">
+                                        <span class="fr-icon-bank-line fr-icon--lg fr-mr-2w" aria-hidden="true"></span>
+                                        <a href="https://www.lyceefulbert.fr/bts-cg/" target="_blank" rel="noopener" class="fr-card__link">
+                                            BTS CG - Comptabilité et Gestion
+                                        </a>
+                                    </h3>
+                                    <p class="fr-card__desc fr-mb-0">
+                                        Le BTS CG prépare les étudiants à produire des documents comptables, à analyser des données de gestion, et à participer à la stratégie financière de l'entreprise.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BTS MCO -->
+                    <div class="fr-col-12 fr-mb-4w">
+                        <div class="fr-card fr-enlarge-link">
+                            <div class="fr-card__body">
+                                <div class="fr-card__content">
+                                    <h3 class="fr-card__title">
+                                        <span class="fr-icon-store-line fr-icon--lg fr-mr-2w" aria-hidden="true"></span>
+                                        <a href="https://www.lyceefulbert.fr/bts-muc/" target="_blank" rel="noopener" class="fr-card__link">
+                                            BTS MCO - Management Commercial Opérationnel
+                                        </a>
+                                    </h3>
+                                    <p class="fr-card__desc fr-mb-0">
+                                        Le BTS MCO forme les étudiants à gérer et animer une unité commerciale (magasin, agence, etc.), à gérer la relation client et à développer les ventes.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BTS NDRC -->
+                    <div class="fr-col-12 fr-mb-4w">
+                        <div class="fr-card fr-enlarge-link">
+                            <div class="fr-card__body">
+                                <div class="fr-card__content">
+                                    <h3 class="fr-card__title">
+                                        <span class="fr-icon-customer-service-line fr-icon--lg fr-mr-2w" aria-hidden="true"></span>
+                                        <a href="https://www.lyceefulbert.fr/bts-nrc/" target="_blank" rel="noopener" class="fr-card__link">
+                                            BTS NDRC - Négociation et Digitalisation de la Relation Client
+                                        </a>
+                                    </h3>
+                                    <p class="fr-card__desc fr-mb-0">
+                                        Le BTS NDRC forme des commerciaux capables de gérer la relation client en présentiel ou à distance, en maîtrisant la négociation, la prospection et la fidélisation.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Informations pratiques -->
+            <section class="fr-mb-8w" aria-labelledby="infos-title">
+                <h2 id="infos-title" class="fr-card__title fr-h2 fr-mb-4w">
+                    <span class="fr-icon-information-line fr-mr-2w" aria-hidden="true"></span>
+                    Informations importantes
+                </h2>
+                <div class="fr-card fr-card--no-arrow">
+                    <div class="fr-card__body">
+                        <div class="fr-card__content">
+                           
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6 fr-mb-4w">
+                                    <h3 class="fr-h6 fr-mb-2w">
+                                        <span class="fr-icon-time-line fr-mr-1w" aria-hidden="true"></span>
+                                        Processus d'inscription
+                                    </h3>
+                                    <ol class="fr-mb-0">
+                                        <li>Connexion à votre espace personnel</li>
+                                        <li>Saisie des informations personnelles de l’élève</li>
+                                        <li>Renseignement des contacts et urgences</li>
+                                        <li>Choix de la formation et informations scolaires</li>
+                                        <li>Saisie des représentants légaux</li>
+                                        <li>Renseignement de la scolarité antérieure</li>
+                                        <li>Complétion des informations médicales</li>
+                                        <li>Indication du responsable financier</li>
+                                        <li>Dépôt des documents requis</li>
+                                        <li>Finalisation et validation de l’inscription</li>
+                                    </ol>
+                                </div>
+                                
+                                <div class="fr-col-12 fr-col-md-6 fr-mb-4w">
+                                    <h3 class="fr-h6 fr-mb-2w">
+                                        <span class="fr-icon-file-text-line fr-mr-1w" aria-hidden="true"></span>
+                                        Documents requis
+                                    </h3>
+                                    <ul class="fr-mb-0">
+                                        <li>Carte Vitale</li>
+                                        <li>Photo d'identité</li>
+                                        <li>Attestation d'identité</li>
+                                        <li>Justificatif de bourse</li>
+                                        <li>Attestation JDC</li>
+                                        <li>Attestation de réussite</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            
+                            <div class="fr-alert fr-alert--warning fr-mt-4w">
+                                <h3 class="fr-alert__title">Important</h3>
+                                <p class="fr-mb-0">
+                                    Vous pouvez sauvegarder votre progression à tout moment et reprendre votre inscription ultérieurement. 
+                                    En cas de non passage à l'étape suivante, vérifiez bien toutes les informations de l'étape, 
+                                    par exemple le bon format du numéro de téléphone ou de l'adresse mail.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

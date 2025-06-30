@@ -1,4 +1,4 @@
-/*! DSFR v1.12.1 | SPDX-License-Identifier: MIT | License-Filename: LICENSE.md | restricted use (see terms and conditions) */
+/*! DSFR v1.13.2 | SPDX-License-Identifier: MIT | License-Filename: LICENSE.md | restricted use (see terms and conditions) */
 
 (function () {
   'use strict';
@@ -7,7 +7,7 @@
     this.modules = {};
   };
 
-  var prototypeAccessors$9 = { isActive: { configurable: true },isLegacy: { configurable: true } };
+  var prototypeAccessors$a = { isActive: { configurable: true },isLegacy: { configurable: true } };
 
   State.prototype.create = function create (ModuleClass) {
     var module = new ModuleClass();
@@ -26,11 +26,11 @@
     this.modules[type].remove(item);
   };
 
-  prototypeAccessors$9.isActive.get = function () {
+  prototypeAccessors$a.isActive.get = function () {
     return this._isActive;
   };
 
-  prototypeAccessors$9.isActive.set = function (value) {
+  prototypeAccessors$a.isActive.set = function (value) {
       var this$1$1 = this;
 
     if (value === this._isActive) { return; }
@@ -53,16 +53,16 @@
     }
   };
 
-  prototypeAccessors$9.isLegacy.get = function () {
+  prototypeAccessors$a.isLegacy.get = function () {
     return this._isLegacy;
   };
 
-  prototypeAccessors$9.isLegacy.set = function (value) {
+  prototypeAccessors$a.isLegacy.set = function (value) {
     if (value === this._isLegacy) { return; }
     this._isLegacy = value;
   };
 
-  Object.defineProperties( State.prototype, prototypeAccessors$9 );
+  Object.defineProperties( State.prototype, prototypeAccessors$a );
 
   var state = new State();
 
@@ -70,7 +70,7 @@
     prefix: 'fr',
     namespace: 'dsfr',
     organisation: '@gouvfr',
-    version: '1.12.1'
+    version: '1.13.2'
   };
 
   var LogLevel = function LogLevel (level, light, dark, logger) {
@@ -92,7 +92,7 @@
     }
   };
 
-  var prototypeAccessors$8 = { color: { configurable: true } };
+  var prototypeAccessors$9 = { color: { configurable: true } };
 
   LogLevel.prototype.log = function log () {
       var values = [], len = arguments.length;
@@ -112,11 +112,11 @@
     this.logger.apply(console, message.getMessage());
   };
 
-  prototypeAccessors$8.color.get = function () {
+  prototypeAccessors$9.color.get = function () {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? this.dark : this.light;
   };
 
-  Object.defineProperties( LogLevel.prototype, prototypeAccessors$8 );
+  Object.defineProperties( LogLevel.prototype, prototypeAccessors$9 );
 
   var Message = function Message (domain) {
     this.inputs = ['%c'];
@@ -229,6 +229,55 @@
     REACT: 'react'
   };
 
+  var dispatch = function (node, type, detail, bubbles, cancelable) {
+    if ( detail === void 0 ) detail = null;
+    if ( bubbles === void 0 ) bubbles = true;
+    if ( cancelable === void 0 ) cancelable = false;
+
+    var options = { bubbles: bubbles === true, cancelable: cancelable === true };
+    if (detail) { options.detail = detail; }
+    var event = new CustomEvent(type, options);
+    node.dispatchEvent(event);
+  };
+
+  var rootDispatch = function (type, detail, bubbles, cancelable) {
+    if ( detail === void 0 ) detail = null;
+    if ( bubbles === void 0 ) bubbles = false;
+    if ( cancelable === void 0 ) cancelable = false;
+
+    return dispatch(document.documentElement, type, detail, bubbles, cancelable);
+  };
+
+  var ns = function (name) { return ((config.prefix) + "-" + name); };
+
+  ns.selector = function (name, notation) {
+    if (notation === undefined) { notation = '.'; }
+    return ("" + notation + (ns(name)));
+  };
+
+  ns.attr = function (name) { return ("data-" + (ns(name))); };
+
+  ns.attr.selector = function (name, value) {
+    var result = ns.attr(name);
+    if (value !== undefined) { result += "=\"" + value + "\""; }
+    return ("[" + result + "]");
+  };
+
+  ns.event = function (type) { return ((config.namespace) + "." + type); };
+
+  ns.emission = function (domain, type) { return ("emission:" + domain + "." + type); };
+
+  var RootEvent = {
+    READY: ns.event('ready'),
+    START: ns.event('start'),
+    STOP: ns.event('stop'),
+    RENDER: ns.event('render'),
+    RESIZE: ns.event('resize'),
+    BREAKPOINT: ns.event('breakpoint'),
+    SCROLL_LOCK: ns.event('scroll-lock'),
+    SCROLL_UNLOCK: ns.event('scroll-unlock')
+  };
+
   var Options = function Options () {
     this._mode = Modes.AUTO;
     this.isStarted = false;
@@ -236,7 +285,7 @@
     this.preventManipulation = false;
   };
 
-  var prototypeAccessors$7 = { mode: { configurable: true } };
+  var prototypeAccessors$8 = { mode: { configurable: true } };
 
   Options.prototype.configure = function configure (settings, start, query) {
       if ( settings === void 0 ) settings = {};
@@ -261,10 +310,11 @@
         break;
     }
     inspector.info(("version " + (config.version)));
+    rootDispatch(RootEvent.READY);
     this.mode = settings.mode || Modes.AUTO;
   };
 
-  prototypeAccessors$7.mode.set = function (value) {
+  prototypeAccessors$8.mode.set = function (value) {
     switch (value) {
       case Modes.AUTO:
         this.preventManipulation = false;
@@ -306,7 +356,7 @@
     inspector.info(("mode set to " + value));
   };
 
-  prototypeAccessors$7.mode.get = function () {
+  prototypeAccessors$8.mode.get = function () {
     return this._mode;
   };
 
@@ -315,7 +365,7 @@
     this.startCallback();
   };
 
-  Object.defineProperties( Options.prototype, prototypeAccessors$7 );
+  Object.defineProperties( Options.prototype, prototypeAccessors$8 );
 
   var options = new Options();
 
@@ -323,7 +373,7 @@
     this._collection = [];
   };
 
-  var prototypeAccessors$6 = { length: { configurable: true },collection: { configurable: true } };
+  var prototypeAccessors$7 = { length: { configurable: true },collection: { configurable: true } };
 
   Collection.prototype.forEach = function forEach (callback) {
     this._collection.forEach(callback);
@@ -333,7 +383,7 @@
     return this._collection.map(callback);
   };
 
-  prototypeAccessors$6.length.get = function () {
+  prototypeAccessors$7.length.get = function () {
     return this._collection.length;
   };
 
@@ -374,11 +424,11 @@
     return clone;
   };
 
-  prototypeAccessors$6.collection.get = function () {
+  prototypeAccessors$7.collection.get = function () {
     return this._collection;
   };
 
-  Object.defineProperties( Collection.prototype, prototypeAccessors$6 );
+  Object.defineProperties( Collection.prototype, prototypeAccessors$7 );
 
   var Module = /*@__PURE__*/(function (Collection) {
     function Module (type) {
@@ -396,25 +446,6 @@
 
     return Module;
   }(Collection));
-
-  var ns = function (name) { return ((config.prefix) + "-" + name); };
-
-  ns.selector = function (name, notation) {
-    if (notation === undefined) { notation = '.'; }
-    return ("" + notation + (ns(name)));
-  };
-
-  ns.attr = function (name) { return ("data-" + (ns(name))); };
-
-  ns.attr.selector = function (name, value) {
-    var result = ns.attr(name);
-    if (value !== undefined) { result += "=\"" + value + "\""; }
-    return ("[" + result + "]");
-  };
-
-  ns.event = function (type) { return ((config.namespace) + "." + type); };
-
-  ns.emission = function (domain, type) { return ("emission:" + domain + "." + type); };
 
   var querySelectorAllArray = function (element, selectors) { return Array.prototype.slice.call(element.querySelectorAll(selectors)); };
 
@@ -444,7 +475,7 @@
     this._attribute = ns.attr(("js-" + dashed));
   };
 
-  var prototypeAccessors$5 = { instanceClassName: { configurable: true },instanceClassNames: { configurable: true },property: { configurable: true },attribute: { configurable: true } };
+  var prototypeAccessors$6 = { instanceClassName: { configurable: true },instanceClassNames: { configurable: true },property: { configurable: true },attribute: { configurable: true } };
 
   Registration.prototype.getInstanceClassNames = function getInstanceClassNames (InstanceClass) {
     var prototype = Object.getPrototypeOf(InstanceClass);
@@ -487,23 +518,23 @@
     this.creator = null;
   };
 
-  prototypeAccessors$5.instanceClassName.get = function () {
+  prototypeAccessors$6.instanceClassName.get = function () {
     return this._instanceClassName;
   };
 
-  prototypeAccessors$5.instanceClassNames.get = function () {
+  prototypeAccessors$6.instanceClassNames.get = function () {
     return this._instanceClassNames;
   };
 
-  prototypeAccessors$5.property.get = function () {
+  prototypeAccessors$6.property.get = function () {
     return this._property;
   };
 
-  prototypeAccessors$5.attribute.get = function () {
+  prototypeAccessors$6.attribute.get = function () {
     return this._attribute;
   };
 
-  Object.defineProperties( Registration.prototype, prototypeAccessors$5 );
+  Object.defineProperties( Registration.prototype, prototypeAccessors$6 );
 
   var Register = /*@__PURE__*/(function (Module) {
     function Register () {
@@ -552,9 +583,9 @@
     this._projects = [];
   };
 
-  var prototypeAccessors$4 = { proxy: { configurable: true },html: { configurable: true },parent: { configurable: true },ascendants: { configurable: true },children: { configurable: true },descendants: { configurable: true } };
+  var prototypeAccessors$5 = { proxy: { configurable: true },html: { configurable: true },parent: { configurable: true },ascendants: { configurable: true },children: { configurable: true },descendants: { configurable: true } };
 
-  prototypeAccessors$4.proxy.get = function () {
+  prototypeAccessors$5.proxy.get = function () {
     var scope = this;
     if (!this._proxy) {
       this._proxy = {
@@ -576,7 +607,7 @@
     return this._proxy;
   };
 
-  prototypeAccessors$4.html.get = function () {
+  prototypeAccessors$5.html.get = function () {
     if (!this.node || !this.node.outerHTML) { return ''; }
     var end = this.node.outerHTML.indexOf('>');
     return this.node.outerHTML.substring(0, end + 1);
@@ -614,19 +645,19 @@
     if (this._proxy) { delete this._proxy[instance.registration.property]; }
   };
 
-  prototypeAccessors$4.parent.get = function () {
+  prototypeAccessors$5.parent.get = function () {
     return this._parent;
   };
 
-  prototypeAccessors$4.ascendants.get = function () {
+  prototypeAccessors$5.ascendants.get = function () {
     return [this.parent ].concat( this.parent.ascendants);
   };
 
-  prototypeAccessors$4.children.get = function () {
+  prototypeAccessors$5.children.get = function () {
     return this._children;
   };
 
-  prototypeAccessors$4.descendants.get = function () {
+  prototypeAccessors$5.descendants.get = function () {
     var descendants = [].concat( this._children );
     this._children.forEach(function (child) { return descendants.push.apply(descendants, child.descendants); });
     return descendants;
@@ -770,7 +801,7 @@
     for (var i = this.instances.length - 1; i > -1; i--) { this.instances[i].examine(attributeNames); }
   };
 
-  Object.defineProperties( Element.prototype, prototypeAccessors$4 );
+  Object.defineProperties( Element.prototype, prototypeAccessors$5 );
 
   var RootEmission = {
     CLICK: ns.emission('root', 'click'),
@@ -1037,6 +1068,7 @@
       var nexts = this.nexts.clone();
       this.nexts.clear();
       nexts.forEach(function (instance) { return instance.next(); });
+      rootDispatch(RootEvent.RENDER);
     };
 
     return Renderer;
@@ -1073,6 +1105,7 @@
       if (!this.requireResize) { return; }
       this.forEach(function (instance) { return instance.resize(); });
       this.requireResize = false;
+      rootDispatch(RootEvent.RESIZE);
     };
 
     return Resizer;
@@ -1109,6 +1142,7 @@
         if (scrollBarGap > 0) {
           document.documentElement.style.setProperty('--scrollbar-width', (scrollBarGap + "px"));
         }
+        rootDispatch(RootEvent.SCROLL_LOCK);
       }
     };
 
@@ -1120,6 +1154,7 @@
         window.scrollTo(0, this._scrollY);
         if (this.behavior === 'smooth') { document.documentElement.style.removeProperty('scroll-behavior'); }
         document.documentElement.style.removeProperty('--scrollbar-width');
+        rootDispatch(RootEvent.SCROLL_UNLOCK);
       }
     };
 
@@ -1300,23 +1335,25 @@
     this.register = registerModule.register.bind(registerModule);
   };
 
-  var prototypeAccessors$3 = { isActive: { configurable: true } };
+  var prototypeAccessors$4 = { isActive: { configurable: true } };
 
-  prototypeAccessors$3.isActive.get = function () {
+  prototypeAccessors$4.isActive.get = function () {
     return state.isActive;
   };
 
   Engine.prototype.start = function start () {
     inspector.debug('START');
     state.isActive = true;
+    rootDispatch(RootEvent.START);
   };
 
   Engine.prototype.stop = function stop () {
     inspector.debug('STOP');
     state.isActive = false;
+    rootDispatch(RootEvent.STOP);
   };
 
-  Object.defineProperties( Engine.prototype, prototypeAccessors$3 );
+  Object.defineProperties( Engine.prototype, prototypeAccessors$4 );
 
   var engine = new Engine();
 
@@ -1418,7 +1455,8 @@
     queryParentSelector: queryParentSelector,
     querySelectorAllArray: querySelectorAllArray,
     queryActions: queryActions,
-    uniqueId: uniqueId
+    uniqueId: uniqueId,
+    dispatch: dispatch
   };
 
   var DataURISVG = function DataURISVG (width, height) {
@@ -1430,29 +1468,29 @@
     this._content = '';
   };
 
-  var prototypeAccessors$2 = { width: { configurable: true },height: { configurable: true },content: { configurable: true } };
+  var prototypeAccessors$3 = { width: { configurable: true },height: { configurable: true },content: { configurable: true } };
 
-  prototypeAccessors$2.width.get = function () {
+  prototypeAccessors$3.width.get = function () {
     return this._width;
   };
 
-  prototypeAccessors$2.width.set = function (value) {
+  prototypeAccessors$3.width.set = function (value) {
     this._width = value;
   };
 
-  prototypeAccessors$2.height.get = function () {
+  prototypeAccessors$3.height.get = function () {
     return this._height;
   };
 
-  prototypeAccessors$2.height.set = function (value) {
+  prototypeAccessors$3.height.set = function (value) {
     this._height = value;
   };
 
-  prototypeAccessors$2.content.get = function () {
+  prototypeAccessors$3.content.get = function () {
     return this._content;
   };
 
-  prototypeAccessors$2.content.set = function (value) {
+  prototypeAccessors$3.content.set = function (value) {
     this._content = value;
   };
 
@@ -1472,7 +1510,7 @@
     return ("data:image/svg+xml;charset=utf8," + svg);
   };
 
-  Object.defineProperties( DataURISVG.prototype, prototypeAccessors$2 );
+  Object.defineProperties( DataURISVG.prototype, prototypeAccessors$3 );
 
   var image = {
     DataURISVG: DataURISVG
@@ -1664,6 +1702,57 @@
     this.emissions = null;
   };
 
+  var FocusManager = function FocusManager () {
+    this._activeElements = [];
+    window.document.addEventListener('focusin', this._onFocusIn.bind(this));
+  };
+
+  var prototypeAccessors$2 = { index: { configurable: true } };
+
+  FocusManager.prototype._onFocusIn = function _onFocusIn (e) {
+    this._activeElements.push(e.target);
+  };
+
+  prototypeAccessors$2.index.get = function () {
+    return this._activeElements.length - 1;
+  };
+
+  FocusManager.prototype.focus = function focus (index) {
+    var element = this._activeElements[index];
+    switch (true) {
+      case index < 0:
+      case this._activeElements.length === 0:
+        this.focusOnLogo();
+        return;
+      case !element:
+      case !document.documentElement.contains(element):
+      case !this._isDisplayed(element):
+        this.focus(index - 1);
+        return;
+    }
+
+    element.focus();
+  };
+
+  FocusManager.prototype.focusOnLogo = function focusOnLogo () {
+    var logo = document.querySelector(api$1.header.HeaderSelector.BRAND_LINK);
+    if (logo) { logo.focus(); }
+  };
+
+  FocusManager.prototype._isDisplayed = function _isDisplayed (element) {
+    while (element && element !== document.documentElement) {
+      if (element === document.body) { return true; }
+      var style = window.getComputedStyle(element);
+      if (style.display === 'none' || style.visibility === 'hidden') { return false; }
+      element = element.parentElement;
+    }
+    return true;
+  };
+
+  Object.defineProperties( FocusManager.prototype, prototypeAccessors$2 );
+
+  var focusManager = new FocusManager();
+
   var Breakpoint = function Breakpoint (id, minWidth) {
     this.id = id;
     this.minWidth = minWidth;
@@ -1681,6 +1770,10 @@
     XL: new Breakpoint('xl', 78)
   };
 
+  var InstanceEvent = {
+    CLICK: ns.event('click')
+  };
+
   var Instance = function Instance (jsAttribute) {
     if ( jsAttribute === void 0 ) jsAttribute = true;
 
@@ -1693,7 +1786,7 @@
     this._isEnabled = true;
     this._isDisposed = false;
     this._listeners = {};
-    this._handlingClick = this.handleClick.bind(this);
+    this._handlingClick = this._handleClick.bind(this);
     this._hashes = [];
     this._hash = '';
     this._keyListenerTypes = [];
@@ -1733,7 +1826,7 @@
 
     var proxyAccessors = {
       get node () {
-        return this.node;
+        return scope.node;
       },
       get isEnabled () {
         return scope.isEnabled;
@@ -1800,9 +1893,12 @@
     return [];
   };
 
-  Instance.prototype.dispatch = function dispatch (type, detail, bubbles, cancelable) {
-    var event = new CustomEvent(type, { detail: detail, bubble: bubbles === true, cancelable: cancelable === true });
-    this.node.dispatchEvent(event);
+  Instance.prototype.dispatch = function dispatch$1 (type, detail, bubbles, cancelable) {
+      if ( detail === void 0 ) detail = null;
+      if ( bubbles === void 0 ) bubbles = true;
+      if ( cancelable === void 0 ) cancelable = false;
+
+    dispatch(this.node, type, detail, bubbles, cancelable);
   };
 
   // TODO v2 => listener au niveau des éléments qui redistribuent aux instances.
@@ -1843,6 +1939,11 @@
 
   Instance.prototype.unlistenClick = function unlistenClick (options) {
     this.unlisten('click', this._handlingClick, options);
+  };
+
+  Instance.prototype._handleClick = function _handleClick (e) {
+    this.handleClick(e);
+    this.dispatch(InstanceEvent.CLICK, this);
   };
 
   Instance.prototype.handleClick = function handleClick (e) {};
@@ -2165,6 +2266,14 @@
     this.node.blur();
   };
 
+  Instance.prototype.retainFocus = function retainFocus () {
+    this._focusIndex = focusManager.index;
+  };
+
+  Instance.prototype.focusBack = function focusBack () {
+    focusManager.focus(this._focusIndex);
+  };
+
   Instance.prototype.focusClosest = function focusClosest () {
     var closest = this._focusClosest(this.node.parentNode);
     if (closest) { closest.focus(); }
@@ -2304,7 +2413,8 @@
 
   var DisclosureEvent = {
     DISCLOSE: ns.event('disclose'),
-    CONCEAL: ns.event('conceal')
+    CONCEAL: ns.event('conceal'),
+    CURRENT: ns.event('current')
   };
 
   var DisclosureEmission = {
@@ -2326,6 +2436,7 @@
       this.disclosuresGroupInstanceClassName = disclosuresGroupInstanceClassName;
       this.modifier = this._selector + '--' + this.type.id;
       this._isPristine = true;
+      this._isActive = true;
       this._isRetrievingPrimaries = false;
       this._hasRetrieved = false;
       this._primaryButtons = [];
@@ -2335,7 +2446,7 @@
     Disclosure.prototype = Object.create( Instance && Instance.prototype );
     Disclosure.prototype.constructor = Disclosure;
 
-    var prototypeAccessors = { isEnabled: { configurable: true },isPristine: { configurable: true },proxy: { configurable: true },buttons: { configurable: true },group: { configurable: true },isDisclosed: { configurable: true },isInitiallyDisclosed: { configurable: true },buttonHasFocus: { configurable: true },hasFocus: { configurable: true },primaryButtons: { configurable: true } };
+    var prototypeAccessors = { isEnabled: { configurable: true },isActive: { configurable: true },isPristine: { configurable: true },proxy: { configurable: true },buttons: { configurable: true },group: { configurable: true },isDisclosed: { configurable: true },isInitiallyDisclosed: { configurable: true },buttonHasFocus: { configurable: true },hasFocus: { configurable: true },primaryButtons: { configurable: true } };
     var staticAccessors = { instanceClassName: { configurable: true } };
 
     staticAccessors.instanceClassName.get = function () {
@@ -2362,6 +2473,20 @@
       else { this.ascend(DisclosureEmission.REMOVED); }
     };
 
+    prototypeAccessors.isActive.get = function () {
+      return this._isActive;
+    };
+
+    prototypeAccessors.isActive.set = function (value) {
+      if (this._isActive === value) { return; }
+      this._isActive = value;
+      if (value) { this.ascend(DisclosureEmission.ADDED); }
+      else {
+        this.ascend(DisclosureEmission.REMOVED);
+        if (this.isDisclosed) { this.conceal(); }
+      }
+    };
+
     prototypeAccessors.isPristine.get = function () {
       return this._isPristine;
     };
@@ -2385,6 +2510,12 @@
         },
         get isDisclosed () {
           return scope.isDisclosed;
+        },
+        get isEnabled () {
+          return scope.isEnabled;
+        },
+        get isActive () {
+          return scope.isActive;
         }
       };
 
@@ -2420,7 +2551,8 @@
     };
 
     Disclosure.prototype.disclose = function disclose (withhold) {
-      if (this.isDisclosed === true || !this.isEnabled) { return false; }
+      if (this.isDisclosed === true || !this.isEnabled || !this._isActive) { return false; }
+      this.retainFocus();
       this._isPristine = false;
       this.isDisclosed = true;
       if (!withhold && this.group) { this.group.current = this; }
@@ -2445,7 +2577,7 @@
 
     prototypeAccessors.isDisclosed.set = function (value) {
       if (this._isDisclosed === value || (!this.isEnabled && value === true)) { return; }
-      this.dispatch(value ? DisclosureEvent.DISCLOSE : DisclosureEvent.CONCEAL, this.type);
+      if (!this._isPristine) { this.dispatch(value ? DisclosureEvent.DISCLOSE : DisclosureEvent.CONCEAL, this); }
       this._isDisclosed = value;
       if (value) { this.addClass(this.modifier); }
       else { this.removeClass(this.modifier); }
@@ -2489,6 +2621,7 @@
 
     Disclosure.prototype.focus = function focus () {
       if (this._primaryButtons.length > 0) { this._primaryButtons[0].focus(); }
+      else { this.focusBack(); }
     };
 
     prototypeAccessors.primaryButtons.get = function () {
@@ -2505,7 +2638,7 @@
       this._isRetrievingPrimaries = false;
       this._primaryButtons = this._electPrimaries(this.buttons);
 
-      if (this._hasRetrieved || this._primaryButtons.length === 0) { return; }
+      if (this._hasRetrieved || (this._primaryButtons.length === 0 && this.type.requirePrimary)) { return; }
       this.retrieved();
       this._hasRetrieved = true;
 
@@ -2516,7 +2649,7 @@
         return;
       }
 
-      if (this._isPristine && this.isEnabled && !this.group) {
+      if (this._isPristine && this.isEnabled && this.isActive && !this.group) {
         switch (true) {
           case this.hash === this.id:
             this._spotlight();
@@ -2547,7 +2680,7 @@
     Disclosure.prototype.applyAbility = function applyAbility (withhold) {
       if ( withhold === void 0 ) withhold = false;
 
-      var isEnabled = !this._primaryButtons.every(function (button) { return button.isDisabled; });
+      var isEnabled = !this.type.requirePrimary || this._primaryButtons.some(function (button) { return !button.isDisabled; });
 
       if (this.isEnabled === isEnabled) { return; }
 
@@ -2761,7 +2894,7 @@
       var this$1$1 = this;
 
       var members = this.element.getDescendantInstances(this.disclosureInstanceClassName, this.constructor.instanceClassName, true);
-      this._members = members.filter(this.validate.bind(this)).filter(function (member) { return member.isEnabled; });
+      this._members = members.filter(this.validate.bind(this)).filter(function (member) { return member.isEnabled && member.isActive; });
       var invalids = members.filter(function (member) { return !this$1$1._members.includes(member); });
       invalids.forEach(function (invalid) { return invalid.conceal(); });
     };
@@ -2780,22 +2913,33 @@
       this.getMembers();
       this._isRetrieving = false;
       this._hasRetrieved = true;
-      if (this.hash) {
+
+      if (!this.isGrouped) {
         for (var i = 0; i < this.length; i++) {
           var member = this.members[i];
-          if (this.hash === member.id) {
-            this.index = i;
+          if (member.isInitiallyDisclosed) {
+            member.disclose(true);
+          }
+        }
+        return;
+      }
+
+      if (this.hash) {
+        for (var i$1 = 0; i$1 < this.length; i$1++) {
+          var member$1 = this.members[i$1];
+          if (this.hash === member$1.id) {
+            this.index = i$1;
             this.request(function () { this$1$1.ascend(DisclosureEmission.SPOTLIGHT); });
-            return i;
+            return i$1;
           }
         }
       }
 
-      for (var i$1 = 0; i$1 < this.length; i$1++) {
-        var member$1 = this.members[i$1];
-        if (member$1.isInitiallyDisclosed) {
-          this.index = i$1;
-          return i$1;
+      for (var i$2 = 0; i$2 < this.length; i$2++) {
+        var member$2 = this.members[i$2];
+        if (member$2.isInitiallyDisclosed) {
+          this.index = i$2;
+          return i$2;
         }
       }
 
@@ -2804,7 +2948,9 @@
 
     DisclosuresGroup.prototype.update = function update () {
       this.getMembers();
-      if (this._hasRetrieved) { this.getIndex(); }
+      if (this._hasRetrieved) {
+        if (this.isGrouped) { this.getIndex(); }
+      }
     };
 
     prototypeAccessors.members.get = function () {
@@ -2843,10 +2989,11 @@
         if (value === i) {
           if (!member.isDisclosed) { member.disclose(true); }
         } else {
-          if ((this.isGrouped || !this.canUngroup) && member.isDisclosed) { member.conceal(true); }
+          if ((this.isGrouped || !this.canUngroup) && member.isDisclosed !== false) { member.conceal(true); }
         }
       }
       this.apply();
+      this.dispatch(DisclosureEvent.CURRENT, this.current);
     };
 
     prototypeAccessors.current.get = function () {
@@ -2906,21 +3053,24 @@
       ariaState: true,
       ariaControls: true,
       canConceal: true,
-      canDisable: true
+      canDisable: true,
+      requirePrimary: true
     },
     SELECT: {
       id: 'selected',
       ariaState: true,
       ariaControls: true,
       canConceal: false,
-      canDisable: true
+      canDisable: true,
+      requirePrimary: true
     },
     OPENED: {
       id: 'opened',
       ariaState: false,
       ariaControls: true,
       canConceal: true,
-      canDisable: false
+      canDisable: false,
+      requirePrimary: false
     }
   };
 
@@ -3155,10 +3305,6 @@
     return EquisizedsGroup;
   }(Instance));
 
-  var ToggleEvent = {
-    TOGGLE: ns.event('toggle')
-  };
-
   var Toggle = /*@__PURE__*/(function (Instance) {
     function Toggle () {
       Instance.apply(this, arguments);
@@ -3194,7 +3340,6 @@
 
     prototypeAccessors.pressed.set = function (value) {
       this.setAttribute('aria-pressed', value ? 'true' : 'false');
-      this.dispatch(ToggleEvent.TOGGLE, value);
     };
 
     prototypeAccessors.proxy.get = function () {
@@ -3461,11 +3606,19 @@
       }
 
       fetch(this.href, { method: 'HEAD', mode: 'cors' }).then(function (response) {
-        this$1$1.length = response.headers.get('content-length') || -1;
-        if (this$1$1.length === -1) {
-          inspector.warn('File size unknown: ' + this$1$1.href + '\nUnable to get HTTP header: "content-length"');
+        if (response.ok) {
+          this$1$1.length = response.headers.get('content-length') || -1;
+          if (this$1$1.length && this$1$1.length === -1) {
+            throw new Error('File size unknown' + '\n Unable to get HTTP header: "content-length"');
+          }
+          this$1$1.gather();
+        } else {
+          throw new Error('Unable to access the resource : Status ' + response.status);
         }
+      }).catch(function (error) {
+        this$1$1.length = -1;
         this$1$1.gather();
+        inspector.warn('Fetch error on assess file : ' + this$1$1.href + '\n ' + error);
       });
     };
 
@@ -3487,7 +3640,6 @@
 
       if (!this.length) {
         this.getFileLength();
-        return;
       }
 
       this.details = [];
@@ -3497,7 +3649,7 @@
         if (extension) { this.details.push(extension.toUpperCase()); }
       }
 
-      if (this.length !== -1) {
+      if (this.length && this.length !== -1) {
         this.details.push(this.bytesToSize(this.length));
       }
 
@@ -3690,6 +3842,7 @@
       this._aligns = aligns;
       this._safeAreaMargin = safeAreaMargin;
       this._isShown = false;
+      this._x = this._y = 0;
     }
 
     if ( Instance ) Placement.__proto__ = Instance;
@@ -3852,21 +4005,11 @@
       this._referent = referent;
     };
 
-    Placement.prototype.resize = function resize () {
-      this.safeArea = {
-        top: this._safeAreaMargin,
-        right: window.innerWidth - this._safeAreaMargin,
-        bottom: window.innerHeight - this._safeAreaMargin,
-        left: this._safeAreaMargin,
-        center: window.innerWidth * 0.5,
-        middle: window.innerHeight * 0.5
-      };
-    };
-
     Placement.prototype.render = function render () {
       if (!this._referent) { return; }
-      this.rect = this.getRect();
       this.referentRect = this._referent.getRect();
+      this.rect = this.getRect();
+      this.safeArea = this.getSafeArea();
 
       if (this.mode === PlacementMode.AUTO) {
         this.place = this.getPlace();
@@ -3886,19 +4029,19 @@
 
       switch (this.place) {
         case PlacementPosition.TOP:
-          y = this.referentRect.top - this.rect.height;
+          y = this.referentRect.top - this.rect.top - this.rect.height;
           break;
 
         case PlacementPosition.RIGHT:
-          x = this.referentRect.right;
+          x = this.referentRect.left - this.rect.left + this.referentRect.width;
           break;
 
         case PlacementPosition.BOTTOM:
-          y = this.referentRect.bottom;
+          y = this.referentRect.top - this.rect.top + this.referentRect.height;
           break;
 
         case PlacementPosition.LEFT:
-          x = this.referentRect.left - this.rect.width;
+          x = this.referentRect.left - this.rect.left - this.rect.width;
           break;
       }
 
@@ -3907,15 +4050,15 @@
         case PlacementPosition.BOTTOM:
           switch (this.align) {
             case PlacementAlign.CENTER:
-              x = this.referentRect.center - this.rect.width * 0.5;
+              x = this.referentRect.left - this.rect.left + this.referentRect.width * 0.5 - this.rect.width * 0.5;
               break;
 
             case PlacementAlign.START:
-              x = this.referentRect.left;
+              x = this.referentRect.left - this.rect.left;
               break;
 
             case PlacementAlign.END:
-              x = this.referentRect.right - this.rect.width;
+              x = this.referentRect.left - this.rect.left + this.referentRect.width - this.rect.width;
               break;
           }
           break;
@@ -3924,25 +4067,23 @@
         case PlacementPosition.LEFT:
           switch (this.align) {
             case PlacementAlign.CENTER:
-              y = this.referentRect.middle - this.rect.height * 0.5;
+              y = this.referentRect.top - this.rect.top + this.referentRect.height * 0.5 - this.rect.height * 0.5;
               break;
 
             case PlacementAlign.START:
-              y = this.referentRect.top;
+              y = this.referentRect.top - this.rect.top;
               break;
 
             case PlacementAlign.END:
-              y = this.referentRect.bottom - this.rect.height;
+              y = this.referentRect.top - this.rect.top - this.rect.height;
               break;
           }
           break;
       }
 
-      if (this._x !== x || this._y !== y) {
-        this._x = (x + 0.5) | 0;
-        this._y = (y + 0.5) | 0;
-        this.node.style.transform = "translate(" + (this._x) + "px," + (this._y) + "px)";
-      }
+      this._x += (x + 0.5) | 0;
+      this._y += (y + 0.5) | 0;
+      this.node.style.transform = "translate(" + (this._x) + "px," + (this._y) + "px)";
     };
 
     Placement.prototype.getPlace = function getPlace () {
@@ -4013,6 +4154,46 @@
       }
 
       return this._aligns[0];
+    };
+
+    Placement.prototype.getSafeArea = function getSafeArea () {
+      var element = this.node;
+      var isX, isY;
+      var top = this._safeAreaMargin;
+      var right = window.innerWidth - this._safeAreaMargin;
+      var bottom = window.innerHeight - this._safeAreaMargin;
+      var left = this._safeAreaMargin;
+
+      while (element) {
+        if (element === document.body) { break; }
+        element = element.parentElement;
+        var style = window.getComputedStyle(element);
+
+        var overflow = /(visible|(\w+))(\s(visible|(\w+)))?/.exec(style.overflow);
+        isX = overflow[2] !== undefined;
+        isY = overflow[3] !== undefined ? overflow[5] !== undefined : overflow[2] !== undefined;
+
+        if (!isX && !isY) { continue; }
+        var rect = element.getBoundingClientRect();
+
+        if (isX) {
+          if (rect.left > left) { left = rect.left; }
+          if (rect.right < right) { right = rect.right; }
+        }
+        if (isY) {
+          if (rect.top > top) { top = rect.top; }
+          if (rect.bottom < bottom) { bottom = rect.bottom; }
+        }
+      }
+
+      return {
+        top: top,
+        right: right,
+        bottom: bottom,
+        left: left,
+        center: left + (right - left) * 0.5,
+        middle: top + (bottom - top) * 0.5
+      };
     };
 
     Placement.prototype.dispose = function dispose () {

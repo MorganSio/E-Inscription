@@ -76,24 +76,13 @@
                     <li class="fr-nav__item">
                         <a class="fr-nav__link" href="{{path('index')}}" target="_self">Acceuil</a>
                     </li>
-                    <li class="fr-nav__item">
-                        <a class="fr-nav__link" href="{{path('fiche-mdl')}}" target="_self">Formulaire d'adhésion MDL</a>
-                    </li>
-                    <li class="fr-nav__item">
-                        <a class="fr-nav__link" href="{{path('fiche-intendance')}}" target="_self">Formulaire Intendance</a>
-                    </li>
-                    <li class="fr-nav__item">
-                        <a class="fr-nav__link" href="{{path('fiche-urgence')}}" target="_self">Fiche d'urgence</a>
-                    </li>
-                    <li class="fr-nav__item">
-                        <a class="fr-nav__link" href="{{path('fiche-representant-legal')}}" target="_self">Représentant Légal</a>
-                    </li>
-                    <li class="fr-nav__item">
-                        <a class="fr-nav__link" href="{{path('fiche-etudiant')}}" target="_self">Info Etudiant</a>
-                    </li>
-                    <li class="fr-nav__item">
-                        <a class="fr-nav__link" href="{{path('fichier-upload')}}" target="_self">Téléversement Fichier</a>
-                    </li>
+                    {% if is_granted('IS_AUTHENTICATED') %}
+                        <li class="fr-nav__item">
+                            <a class="fr-nav__link" href="{{ path('app_inscription_dashboard') }}" target="_self">
+                                Tableau de bord de {{ app.user.email }}
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>

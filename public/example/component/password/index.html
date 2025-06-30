@@ -121,13 +121,13 @@
   </script>
     <span id="[url - à modifier]"></span>
     <div class="fr-container fr-mt-2v fr-mb-8w">
-        <p class="fr-text--sm" style="float:right">DSFR v1.12.1</p>
+        <p class="fr-text--sm" style="float:right">DSFR v1.13.2</p>
         <p>
             <a class="fr-icon-arrow-left-line fr-link--icon-left fr-link" href="../">Retour</a>
         </p>
         <h1>Mot de passe (password)</h1>
         <p>La demande de mot de passe permet d’aider un utilisateur à créer ou saisir un mot de passe.</p>
-        <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/mot-de-passe" target="_blank" rel="noopener external" title="[À MODIFIER - Intitulé] - nouvelle fenêtre">Documentation</a>
+        <a href="https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/mot-de-passe" rel="noopener external" target="_blank" title="${getBlankTitle('Documentation')}">Documentation</a>
     </div>
     <div class="fr-mb-12w">
         <div class="fr-container">
@@ -135,22 +135,22 @@
                 <div class="fr-col-md-8 fr-col-12">
                     <h3>Mot de passe</h3>
                     <div class="fr-mb-6v">
-                        <div class="fr-password" id="password-6511">
-                            <label class="fr-label" for="password-6511-input">
+                        <div class="fr-password" id="password-6143">
+                            <label class="fr-password__label fr-label" for="password-6143-input">
                                 Mot de passe
                             </label>
                             <div class="fr-input-wrap">
-                                <input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6511-input-messages" aria-required="true" name="password" autocomplete="new-password" id="password-6511-input" type="password">
+                                <input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6143-input-messages" aria-required="true" name="password" autocomplete="new-password" id="password-6143-input" type="password">
                             </div>
-                            <div class="fr-messages-group" id="password-6511-input-messages" aria-live="polite">
-                                <p class="fr-message" id="password-6511-input-message">Votre mot de passe doit contenir :</p>
-                                <p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6511-input-message-info">12 caractères minimum</p>
-                                <p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6511-input-message-info-1">1 caractère spécial minimum</p>
-                                <p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6511-input-message-info-2">1 chiffre minimum</p>
+                            <div class="fr-messages-group" id="password-6143-input-messages" aria-live="polite">
+                                <p class="fr-message" id="password-6143-input-message">Votre mot de passe doit contenir :</p>
+                                <p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6143-input-message-info">12 caractères minimum</p>
+                                <p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6143-input-message-info-1">1 caractère spécial minimum</p>
+                                <p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6143-input-message-info-2">1 chiffre minimum</p>
                             </div>
                             <div class="fr-password__checkbox fr-checkbox-group fr-checkbox-group--sm">
-                                <input aria-label="Afficher le mot de passe" id="password-6511-show" type="checkbox">
-                                <label class="fr--password__checkbox fr-label" for="password-6511-show">
+                                <input aria-label="Afficher le mot de passe" id="password-6143-show" type="checkbox">
+                                <label class="fr--password__checkbox fr-label" for="password-6143-show">
                                     Afficher
                                 </label>
                             </div>
@@ -159,25 +159,25 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6513">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6145">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-6513">
-                                <pre class=" language-html"><code>&lt;div class="fr-password" id="password-6512"&gt;
-    &lt;label class="fr-label" for="password-6512-input"&gt;
+                            <div class="fr-collapse" id="snippet-6145">
+                                <pre class=" language-html"><code>&lt;div class="fr-password" id="password-6144"&gt;
+    &lt;label class="fr-password__label fr-label" for="password-6144-input"&gt;
         Mot de passe
     &lt;/label&gt;
     &lt;div class="fr-input-wrap"&gt;
-        &lt;input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6512-input-messages" aria-required="true" name="password" autocomplete="new-password" id="password-6512-input" type="password"&gt;
+        &lt;input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6144-input-messages" aria-required="true" name="password" autocomplete="new-password" id="password-6144-input" type="password"&gt;
     &lt;/div&gt;
-    &lt;div class="fr-messages-group" id="password-6512-input-messages" aria-live="polite"&gt;
-        &lt;p class="fr-message" id="password-6512-input-message"&gt;Votre mot de passe doit contenir :&lt;/p&gt;
-        &lt;p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6512-input-message-info"&gt;12 caractères minimum&lt;/p&gt;
-        &lt;p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6512-input-message-info-1"&gt;1 caractère spécial minimum&lt;/p&gt;
-        &lt;p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6512-input-message-info-2"&gt;1 chiffre minimum&lt;/p&gt;
+    &lt;div class="fr-messages-group" id="password-6144-input-messages" aria-live="polite"&gt;
+        &lt;p class="fr-message" id="password-6144-input-message"&gt;Votre mot de passe doit contenir :&lt;/p&gt;
+        &lt;p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6144-input-message-info"&gt;12 caractères minimum&lt;/p&gt;
+        &lt;p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6144-input-message-info-1"&gt;1 caractère spécial minimum&lt;/p&gt;
+        &lt;p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6144-input-message-info-2"&gt;1 chiffre minimum&lt;/p&gt;
     &lt;/div&gt;
     &lt;div class="fr-password__checkbox fr-checkbox-group fr-checkbox-group--sm"&gt;
-        &lt;input aria-label="Afficher le mot de passe" id="password-6512-show" type="checkbox"&gt;
-        &lt;label class="fr--password__checkbox fr-label" for="password-6512-show"&gt;
+        &lt;input aria-label="Afficher le mot de passe" id="password-6144-show" type="checkbox"&gt;
+        &lt;label class="fr--password__checkbox fr-label" for="password-6144-show"&gt;
             Afficher
         &lt;/label&gt;
     &lt;/div&gt;
@@ -188,23 +188,23 @@
                     </div>
                     <h3>Mot de passe avec description</h3>
                     <div class="fr-mb-6v">
-                        <div class="fr-password" id="password-6514">
-                            <label class="fr-label" for="password-6514-input">
+                        <div class="fr-password" id="password-6146">
+                            <label class="fr-password__label fr-label" for="password-6146-input">
                                 Mot de passe
                                 <span class="fr-hint-text">Texte de description additionnel</span>
                             </label>
                             <div class="fr-input-wrap">
-                                <input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6514-input-messages" aria-required="true" name="password" autocomplete="new-password" id="password-6514-input" type="password">
+                                <input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6146-input-messages" aria-required="true" name="password" autocomplete="new-password" id="password-6146-input" type="password">
                             </div>
-                            <div class="fr-messages-group" id="password-6514-input-messages" aria-live="polite">
-                                <p class="fr-message" id="password-6514-input-message">Votre mot de passe doit contenir :</p>
-                                <p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6514-input-message-info">12 caractères minimum</p>
-                                <p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6514-input-message-info-1">1 caractère spécial minimum</p>
-                                <p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6514-input-message-info-2">1 chiffre minimum</p>
+                            <div class="fr-messages-group" id="password-6146-input-messages" aria-live="polite">
+                                <p class="fr-message" id="password-6146-input-message">Votre mot de passe doit contenir :</p>
+                                <p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6146-input-message-info">12 caractères minimum</p>
+                                <p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6146-input-message-info-1">1 caractère spécial minimum</p>
+                                <p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6146-input-message-info-2">1 chiffre minimum</p>
                             </div>
                             <div class="fr-password__checkbox fr-checkbox-group fr-checkbox-group--sm">
-                                <input aria-label="Afficher le mot de passe" id="password-6514-show" type="checkbox">
-                                <label class="fr--password__checkbox fr-label" for="password-6514-show">
+                                <input aria-label="Afficher le mot de passe" id="password-6146-show" type="checkbox">
+                                <label class="fr--password__checkbox fr-label" for="password-6146-show">
                                     Afficher
                                 </label>
                             </div>
@@ -213,26 +213,26 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6516">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6148">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-6516">
-                                <pre class=" language-html"><code>&lt;div class="fr-password" id="password-6515"&gt;
-    &lt;label class="fr-label" for="password-6515-input"&gt;
+                            <div class="fr-collapse" id="snippet-6148">
+                                <pre class=" language-html"><code>&lt;div class="fr-password" id="password-6147"&gt;
+    &lt;label class="fr-password__label fr-label" for="password-6147-input"&gt;
         Mot de passe
         &lt;span class="fr-hint-text"&gt;Texte de description additionnel&lt;/span&gt;
     &lt;/label&gt;
     &lt;div class="fr-input-wrap"&gt;
-        &lt;input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6515-input-messages" aria-required="true" name="password" autocomplete="new-password" id="password-6515-input" type="password"&gt;
+        &lt;input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6147-input-messages" aria-required="true" name="password" autocomplete="new-password" id="password-6147-input" type="password"&gt;
     &lt;/div&gt;
-    &lt;div class="fr-messages-group" id="password-6515-input-messages" aria-live="polite"&gt;
-        &lt;p class="fr-message" id="password-6515-input-message"&gt;Votre mot de passe doit contenir :&lt;/p&gt;
-        &lt;p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6515-input-message-info"&gt;12 caractères minimum&lt;/p&gt;
-        &lt;p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6515-input-message-info-1"&gt;1 caractère spécial minimum&lt;/p&gt;
-        &lt;p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6515-input-message-info-2"&gt;1 chiffre minimum&lt;/p&gt;
+    &lt;div class="fr-messages-group" id="password-6147-input-messages" aria-live="polite"&gt;
+        &lt;p class="fr-message" id="password-6147-input-message"&gt;Votre mot de passe doit contenir :&lt;/p&gt;
+        &lt;p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6147-input-message-info"&gt;12 caractères minimum&lt;/p&gt;
+        &lt;p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6147-input-message-info-1"&gt;1 caractère spécial minimum&lt;/p&gt;
+        &lt;p class="fr-message fr-message--info" data-fr-valid="validé" data-fr-error="en erreur" id="password-6147-input-message-info-2"&gt;1 chiffre minimum&lt;/p&gt;
     &lt;/div&gt;
     &lt;div class="fr-password__checkbox fr-checkbox-group fr-checkbox-group--sm"&gt;
-        &lt;input aria-label="Afficher le mot de passe" id="password-6515-show" type="checkbox"&gt;
-        &lt;label class="fr--password__checkbox fr-label" for="password-6515-show"&gt;
+        &lt;input aria-label="Afficher le mot de passe" id="password-6147-show" type="checkbox"&gt;
+        &lt;label class="fr--password__checkbox fr-label" for="password-6147-show"&gt;
             Afficher
         &lt;/label&gt;
     &lt;/div&gt;
@@ -243,22 +243,22 @@
                     </div>
                     <h3>Mot de passe après validation</h3>
                     <div class="fr-mb-6v">
-                        <div class="fr-password" id="password-6517">
-                            <label class="fr-label" for="password-6517-input">
+                        <div class="fr-password" id="password-6149">
+                            <label class="fr-password__label fr-label" for="password-6149-input">
                                 Mot de passe
                             </label>
                             <div class="fr-input-wrap">
-                                <input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6517-input-messages" aria-required="true" name="password" value="x8A@" autocomplete="new-password" id="password-6517-input" type="password">
+                                <input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6149-input-messages" aria-required="true" name="password" value="x8A@" autocomplete="new-password" id="password-6149-input" type="password">
                             </div>
-                            <div class="fr-messages-group" id="password-6517-input-messages" aria-live="polite">
-                                <p class="fr-message" id="password-6517-input-message">Votre mot de passe doit contenir :</p>
-                                <p class="fr-message fr-message--error" data-fr-valid="validé" data-fr-error="en erreur" id="password-6517-input-message-error">12 caractères minimum</p>
-                                <p class="fr-message fr-message--valid" data-fr-valid="validé" data-fr-error="en erreur" id="password-6517-input-message-valid">1 caractère spécial minimum</p>
-                                <p class="fr-message fr-message--valid" data-fr-valid="validé" data-fr-error="en erreur" id="password-6517-input-message-valid-1">1 chiffre minimum</p>
+                            <div class="fr-messages-group" id="password-6149-input-messages" aria-live="polite">
+                                <p class="fr-message" id="password-6149-input-message">Votre mot de passe doit contenir :</p>
+                                <p class="fr-message fr-message--error" data-fr-valid="validé" data-fr-error="en erreur" id="password-6149-input-message-error">12 caractères minimum</p>
+                                <p class="fr-message fr-message--valid" data-fr-valid="validé" data-fr-error="en erreur" id="password-6149-input-message-valid">1 caractère spécial minimum</p>
+                                <p class="fr-message fr-message--valid" data-fr-valid="validé" data-fr-error="en erreur" id="password-6149-input-message-valid-1">1 chiffre minimum</p>
                             </div>
                             <div class="fr-password__checkbox fr-checkbox-group fr-checkbox-group--sm">
-                                <input aria-label="Afficher le mot de passe" id="password-6517-show" type="checkbox">
-                                <label class="fr--password__checkbox fr-label" for="password-6517-show">
+                                <input aria-label="Afficher le mot de passe" id="password-6149-show" type="checkbox">
+                                <label class="fr--password__checkbox fr-label" for="password-6149-show">
                                     Afficher
                                 </label>
                             </div>
@@ -267,25 +267,25 @@
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6519">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6151">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-6519">
-                                <pre class=" language-html"><code>&lt;div class="fr-password" id="password-6518"&gt;
-    &lt;label class="fr-label" for="password-6518-input"&gt;
+                            <div class="fr-collapse" id="snippet-6151">
+                                <pre class=" language-html"><code>&lt;div class="fr-password" id="password-6150"&gt;
+    &lt;label class="fr-password__label fr-label" for="password-6150-input"&gt;
         Mot de passe
     &lt;/label&gt;
     &lt;div class="fr-input-wrap"&gt;
-        &lt;input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6518-input-messages" aria-required="true" name="password" value="x8A@" autocomplete="new-password" id="password-6518-input" type="password"&gt;
+        &lt;input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6150-input-messages" aria-required="true" name="password" value="x8A@" autocomplete="new-password" id="password-6150-input" type="password"&gt;
     &lt;/div&gt;
-    &lt;div class="fr-messages-group" id="password-6518-input-messages" aria-live="polite"&gt;
-        &lt;p class="fr-message" id="password-6518-input-message"&gt;Votre mot de passe doit contenir :&lt;/p&gt;
-        &lt;p class="fr-message fr-message--error" data-fr-valid="validé" data-fr-error="en erreur" id="password-6518-input-message-error"&gt;12 caractères minimum&lt;/p&gt;
-        &lt;p class="fr-message fr-message--valid" data-fr-valid="validé" data-fr-error="en erreur" id="password-6518-input-message-valid"&gt;1 caractère spécial minimum&lt;/p&gt;
-        &lt;p class="fr-message fr-message--valid" data-fr-valid="validé" data-fr-error="en erreur" id="password-6518-input-message-valid-1"&gt;1 chiffre minimum&lt;/p&gt;
+    &lt;div class="fr-messages-group" id="password-6150-input-messages" aria-live="polite"&gt;
+        &lt;p class="fr-message" id="password-6150-input-message"&gt;Votre mot de passe doit contenir :&lt;/p&gt;
+        &lt;p class="fr-message fr-message--error" data-fr-valid="validé" data-fr-error="en erreur" id="password-6150-input-message-error"&gt;12 caractères minimum&lt;/p&gt;
+        &lt;p class="fr-message fr-message--valid" data-fr-valid="validé" data-fr-error="en erreur" id="password-6150-input-message-valid"&gt;1 caractère spécial minimum&lt;/p&gt;
+        &lt;p class="fr-message fr-message--valid" data-fr-valid="validé" data-fr-error="en erreur" id="password-6150-input-message-valid-1"&gt;1 chiffre minimum&lt;/p&gt;
     &lt;/div&gt;
     &lt;div class="fr-password__checkbox fr-checkbox-group fr-checkbox-group--sm"&gt;
-        &lt;input aria-label="Afficher le mot de passe" id="password-6518-show" type="checkbox"&gt;
-        &lt;label class="fr--password__checkbox fr-label" for="password-6518-show"&gt;
+        &lt;input aria-label="Afficher le mot de passe" id="password-6150-show" type="checkbox"&gt;
+        &lt;label class="fr--password__checkbox fr-label" for="password-6150-show"&gt;
             Afficher
         &lt;/label&gt;
     &lt;/div&gt;
@@ -296,49 +296,49 @@
                     </div>
                     <h3>Mot de passe de connexion</h3>
                     <div class="fr-mb-6v">
-                        <div class="fr-password" id="password-6520">
-                            <label class="fr-label" for="password-6520-input">
+                        <div class="fr-password" id="password-6152">
+                            <label class="fr-password__label fr-label" for="password-6152-input">
                                 Mot de passe
                             </label>
                             <div class="fr-input-wrap">
-                                <input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6520-input-messages" aria-required="true" name="password" autocomplete="current-password" id="password-6520-input" type="password">
+                                <input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6152-input-messages" aria-required="true" name="password" autocomplete="current-password" id="password-6152-input" type="password">
                             </div>
-                            <div class="fr-messages-group" id="password-6520-input-messages" aria-live="polite">
+                            <div class="fr-messages-group" id="password-6152-input-messages" aria-live="polite">
                             </div>
                             <div class="fr-password__checkbox fr-checkbox-group fr-checkbox-group--sm">
-                                <input aria-label="Afficher le mot de passe" id="password-6520-show" type="checkbox">
-                                <label class="fr--password__checkbox fr-label" for="password-6520-show">
+                                <input aria-label="Afficher le mot de passe" id="password-6152-show" type="checkbox">
+                                <label class="fr--password__checkbox fr-label" for="password-6152-show">
                                     Afficher
                                 </label>
                             </div>
                             <p>
-                                <a href="" class="fr-link">Mot de passe oublié ?</a>
+                                <a href="[À MODIFIER - url de la page de récupération]" class="fr-link">Mot de passe oublié ?</a>
                             </p>
                         </div>
                     </div>
                     <div class="fr-mb-12v">
                         <section class="fr-accordion">
                             <h3 class="fr-accordion__title">
-                                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6522">Extrait de code</button>
+                                <button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="snippet-6154">Extrait de code</button>
                             </h3>
-                            <div class="fr-collapse" id="snippet-6522">
-                                <pre class=" language-html"><code>&lt;div class="fr-password" id="password-6521"&gt;
-    &lt;label class="fr-label" for="password-6521-input"&gt;
+                            <div class="fr-collapse" id="snippet-6154">
+                                <pre class=" language-html"><code>&lt;div class="fr-password" id="password-6153"&gt;
+    &lt;label class="fr-password__label fr-label" for="password-6153-input"&gt;
         Mot de passe
     &lt;/label&gt;
     &lt;div class="fr-input-wrap"&gt;
-        &lt;input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6521-input-messages" aria-required="true" name="password" autocomplete="current-password" id="password-6521-input" type="password"&gt;
+        &lt;input class="fr-password__input fr-input" autocapitalize="off" autocorrect="off" aria-describedby="password-6153-input-messages" aria-required="true" name="password" autocomplete="current-password" id="password-6153-input" type="password"&gt;
     &lt;/div&gt;
-    &lt;div class="fr-messages-group" id="password-6521-input-messages" aria-live="polite"&gt;
+    &lt;div class="fr-messages-group" id="password-6153-input-messages" aria-live="polite"&gt;
     &lt;/div&gt;
     &lt;div class="fr-password__checkbox fr-checkbox-group fr-checkbox-group--sm"&gt;
-        &lt;input aria-label="Afficher le mot de passe" id="password-6521-show" type="checkbox"&gt;
-        &lt;label class="fr--password__checkbox fr-label" for="password-6521-show"&gt;
+        &lt;input aria-label="Afficher le mot de passe" id="password-6153-show" type="checkbox"&gt;
+        &lt;label class="fr--password__checkbox fr-label" for="password-6153-show"&gt;
             Afficher
         &lt;/label&gt;
     &lt;/div&gt;
     &lt;p&gt;
-        &lt;a href="" class="fr-link"&gt;Mot de passe oublié ?&lt;/a&gt;
+        &lt;a href="[À MODIFIER - url de la page de récupération]" class="fr-link"&gt;Mot de passe oublié ?&lt;/a&gt;
     &lt;/p&gt;
 &lt;/div&gt;
 </code></pre>
@@ -349,14 +349,14 @@
             </div>
         </div>
     </div>
-    <button aria-controls="fr-theme-modal" data-fr-opened="false" style="z-index: 1600" id="button-6523" class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary">Libellé bouton</button>
+    <button aria-controls="fr-theme-modal" data-fr-opened="false" style="z-index: 1600" type="button" class="fr-display-button fr-background-default--grey fr-btn fr-btn--lg fr-icon-theme-fill fr-btn--secondary">Libellé bouton</button>
     <dialog id="fr-theme-modal" class="fr-modal" aria-labelledby="fr-theme-modal-title">
         <div class="fr-container fr-container--fluid fr-container-md">
             <div class="fr-grid-row fr-grid-row--center">
                 <div class="fr-col-12 fr-col-md-6 fr-col-lg-4">
                     <div class="fr-modal__body">
                         <div class="fr-modal__header">
-                            <button aria-controls="fr-theme-modal" id="button-6524" title="Fermer" class="fr-btn--close fr-btn">Fermer</button>
+                            <button aria-controls="fr-theme-modal" title="Fermer" type="button" id="button-6155" class="fr-btn--close fr-btn">Fermer</button>
                         </div>
                         <div class="fr-modal__content">
                             <h1 id="fr-theme-modal-title" class="fr-modal__title">

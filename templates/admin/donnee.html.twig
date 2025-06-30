@@ -37,7 +37,7 @@
                                 </tr>
                                 <tr>
                                     <th>Classe</th>
-                                    <td>{{ user.infoEleve.classe ?: 'Non renseignée' }}</td>
+                                    <td>{{ user.infoEleve.classe.label ?: 'Non renseignée' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Promotion</th>
@@ -73,51 +73,434 @@
         <!-- Détail par section -->
         <div class="card mb-4 w-100">
             <div class="card-header">
-                <h4>Complétion par section</h4>
+                <h5 class="mb-3">Top champs manquants</h5>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div id="sectionsChart" style="width: 100%; min-height: 400px;"></div>
-                    </div>
-                    <div class="col-lg-4">
-                        <h5 class="mb-3">Top champs manquants</h5>
-                        <ul class="list-group">
-                            {% for field in completionData.missingFields %}
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span>{{ field.section|capitalize }} > {{ field.field|capitalize }}</span>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
+                <ul class="list-group">
+                    {% for field in completionData.missingFields %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{{ field.section|capitalize }} > {{ field.field|capitalize }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
         
-        <!-- Documents fournis -->
-        <div class="card mb-4 w-100">
-            <div class="card-header">
-                <h4>Documents fournis</h4>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    {% for name, isPresent in documents.details %}
-                        <div class="col-md-3 mb-3">
-                            <div class="card {{ isPresent ? 'border-success' : 'border-danger' }}">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">{{ name|capitalize|replace({'_': ' '}) }}</h5>
-                                    {% if isPresent %}
-                                        <span class="badge bg-success">Fourni</span>
-                                    {% else %}
-                                        <span class="badge bg-danger">Manquant</span>
-                                    {% endif %}
+        <!-- Documents à fournir - Récapitulatif -->
+        {% if inscription %}
+        <div class="fr-grid-row fr-grid-row--gutters fr-mb-4w">
+            <div class="fr-col-12">
+                <div class="fr-card fr-card--shadow">
+                    <div class="fr-card__body">
+                        <div class="fr-card__content">
+                            <h2 class="fr-card__title fr-mb-3w">
+                                <span class="fr-icon-file-text-line fr-icon--lg fr-mr-2w" aria-hidden="true"></span>
+                                Documents fournis
+                            </h2>
+                            
+                            <div class="fr-grid-row fr-grid-row--gutters fr-mt-4w">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    <!-- Carte Vitale -->
+                                    <div class="fr-card fr-card--sm fr-mb-3w fr-card--no-arrow">
+                                        <div class="fr-card__body">
+                                            <div class="fr-card__content">
+                                                <div class="fr-checkbox-group">
+                                                    <input type="checkbox" id="carte-vitale" name="carte-vitale" disabled 
+                                                        {{ documentManager.hasDocument(inscription, 'carte_vitale') ? 'checked' : '' }}>
+                                                    <label class="fr-label document-label-container" for="carte-vitale">
+                                                        <div class="fr-grid-row fr-grid-row--middle">
+                                                            <div class="fr-col-8">
+                                                                <span class="document-label">
+                                                                    <span class="document-name fr-text--bold">Carte Vitale</span>
+                                                                    <div class="fr-mt-1v">
+                                                                        {% if documentManager.hasDocument(inscription, 'carte_vitale') %}
+                                                                            <span class="fr-badge fr-badge--success fr-badge--sm">
+                                                                                <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-mr-1v" aria-hidden="true"></span>
+                                                                                Fourni
+                                                                            </span>
+                                                                        {% else %}
+                                                                            <span class="fr-badge fr-badge--error fr-badge--sm">
+                                                                                <span class="fr-icon-close-circle-fill fr-icon--sm fr-mr-1v" aria-hidden="true"></span>
+                                                                                Manquant
+                                                                            </span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </span>
+                                                            </div>
+                                                            <div class="fr-col-4 fr-text--right">
+                                                                {% if documentManager.hasDocument(inscription, 'carte_vitale') %}
+                                                                    <div class="document-actions">
+                                                                        <a href="{{ path('download_document', {eleveId: inscription.id, documentType: 'carte_vitale'}) }}" 
+                                                                        class="fr-btn fr-btn--tertiary-no-outline fr-btn--sm fr-icon-download-line fr-btn--icon-only"
+                                                                        title="Télécharger le document">
+                                                                            Télécharger
+                                                                        </a>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Photo d'identité -->
+                                    <div class="fr-card fr-card--sm fr-mb-3w fr-card--no-arrow">
+                                        <div class="fr-card__body">
+                                            <div class="fr-card__content">
+                                                <div class="fr-checkbox-group">
+                                                    <input type="checkbox" id="photo-identite" name="photo-identite" disabled 
+                                                        {{ documentManager.hasDocument(inscription, 'photo_identite') ? 'checked' : '' }}>
+                                                    <label class="fr-label document-label-container" for="photo-identite">
+                                                        <div class="fr-grid-row fr-grid-row--middle">
+                                                            <div class="fr-col-8">
+                                                                <span class="document-label">
+                                                                    <span class="document-name fr-text--bold">Photo d'identité</span>
+                                                                    <div class="fr-mt-1v">
+                                                                        {% if documentManager.hasDocument(inscription, 'photo_identite') %}
+                                                                            <span class="fr-badge fr-badge--success fr-badge--sm">
+                                                                                <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-mr-1v" aria-hidden="true"></span>
+                                                                                Fourni
+                                                                            </span>
+                                                                        {% else %}
+                                                                            <span class="fr-badge fr-badge--error fr-badge--sm">
+                                                                                <span class="fr-icon-close-circle-fill fr-icon--sm fr-mr-1v" aria-hidden="true"></span>
+                                                                                Manquant
+                                                                            </span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </span>
+                                                            </div>
+                                                            <div class="fr-col-4 fr-text--right">
+                                                                {% if documentManager.hasDocument(inscription, 'photo_identite') %}
+                                                                    <div class="document-actions">
+                                                                        <a href="{{ path('download_document', {eleveId: inscription.id, documentType: 'photo_identite'}) }}" 
+                                                                        class="fr-btn fr-btn--tertiary-no-outline fr-btn--sm fr-icon-download-line fr-btn--icon-only"
+                                                                        title="Télécharger le document">
+                                                                            Télécharger
+                                                                        </a>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Attestation d'identité -->
+                                    <div class="fr-card fr-card--sm fr-mb-3w fr-card--no-arrow">
+                                        <div class="fr-card__body">
+                                            <div class="fr-card__content">
+                                                <div class="fr-checkbox-group">
+                                                    <input type="checkbox" id="attestation-identite" name="attestation-identite" disabled 
+                                                        {{ documentManager.hasDocument(inscription, 'attestation_identite') ? 'checked' : '' }}>
+                                                    <label class="fr-label document-label-container" for="attestation-identite">
+                                                        <div class="fr-grid-row fr-grid-row--middle">
+                                                            <div class="fr-col-8">
+                                                                <span class="document-label">
+                                                                    <span class="document-name fr-text--bold">Attestation d'identité</span>
+                                                                    <div class="fr-mt-1v">
+                                                                        {% if documentManager.hasDocument(inscription, 'attestation_identite') %}
+                                                                            <span class="fr-badge fr-badge--success fr-badge--sm">
+                                                                                <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-mr-1v" aria-hidden="true"></span>
+                                                                                Fourni
+                                                                            </span>
+                                                                        {% else %}
+                                                                            <span class="fr-badge fr-badge--error fr-badge--sm">
+                                                                                <span class="fr-icon-close-circle-fill fr-icon--sm fr-mr-1v" aria-hidden="true"></span>
+                                                                                Manquant
+                                                                            </span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </span>
+                                                            </div>
+                                                            <div class="fr-col-4 fr-text--right">
+                                                                {% if documentManager.hasDocument(inscription, 'attestation_identite') %}
+                                                                    <div class="document-actions">
+                                                                        <a href="{{ path('download_document', {eleveId: inscription.id, documentType: 'attestation_identite'}) }}" 
+                                                                        class="fr-btn fr-btn--tertiary-no-outline fr-btn--sm fr-icon-download-line fr-btn--icon-only"
+                                                                        title="Télécharger le document">
+                                                                            Télécharger
+                                                                        </a>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="fr-col-12 fr-col-md-6">
+                                    <!-- Bourse -->
+                                    <div class="fr-card fr-card--sm fr-mb-3w fr-card--no-arrow">
+                                        <div class="fr-card__body">
+                                            <div class="fr-card__content">
+                                                <div class="fr-checkbox-group">
+                                                    <input type="checkbox" id="bourse" name="bourse" disabled 
+                                                        {{ documentManager.hasDocument(inscription, 'bourse') ? 'checked' : '' }}>
+                                                    <label class="fr-label document-label-container" for="bourse">
+                                                        <div class="fr-grid-row fr-grid-row--middle">
+                                                            <div class="fr-col-8">
+                                                                <span class="document-label">
+                                                                    <span class="document-name fr-text--bold">
+                                                                        Justificatif de bourse
+                                                                    </span>
+                                                                    <div class="fr-text--xs fr-text-mention--grey fr-mt-1v">
+                                                                        (optionnel)
+                                                                    </div>
+                                                                    <div class="fr-mt-1v">
+                                                                        {% if documentManager.hasDocument(inscription, 'bourse') %}
+                                                                            <span class="fr-badge fr-badge--success fr-badge--sm">
+                                                                                <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-mr-1v" aria-hidden="true"></span>
+                                                                                Fourni
+                                                                            </span>
+                                                                        {% else %}
+                                                                            <span class="fr-badge fr-badge--info fr-badge--sm">
+                                                                                <span class="fr-icon-info-fill fr-icon--sm fr-mr-1v" aria-hidden="true"></span>
+                                                                                Non fourni
+                                                                            </span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </span>
+                                                            </div>
+                                                            <div class="fr-col-4 fr-text--right">
+                                                                {% if documentManager.hasDocument(inscription, 'bourse') %}
+                                                                    <div class="document-actions">
+                                                                        <a href="{{ path('download_document', {eleveId: inscription.id, documentType: 'bourse'}) }}" 
+                                                                        class="fr-btn fr-btn--tertiary-no-outline fr-btn--sm fr-icon-download-line fr-btn--icon-only"
+                                                                        title="Télécharger le document">
+                                                                            Télécharger
+                                                                        </a>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Attestation JDC -->
+                                    <div class="fr-card fr-card--sm fr-mb-3w fr-card--no-arrow">
+                                        <div class="fr-card__body">
+                                            <div class="fr-card__content">
+                                                <div class="fr-checkbox-group">
+                                                    <input type="checkbox" id="attestation-jdc" name="attestation-jdc" disabled 
+                                                        {{ documentManager.hasDocument(inscription, 'attestation_jdc') ? 'checked' : '' }}>
+                                                    <label class="fr-label document-label-container" for="attestation-jdc">
+                                                        <div class="fr-grid-row fr-grid-row--middle">
+                                                            <div class="fr-col-8">
+                                                                <span class="document-label">
+                                                                    <span class="document-name fr-text--bold">
+                                                                        Attestation JDC
+                                                                    </span>
+                                                                    <div class="fr-text--xs fr-text-mention--grey fr-mt-1v">
+                                                                        (optionnel)
+                                                                    </div>
+                                                                    <div class="fr-mt-1v">
+                                                                        {% if documentManager.hasDocument(inscription, 'attestation_jdc') %}
+                                                                            <span class="fr-badge fr-badge--success fr-badge--sm">
+                                                                                <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-mr-1v" aria-hidden="true"></span>
+                                                                                Fourni
+                                                                            </span>
+                                                                        {% else %}
+                                                                            <span class="fr-badge fr-badge--info fr-badge--sm">
+                                                                                <span class="fr-icon-info-fill fr-icon--sm fr-mr-1v" aria-hidden="true"></span>
+                                                                                Non fourni
+                                                                            </span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </span>
+                                                            </div>
+                                                            <div class="fr-col-4 fr-text--right">
+                                                                {% if documentManager.hasDocument(inscription, 'attestation_jdc') %}
+                                                                    <div class="document-actions">
+                                                                        <a href="{{ path('download_document', {eleveId: inscription.id, documentType: 'attestation_jdc'}) }}" 
+                                                                        class="fr-btn fr-btn--tertiary-no-outline fr-btn--sm fr-icon-download-line fr-btn--icon-only"
+                                                                        title="Télécharger le document">
+                                                                            Télécharger
+                                                                        </a>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Attestation de réussite -->
+                                    <div class="fr-card fr-card--sm fr-mb-3w fr-card--no-arrow">
+                                        <div class="fr-card__body">
+                                            <div class="fr-card__content">
+                                                <div class="fr-checkbox-group">
+                                                    <input type="checkbox" id="attestation-reussite" name="attestation-reussite" disabled 
+                                                        {{ documentManager.hasDocument(inscription, 'attestation_reusite') ? 'checked' : '' }}>
+                                                    <label class="fr-label document-label-container" for="attestation-reussite">
+                                                        <div class="fr-grid-row fr-grid-row--middle">
+                                                            <div class="fr-col-8">
+                                                                <span class="document-label">
+                                                                    <span class="document-name fr-text--bold">
+                                                                        Attestation de réussite
+                                                                    </span>
+                                                                    <div class="fr-text--xs fr-text-mention--grey fr-mt-1v">
+                                                                        (optionnel)
+                                                                    </div>
+                                                                    <div class="fr-mt-1v">
+                                                                        {% if documentManager.hasDocument(inscription, 'attestation_reusite') %}
+                                                                            <span class="fr-badge fr-badge--success fr-badge--sm">
+                                                                                <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-mr-1v" aria-hidden="true"></span>
+                                                                                Fourni
+                                                                            </span>
+                                                                        {% else %}
+                                                                            <span class="fr-badge fr-badge--info fr-badge--sm">
+                                                                                <span class="fr-icon-info-fill fr-icon--sm fr-mr-1v" aria-hidden="true"></span>
+                                                                                Non fourni
+                                                                            </span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </span>
+                                                            </div>
+                                                            <div class="fr-col-4 fr-text--right">
+                                                                {% if documentManager.hasDocument(inscription, 'attestation_reusite') %}
+                                                                    <div class="document-actions">
+                                                                        <a href="{{ path('download_document', {eleveId: inscription.id, documentType: 'attestation_reusite'}) }}" 
+                                                                        class="fr-btn fr-btn--tertiary-no-outline fr-btn--sm fr-icon-download-line fr-btn--icon-only"
+                                                                        title="Télécharger le document">
+                                                                            Télécharger
+                                                                        </a>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+                            <!-- Résumé des documents -->
+                            <div class="fr-mt-5w">
+                                {% if documentsStatus is defined and documentsStatus %}
+                                    {% set totalDocuments = documentsStatus|length %}
+                                    {% set uploadedDocuments = 0 %}
+                                    {% set requiredDocuments = 0 %}
+                                    {% set uploadedRequiredDocuments = 0 %}
+                                    
+                                    {% for type, status in documentsStatus %}
+                                        {% if status.uploaded %}
+                                            {% set uploadedDocuments = uploadedDocuments + 1 %}
+                                        {% endif %}
+                                        {% if status.required %}
+                                            {% set requiredDocuments = requiredDocuments + 1 %}
+                                            {% if status.uploaded %}
+                                                {% set uploadedRequiredDocuments = uploadedRequiredDocuments + 1 %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <div class="fr-card fr-card--sm fr-card--grey">
+                                        <div class="fr-card__body">
+                                            <div class="fr-card__content">
+                                                <h3 class="fr-card__title fr-text--lg fr-mb-3w">
+                                                    <span class="fr-icon-survey-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
+                                                    Récapitulatif du dossier
+                                                </h3>
+                                                
+                                                <div class="fr-grid-row fr-grid-row--gutters">
+                                                    <div class="fr-col-12 fr-col-md-4">
+                                                        <div class="fr-card fr-card--sm fr-card--no-arrow">
+                                                            <div class="fr-card__body">
+                                                                <div class="fr-card__content fr-text--center">
+                                                                    <div class="fr-text--xl fr-text--bold {{ uploadedRequiredDocuments == requiredDocuments ? 'fr-text--success' : 'fr-text--warning' }}">
+                                                                        {{ uploadedRequiredDocuments }}/{{ requiredDocuments }}
+                                                                    </div>
+                                                                    <div class="fr-text--sm fr-text-mention--grey">
+                                                                        Documents obligatoires
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="fr-col-12 fr-col-md-4">
+                                                        <div class="fr-card fr-card--sm fr-card--no-arrow">
+                                                            <div class="fr-card__body">
+                                                                <div class="fr-card__content fr-text--center">
+                                                                    <div class="fr-text--xl fr-text--bold fr-text--info">
+                                                                        {{ uploadedDocuments }}/{{ totalDocuments }}
+                                                                    </div>
+                                                                    <div class="fr-text--sm fr-text-mention--grey">
+                                                                        Total des documents
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="fr-col-12 fr-col-md-4">
+                                                        <div class="fr-card fr-card--sm fr-card--no-arrow">
+                                                            <div class="fr-card__body">
+                                                                <div class="fr-card__content fr-text--center">
+                                                                    {% if hasAllRequiredDocuments is defined and hasAllRequiredDocuments %}
+                                                                        <div class="fr-text--lg fr-text--bold fr-text--success fr-mb-1v">
+                                                                            <span class="fr-icon-checkbox-circle-fill fr-icon--lg" aria-hidden="true"></span>
+                                                                        </div>
+                                                                        <div class="fr-text--sm fr-text--success">
+                                                                            Dossier complet
+                                                                        </div>
+                                                                    {% else %}
+                                                                        <div class="fr-text--lg fr-text--bold fr-text--warning fr-mb-1v">
+                                                                            <span class="fr-icon-warning-fill fr-icon--lg" aria-hidden="true"></span>
+                                                                        </div>
+                                                                        <div class="fr-text--sm fr-text--warning">
+                                                                            Documents manquants
+                                                                        </div>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
-                    {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
+        {% else %}
+        <!-- Message si aucune inscription -->
+        <div class="fr-grid-row fr-grid-row--gutters fr-mb-4w">
+            <div class="fr-col-12">
+                <div class="fr-card fr-card--shadow">
+                    <div class="fr-card__body">
+                        <div class="fr-card__content">
+                            <h2 class="fr-card__title fr-mb-3w">
+                                <span class="fr-icon-file-text-line fr-icon--lg fr-mr-2w" aria-hidden="true"></span>
+                                Documents à fournir
+                            </h2>
+                            <div class="fr-alert fr-alert--info">
+                                <h3 class="fr-alert__title">Information</h3>
+                                <p>Aucune inscription trouvée. Veuillez d'abord compléter votre inscription pour accéder à la gestion des documents.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         
         <!-- Dossiers PDF -->
         <div class="card w-100 mb-4">

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\RepresentantLegalRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use phpDocumentor\Reflection\Types\Nullable;
 
 #[ORM\Entity(repositoryClass: RepresentantLegalRepository::class)]
@@ -35,6 +37,46 @@ class RepresentantLegal extends Humain
 
     #[ORM\ManyToOne]
     private InfoEleve $infoEleve;
+    /**
+    * @var Collection<int, InfoEleve>
+    */
+    #[ORM\OneToMany(targetEntity: InfoEleve::class, mappedBy: 'responsable_un')]
+    private Collection $infoEleves;
+
+    public function __construct()
+    {
+        // parent::__construct(); // Si la classe Humain a un constructeur
+        $this->infoEleves = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection<int, InfoEleve>
+     */
+    public function getInfoEleves(): Collection
+    {
+        return $this->infoEleves;
+    }
+
+    public function addInfoEleve(InfoEleve $infoEleve): static
+    {
+        if (!$this->infoEleves->contains($infoEleve)) {
+            $this->infoEleves->add($infoEleve);
+            $infoEleve->setResponsableUn($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInfoEleve(InfoEleve $infoEleve): static
+    {
+        if ($this->infoEleves->removeElement($infoEleve)) {
+            if ($infoEleve->getResponsableUn() === $this) {
+                $infoEleve->setResponsableUn(null);
+            }
+        }
+
+        return $this;
+    }
 
     public function getTelephoneFixe(): ?string
     {
@@ -137,10 +179,4 @@ class RepresentantLegal extends Humain
     {
         $this->infoEleve = $eleve;
     }
-    
-    public function getInfoEleves(): InfoEleve
-    {
-        return $this->infoEleve;
-    }
-
 }

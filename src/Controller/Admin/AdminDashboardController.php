@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use App\Service\CompletionCheckerService;
 use App\Service\GraphMailer;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\DocumentManager;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -25,6 +26,7 @@ class AdminDashboardController extends AbstractDashboardController
         private readonly GraphMailer $graphMailer,
         private readonly CompletionCheckerService $completionChecker,
         private readonly LoggerInterface $logger,
+        private readonly DocumentManager $documentManager
     ) {}
 
     #[Route('/admin', name: 'admin')]
@@ -141,8 +143,21 @@ class AdminDashboardController extends AbstractDashboardController
     public function visualiserDonnees(User $user): Response
     {
         $completionData = $this->completionChecker->analyzeStudentDataCompletion($user);
-        $documents = $this->completionChecker->checkRequiredDocuments($user, $this->getParameter('kernel.project_dir'));
+        $document = $this->completionChecker->checkRequiredDocuments($user, $this->getParameter('kernel.project_dir'));
         $globalStats = $this->completionChecker->getGlobalStatistics();
+
+        $inscription = $user->getInfoEleve(); // Ajustez selon votre entité
+        $documents = [
+            'details' => [
+                'Carte Vitale' => $this->documentManager->hasDocument($inscription, 'carte_vitale'),
+                'Certificat Médical' => $this->documentManager->hasDocument($inscription, 'certificat_medical'),
+                'Photo d\'identité' => $this->documentManager->hasDocument($inscription, 'photo_identite'),
+                'Justificatif de domicile' => $this->documentManager->hasDocument($inscription, 'justificatif_domicile'),
+                'Relevé de notes' => $this->documentManager->hasDocument($inscription, 'releve_notes'),
+                'Attestation d\'assurance' => $this->documentManager->hasDocument($inscription, 'attestation_assurance'),
+                // Add other document types as needed
+            ]
+        ];
 
         return $this->render('admin/donnee.html.twig', [
             'user' => $user,
@@ -157,12 +172,15 @@ class AdminDashboardController extends AbstractDashboardController
                 ], $completionData['sections']),
                 'missingFields' => array_slice($completionData['missing_fields'], 0, 10),
             ],
-            'documents' => $documents,
+            'document' => $document,
             'globalComparison' => [
                 'user_percentage' => $completionData['completion_percentage'],
                 'global_average' => $globalStats['completion_average'],
             ],
-            'pdfs' => $documents['pdfs'],
+            'pdfs' => $document['pdfs'],
+            'inscription' => $inscription, // Ajustez selon votre entité
+            'documentManager' => $this->documentManager, // Passage du service
+            'documents' => $documents,
         ]);
     }
 

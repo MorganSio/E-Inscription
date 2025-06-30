@@ -1,0 +1,1199 @@
+{% extends 'base.html.twig' %}
+{% block title %}Inscription - Étape {{ flow.currentStepNumber }} - E-Inscription{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .fr-fieldset {
+            margin-bottom: 2rem;
+        }
+        .fr-alert--success {
+            margin-bottom: 1rem;
+        }
+        .fr-alert--error {
+            margin-bottom: 1rem;
+        }
+        .loading-spinner {
+            display: none;
+            margin-left: 0.5rem;
+        }
+        .fr-btn--loading .loading-spinner {
+            display: inline-block;
+        }
+        .fr-grid-row.fr-grid-row--gutters > * {
+            margin-bottom: 1rem;
+        }
+        .fr-input--error {
+            border: 2px solid var(--error-500) !important;
+            background-color: #fef2f2 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="fr-container">
+    <div class="fr-grid-row fr-grid-row--center">
+        <div class="fr-col-12 fr-col-lg-10">
+            <nav class="fr-breadcrumb" aria-label="vous êtes ici :" role="navigation">
+                <button class="fr-breadcrumb__button" aria-expanded="false" aria-controls="breadcrumb-{{ flow.currentStepNumber }}">
+                    Voir le fil d'Ariane
+                </button>
+                <div class="fr-collapse" id="breadcrumb-{{ flow.currentStepNumber }}">
+                    <ol class="fr-breadcrumb__list">
+                        <li>
+                            <a class="fr-breadcrumb__link" href="{{ path('app_home') }}">Accueil</a>
+                        </li>
+                        <li>
+                            <a class="fr-breadcrumb__link" aria-current="page">Inscription</a>
+                        </li>
+                    </ol>
+                </div>
+            </nav>
+
+            <div class="fr-stepper">
+                <h2 class="fr-stepper__title" id="step-title">
+                    Étape {{ flow.currentStepNumber }} sur 10 : {{ flow.currentStepLabel }}
+                </h2>
+                <div class="fr-stepper__steps" data-fr-current-step="{{ flow.currentStepNumber }}" data-fr-steps="10"></div>
+                {% if flow.nextStepLabel is defined %}
+                    <p class="fr-stepper__details">
+                        <span class="fr-text--bold">Étape suivante :</span> 
+                        {{ flow.nextStepLabel }}
+                    </p>
+                {% endif %}
+            </div>
+
+            <!-- Conteneur pour les messages d'erreur AJAX -->
+            <div id="ajax-messages"></div>
+
+            {% for flash_error in app.flashes('error') %}
+                <div class="fr-alert fr-alert--error">
+                    <p class="fr-alert__title">Erreur</p>
+                    <p>{{ flash_error }}</p>
+                </div>
+            {% endfor %}
+
+            {% for flash_success in app.flashes('success') %}
+                <div class="fr-alert fr-alert--success">
+                    <p class="fr-alert__title">Succès</p>
+                    <p>{{ flash_success }}</p>
+                </div>
+            {% endfor %}
+
+            <div class="main-content">
+                {{ form_start(form, {'attr': {'id': 'inscription-form', 'novalidate': 'novalidate'}}) }}
+
+                {% if flow.currentStepNumber == 1 %}
+                    <fieldset class="fr-fieldset">
+                        <legend class="fr-fieldset__legend fr-text--regular">
+                            <span class="fr-icon-user-line fr-icon--sm" aria-hidden="true"></span>
+                            Informations personnelles
+                        </legend>
+                        <div class="fr-fieldset__content">
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.nom) }}
+                                    {% for error in form.nom.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.prenom) }}
+                                    {% for error in form.prenom.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.email) }}
+                                    {% for error in form.email.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.dateNaissance) }}
+                                    {% for error in form.dateNaissance.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.sexe) }}
+                                    {% for error in form.sexe.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.nationalite) }}
+                                    {% for error in form.nationalite.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.departement) }}
+                                    {% for error in form.departement.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.communeNaissance) }}
+                                    {% for error in form.communeNaissance.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {{ form_row(form.numSecuSocial) }}
+                        </div>
+                    </fieldset>
+                {% endif %}
+
+                {% if flow.currentStepNumber == 2 %}
+                    <fieldset class="fr-fieldset">
+                        <legend class="fr-fieldset__legend fr-text--regular">
+                            <span class="fr-icon-phone-line fr-icon--sm" aria-hidden="true"></span>
+                            Contact et urgence
+                        </legend>
+                        <div class="fr-fieldset__content">
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-12">
+                                    {{ form_row(form.numeroMobile) }}
+                                    {% for error in form.numeroMobile.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {{ form_row(form.accepterSms) }}
+                            
+                            <h4 class="fr-h4 fr-mt-3w">Contact d'urgence</h4>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.nomContacteUrgence) }}
+                                    {% for error in form.nomContacteUrgence.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.numeroContacteUrgence) }}
+                                    {% for error in form.numeroContacteUrgence.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                {% endif %}
+
+                {% if flow.currentStepNumber == 3 %}
+                    <fieldset class="fr-fieldset">
+                        <legend class="fr-fieldset__legend fr-text--regular">
+                            <span class="fr-icon-information-line fr-icon--sm" aria-hidden="true"></span>
+                            Informations scolaires
+                        </legend>
+                        <div class="fr-fieldset__content">
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.classe) }}
+                                    {% for error in form.classe.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.promotion) }}
+                                </div>
+                            </div>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-12">
+                                <p><strong>Tarif du ticket : 4,55€</strong><br>
+                                Le paiement se fait par télépaiement sur MyTurboSelf ou au niveau de l'Intendance.<br>
+                                Pour plus d'informations, veuillez consulter l'Intendance à la rentrée.</p>
+                                    {{ form_row(form.regime) }}
+                                    {% for error in form.regime.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-12">
+                                    {{ form_row(form.redoublant) }}
+                                </div>
+                            </div>
+                            
+                            <h4 class="fr-h4 fr-mt-3w">Langues vivantes</h4>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.lvUn) }}
+                                    {% for error in form.lvUn.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.lvDeux) }}
+                                </div>
+                            </div>
+                            
+                            <h4 class="fr-h4 fr-mt-3w">Autres informations</h4>
+                            {{ form_row(form.dernierDiplome) }}
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.transportScolaire) }}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.immatriculationVeic) }}
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                {% endif %}
+
+                {% if flow.currentStepNumber == 4 %}
+                    <fieldset class="fr-fieldset">
+                        <legend class="fr-fieldset__legend fr-text--regular">
+                            <span class="fr-icon-parent-line fr-icon--sm" aria-hidden="true"></span>
+                            Représentant légal 1
+                        </legend>
+                        <div class="fr-fieldset__content">
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal1Nom) }}
+                                    {% for error in form.representantLegal1Nom.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal1Prenom) }}
+                                    {% for error in form.representantLegal1Prenom.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <h4 class="fr-h4 fr-mt-3w">Contact</h4>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal1Courriel) }}
+                                    {% for error in form.representantLegal1Courriel.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal1Telephone) }}
+                                    {% for error in form.representantLegal1Telephone.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal1TelephoneFixe) }}
+                                    {% for error in form.representantLegal1TelephoneFixe.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal1TelephonePro) }}
+                                    {% for error in form.representantLegal1TelephonePro.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {{ form_row(form.representantLegal1Sms) }}
+                            
+                            <h4 class="fr-h4 fr-mt-3w">Adresse</h4>
+                            {{ form_row(form.representantLegal1Adresse) }}
+                            {% for error in form.representantLegal1Adresse.vars.errors %}
+                                <div class="fr-alert fr-alert--error">
+                                    <p class="fr-alert__title">Erreur</p>
+                                    <p>{{ error.message }}</p>
+                                </div>
+                            {% endfor %}
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal1CodePostal) }}
+                                    {% for error in form.representantLegal1CodePostal.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal1Commune) }}
+                                    {% for error in form.representantLegal1Commune.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <h4 class="fr-h4 fr-mt-3w">Informations professionnelles</h4>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal1Poste) }}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal1LienEleve) }}
+                                    {% for error in form.representantLegal1LienEleve.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal1NomEmployeur) }}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal1AdresseEmployeur) }}
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                {% endif %}
+
+                {% if flow.currentStepNumber == 5 %}
+                    <fieldset class="fr-fieldset">
+                        <legend class="fr-fieldset__legend fr-text--regular">
+                            <span class="fr-icon-parent-line fr-icon--sm" aria-hidden="true"></span>
+                            Représentant légal 2
+                        </legend>
+                        <div class="fr-fieldset__content">
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal2Nom) }}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal2Prenom) }}
+                                </div>
+                            </div>
+                            
+                            <h4 class="fr-h4 fr-mt-3w">Contact</h4>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal2Courriel) }}
+                                    {% for error in form.representantLegal2Courriel.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal2Telephone) }}
+                                    {% for error in form.representantLegal2Telephone.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-collg-6">
+                                    {{ form_row(form.representantLegal2TelephoneFixe) }}
+                                    {% for error in form.representantLegal2TelephoneFixe.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal2TelephonePro) }}
+                                    {% for error in form.representantLegal2TelephonePro.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {{ form_row(form.representantLegal2Sms) }}
+                            
+                            <h4 class="fr-h4 fr-mt-3w">Adresse</h4>
+                            {{ form_row(form.representantLegal2Adresse) }}
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal2CodePostal) }}
+                                    {% for error in form.representantLegal2CodePostal.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal2Commune) }}
+                                </div>
+                            </div>
+                            
+                            <h4 class="fr-h4 fr-mt-3w">Informations professionnelles</h4>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal2Poste) }}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal2LienEleve) }}
+                                </div>
+                            </div>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal2NomEmployeur) }}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.representantLegal2AdresseEmployeur) }}
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                {% endif %}
+
+                {% if flow.currentStepNumber == 6 %}
+                    <fieldset class="fr-fieldset">
+                        <legend class="fr-fieldset__legend fr-text--regular">
+                            <span class="fr-icon-book-2-line fr-icon--sm" aria-hidden="true"></span>
+                            Scolarité antérieure
+                        </legend>
+                        <div class="fr-fieldset__content">
+                            <h4 class="fr-h4">Établissement précédent 1</h4>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.etablissementPrecedent1) }}
+                                    {% for error in form.etablissementPrecedent1.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.classePrecedente1) }}
+                                    {% for error in form.classePrecedente1.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.anneeScolairePrecedente1) }}
+                                    {% for error in form.anneeScolairePrecedente1.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.lvUnPrecedente1) }}
+                                </div>
+                            </div>
+                            <div class="fr-grid-row fr-grid-row-gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.lvDeuxPrecedente1) }}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.optionPrecedente1) }}
+                                </div>
+                            </div>
+                            
+                            <h4 class="fr-h4 fr-mt-3w">Établissement précédent 2</h4>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.etablissementPrecedent2) }}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.classePrecedente2) }}
+                                </div>
+                            </div>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.anneeScolairePrecedente2) }}
+                                    {% for error in form.anneeScolairePrecedente2.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.lvUnPrecedente2) }}
+                                </div>
+                            </div>
+                            <div class="fr-grid-row fr-grid-row-gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.lvDeuxPrecedente2) }}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.optionPrecedente2) }}
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                {% endif %}
+
+                {% if flow.currentStepNumber == 7 %}
+                    <fieldset class="fr-fieldset">
+                        <legend class="fr-fieldset__legend fr-text--regular">
+                            <span class="fr-icon-heart-pulse-line fr-icon--sm" aria-hidden="true"></span>
+                            Informations médicales
+                        </legend>
+                        <div class="fr-fieldset__content">
+                            <h4 class="fr-h4">Médecin traitant</h4>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.medecinTraitantNom) }}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.medecinTraitantTelephone) }}
+                                    {% for error in form.medecinTraitantTelephone.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {{ form_row(form.medecinTraitantAdresse) }}
+                            
+                            <h4 class="fr-h4 fr-mt-3w">Informations de santé</h4>
+                            {{ form_row(form.dernierRappelAntitetanique) }}
+                            {{ form_row(form.observations) }}
+                            
+                            <h4 class="fr-h4 fr-mt-3w">Sécurité sociale</h4>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.secuSocialeNom) }}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.secuSocialeAdresse) }}
+                                </div>
+                            </div>
+                            
+                            <h4 class="fr-h4 fr-mt-3w">Assurance</h4>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.assureurNom) }}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.assureurNumeroAssurance) }}
+                                </div>
+                            </div>
+                            {{ form_row(form.assureurAdresse) }}
+                        </div>
+                    </fieldset>
+                {% endif %}
+
+                {% if flow.currentStepNumber == 8 %}
+                    <fieldset class="fr-fieldset">
+                        <legend class="fr-fieldset__legend fr-text--regular">
+                            <span class="fr-icon-money-euro-circle-line fr-icon--sm" aria-hidden="true"></span>
+                            Responsable financier
+                        </legend>
+                        <div class="fr-fieldset__content">
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.responsableFinancierNom) }}
+                                    {% for error in form.responsableFinancierNom.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.responsableFinancierPrenom) }}
+                                    {% for error in form.responsableFinancierPrenom.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="fr-grid-row fr-grid-row--gutters">
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.responsableFinancierNomEmployeur) }}
+                                </div>
+                                <div class="fr-col-12 fr-col-md-6">
+                                    {{ form_row(form.responsableFinancierAdresseEmployeur) }}
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                {% endif %}
+
+                {% if flow.currentStepNumber == 9 %}
+                    <fieldset class="fr-fieldset">
+                        <legend class="fr-fieldset__legend fr-text--regular">
+                            <span class="fr-icon-file-line fr-icon--sm" aria-hidden="true"></span>
+                            Documents à fournir
+                        </legend>
+
+                        <div class="fr-fieldset__content">
+                            <div class="alert fr-alert fr-alert--info fr-mb-4w">
+                                <p class="fr-alert__title">Informations</p>
+                                <p>
+                                    <strong>Documents obligatoires:</strong> Carte Vitale, Photo d'identité, Attestation d'identité<br>
+                                    <small>Formats acceptés: PDF, JPG, PNG (max 5MB par fichier)</small>
+                                </p>
+                            </div>
+
+                            <div id="documents-container" class="fr-mb-4w">
+                                <!-- Les documents seront chargés ici via JavaScript -->
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <script>
+                        const eleveId = {{ infoEleve.id|default(0) }};
+                        let documentUploader;
+
+                        document.addEventListener('DOMContentLoaded', function () {
+                            documentUploader = new DocumentUploader(eleveId);
+                        });
+                    </script>
+
+                    <!-- Ajoute ici le script DocumentUploader complet ou en import -->
+                    <script src="{{ asset('documentUploader.js') }}"></script>
+                {% endif %}
+
+                {% if flow.currentStepNumber == 10 %}
+                    <fieldset class="fr-fieldset">
+                        <legend class="fr-fieldsetlegend fr-text--regular">
+                            <span class="fr-icon-check-line fr-icon--sm" aria-hidden="true"></span>
+                            Finalisation et adhésion
+                        </legend>
+
+                        <div class="fr-fieldset__content">
+                            <h4 class="fr-h4">À propos de la MDL</h4>
+                            <p><strong>La MDL de Fulbert</strong></p>
+                            <p>La Maison Des Lycéens (MDL) du lycée Fulbert à Chartres est un espace dynamique et collaboratif géré par et pour les élèves.</p>
+                            <p>Elle favorise le développement culturel et associatif au sein de l'établissement.</p>
+                            <ul>
+                                <li><strong>Objectifs:</strong> Responsabiliser les élèves, promouvoir la diversité culturelle et créer des espaces d'expression.</li>
+                                <li><strong>Activités:</strong> Organisation d'événements culturels, sportifs et humanitaires.</li>
+                                <li><strong>Engagement:</strong> Implication des élèves avec le soutien de l'administration.</li>
+                            </ul>
+                            <p><strong>Et cela ne coûte que 10€ par an.</strong></p>
+
+                            <div class="fr-radio-group fr-mb-3w">
+                                {{ form_label(form.adhesionAccepted, null, {'label_attr': {'class': 'fr-fieldset__legend fr-text--regular'}}) }}
+                                {{ form_widget(form.adhesionAccepted, {
+                                    'attr': {'class': 'adhesion-choice'}
+                                }) }}
+                                <div class="fr-messages-group" id="adhesionAccepted-messages" aria-live="polite">
+                                    {% for error in form.adhesionAccepted.vars.errors %}
+                                        <div class="fr-alert fr-alert--error">
+                                            <p class="fr-alert__title">Erreur</p>
+                                            <p>{{ error.message }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            {# Bloc affiché uniquement si "Oui" est sélectionné #}
+                            <div id="adhesion-details" class="adhesion-conditional" style="display: none;">
+                                <div class="fr-alert fr-alert--success fr-mb-3w">
+                                    <p class="fr-alert__title">Félicitations!</p>
+                                    <p>Vous avez choisi d'adhérer à la MDL. Veuillez compléter les informations ci-dessous.</p>
+                                </div>
+
+                                <h5 class="fr-h5 fr-mt-3w">{{ form_label(form.adhesionPaymentMethod) }}</h5>
+                                <div class="fr-radio-group fr-mb-3w">
+                                    {{ form_widget(form.adhesionPaymentMethod) }}
+                                    <div class="fr-messages-group" aria-live="polite">
+                                        {% for error in form.adhesionPaymentMethod.vars.errors %}
+                                            <div class="fr-alert fr-alert--error">
+                                                <p class="fr-alert__title">Erreur</p>
+                                                <p>{{ error.message }}</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <h5 class="fr-h5 fr-mt-3w">Autorisation droit à l'image</h5>
+                                <div class="fr-checkbox-group fr-mb-3w">
+                                    {{ form_widget(form.adhesionImageRights, { 
+                                        'attr': {'class': 'droit-image-checkbox'}
+                                    }) }}
+                                    {{ form_label(form.adhesionImageRights, null, {
+                                        'label_attr': {'class': 'fr-label'}
+                                    }) }}
+                                    <div class="fr-messages-group" id="droitImage-messages" aria-live="polite">
+                                        {% for error in form.adhesionImageRights.vars.errors %}
+                                            <div class="fr-alert fr-alert--error">
+                                                <p class="fr-alert__title">Erreur</p>
+                                                <p>{{ error.message }}</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="fr-alert fr-alert--info fr-mt-2w">
+                                <p class="fr-alert__title">Information importante</p>
+                                <p>Vous êtes sur le point de finaliser votre inscription. Vérifiez bien toutes les informations saisies avant de valider.</p>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            // Sélectionner tous les boutons radio pour l'adhésion
+                            const adhesionRadios = document.querySelectorAll('input[name$="[adhesionAccepted]"]');
+                            const adhesionDetails = document.getElementById('adhesion-details');
+                            
+                            function toggleAdhesionDetails() {
+                                // Trouver le bouton radio sélectionné
+                                const selectedRadio = document.querySelector('input[name$="[adhesionAccepted]"]:checked');
+                                
+                                if (selectedRadio && selectedRadio.value === '1') {
+                                    // Si "Oui" est sélectionné (true), afficher les détails
+                                    adhesionDetails.style.display = 'block';
+                                    // Rendre le mode de paiement obligatoire
+                                    setPaymentRequired(true);
+                                } else {
+                                    // Si "Non" ou rien n'est sélectionné, masquer les détails
+                                    adhesionDetails.style.display = 'none';
+                                    // Retirer l'obligation du mode de paiement
+                                    setPaymentRequired(false);
+                                    // Réinitialiser les valeurs des champs cachés
+                                    resetHiddenFields();
+                                }
+                            }
+                            
+                            function setPaymentRequired(required) {
+                                const paymentRadios = document.querySelectorAll('input[name$="[adhesionPaymentMethod]"]');
+                                paymentRadios.forEach(function(radio) {
+                                    if (required) {
+                                        radio.setAttribute('required', 'required');
+                                    } else {
+                                        radio.removeAttribute('required');
+                                    }
+                                });
+                            }
+                            
+                            function resetHiddenFields() {
+                                // Réinitialiser le mode de paiement
+                                const paymentRadios = document.querySelectorAll('input[name$="[adhesionPaymentMethod]"]');
+                                paymentRadios.forEach(function(radio) {
+                                    radio.checked = false;
+                                });
+                                
+                                // Réinitialiser le droit à l'image
+                                const imageRightsCheckbox = document.querySelector('input[name$="[adhesionImageRights]"]');
+                                if (imageRightsCheckbox) {
+                                    imageRightsCheckbox.checked = false;
+                                }
+                            }
+                            
+                            // Ajouter les écouteurs d'événements
+                            adhesionRadios.forEach(function(radio) {
+                                radio.addEventListener('change', toggleAdhesionDetails);
+                            });
+                            
+                            // État initial au chargement de la page
+                            toggleAdhesionDetails();
+                        });
+                    </script>
+                {% endif %}               
+
+                    <div class="fr-mt-4w">
+                        <ul class="fr-btns-group fr-btns-group--inline-reverse fr-btns-group--inline-lg">
+                            <li>
+                                {% if flow.currentStepNumber < 10 %}
+                                    <button type="submit" name="flow_transition" value="next" class="fr-btn" id="next-btn">
+                                        Étape suivante
+                                        <span class="fr-icon-arrow-right-line fr-icon--sm" aria-hidden="true"></span>
+                                        <span class="loading-spinner">⏳</span>
+                                    </button>
+                                {% else %}
+                                    <button type="submit" name="flow_transition" value="finish" class="fr-btn fr-btn--icon-left fr-icon-check-line" id="finish-btn">
+                                        Valider l'inscription
+                                        <span class="loading-spinner">⏳</span>
+                                    </button>
+                                {% endif %}
+                            </li>
+                            {% if flow.currentStepNumber > 1 %}
+                                <li>
+                                    <button type="submit" name="flow_transition" value="previous" class="fr-btn fr-btn--secondary" id="previous-btn">
+                                        <span class="fr-icon-arrow-left-line fr-icon--sm" aria-hidden="true"></span>
+                                        Étape précédente
+                                    </button>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('inscription-form');
+    
+    if (!form) {
+        console.error('Formulaire inscription-form non trouvé');
+        return;
+    }
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Trouver le bouton qui a été cliqué
+        const clickedButton = [...form.querySelectorAll('button[type="submit"]')]
+            .find(btn => btn === document.activeElement);
+        
+        if (!clickedButton) {
+            console.warn('Aucun bouton de soumission détecté');
+            return;
+        }
+
+        // Validation spéciale pour l'étape 10
+        if (clickedButton.value === 'finish') {
+            if (!validateFinalStep()) {
+                return;
+            }
+        }
+
+        // Préparer les données du formulaire
+        const formData = new FormData(form);
+        formData.append(clickedButton.name, clickedButton.value);
+
+        // Désactiver le bouton pendant l'envoi
+        setButtonLoading(clickedButton, true);
+
+        // Effacer les erreurs précédentes
+        clearMessages();
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Succès
+                if (data.message) {
+                    showMessage('success', data.message);
+                }
+                
+                if (data.redirect) {
+                    // Délai court pour permettre à l'utilisateur de voir le message
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1000);
+                } else {
+                    console.error('Pas d\'URL de redirection fournie');
+                    showMessage('error', 'Succès mais pas de redirection définie');
+                }
+            } else {
+                // Échec - afficher les erreurs
+                handleErrors(data);
+            }
+        })
+        .catch(error => {
+            console.error('Erreur AJAX :', error);
+            showMessage('error', 'Une erreur de connexion est survenue. Veuillez réessayer.');
+        })
+        .finally(() => {
+            // Réactiver le bouton
+            setButtonLoading(clickedButton, false);
+        });
+    });
+
+    /**
+     * Validation spécifique pour l'étape finale
+     */
+    function validateFinalStep() {
+        const requiredFields = form.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+                field.classList.add('fr-input--error');
+            } else {
+                field.classList.remove('fr-input--error');
+            }
+        });
+        
+        if (!isValid) {
+            showMessage('error', 'Veuillez remplir tous les champs obligatoires avant de finaliser votre inscription.');
+            return false;
+        }
+        
+        return true;
+    }
+
+    /**
+     * Gère l'état de chargement des boutons
+     */
+    function setButtonLoading(button, loading) {
+        if (loading) {
+            button.disabled = true;
+            button.classList.add('fr-btn--loading');
+            button.setAttribute('aria-busy', 'true');
+        } else {
+            button.disabled = false;
+            button.classList.remove('fr-btn--loading');
+            button.removeAttribute('aria-busy');
+        }
+    }
+
+    /**
+     * Affiche un message (succès ou erreur)
+     */
+    function showMessage(type, message) {
+        const container = document.getElementById('ajax-messages');
+        const alertClass = type === 'success' ? 'fr-alert--success' : 'fr-alert--error';
+        const alertTitle = type === 'success' ? 'Succès' : 'Erreur';
+        
+        container.innerHTML = `
+            <div class="fr-alert ${alertClass}">
+                <p class="fr-alert__title">${alertTitle}</p>
+                <p>${message}</p>
+            </div>
+        `;
+        
+        // Scroll vers le message
+        container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /**
+     * Gère l'affichage des erreurs selon le type de réponse du contrôleur
+     */
+    function handleErrors(data) {
+        if (data.errors && Array.isArray(data.errors)) {
+            // Erreurs de validation - les afficher
+            displayValidationErrors(data.errors);
+        } else if (data.form_html) {
+            // Le contrôleur renvoie le HTML du formulaire avec les erreurs
+            updateFormContent(data.form_html);
+        } else if (data.error) {
+            // Message d'erreur simple
+            showMessage('error', data.error);
+        } else {
+            // Erreur générique
+            showMessage('error', 'Une erreur est survenue lors du traitement du formulaire.');
+        }
+    }
+
+    /**
+     * Affiche les erreurs de validation de manière accessible
+     */
+    function displayValidationErrors(errors) {
+        let errorMessages = '';
+        
+        if (errors.length === 1) {
+            errorMessages = errors[0];
+        } else {
+            errorMessages = '<ul>';
+            errors.forEach(error => {
+                errorMessages += `<li>${error}</li>`;
+            });
+            errorMessages += '</ul>';
+        }
+        
+        const container = document.getElementById('ajax-messages');
+        container.innerHTML = `
+            <div class="fr-alert fr-alert--error">
+                <p class="fr-alert__title">Erreurs de validation</p>
+                <div>${errorMessages}</div>
+            </div>
+        `;
+        
+        container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /**
+     * Met à jour le contenu du formulaire avec la version contenant les erreurs
+     */
+    function updateFormContent(formHtml) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = formHtml;
+        
+        const newFormContent = tempDiv.querySelector('#inscription-form');
+        if (newFormContent) {
+            // Sauvegarder les données du formulaire actuel
+            const currentData = new FormData(form);
+            
+            // Remplacer le contenu
+            form.innerHTML = newFormContent.innerHTML;
+            
+            // Restaurer les données si possible
+            restoreFormData(currentData);
+            
+            // Réattacher les event listeners
+            reattachEventListeners();
+        }
+    }
+
+    /**
+     * Restaure les données du formulaire après mise à jour du DOM
+     */
+    function restoreFormData(formData) {
+        for (let [name, value] of formData.entries()) {
+            const field = form.querySelector(`[name="${name}"]`);
+            if (field) {
+                if (field.type !== 'file') {
+                    field.value = value;
+                }
+            }
+        }
+    }
+
+    /**
+     * Efface les messages précédents
+     */
+    function clearMessages() {
+        const container = document.getElementById('ajax-messages');
+        container.innerHTML = '';
+        
+        // Effacer les classes d'erreur sur les champs
+        const invalidFields = form.querySelectorAll('.fr-input--error, .is-invalid');
+        invalidFields.forEach(field => {
+            field.classList.remove('fr-input--error', 'is-invalid');
+        });
+    }
+
+    /**
+     * Réattache les event listeners après mise à jour du DOM
+     */
+    function reattachEventListeners() {
+        // Réattacher l'event listener principal
+        form.removeEventListener('submit', arguments.callee);
+        form.addEventListener('submit', arguments.callee);
+        
+        console.log('Event listeners réattachés');
+    }
+
+    // Gestion de la sauvegarde automatique (désactivée pour l'étape 10)
+    let autoSaveTimeout;
+    
+    function autoSave() {
+        // Ne pas sauvegarder automatiquement à l'étape 10
+        const currentStep = parseInt(document.querySelector('[data-fr-current-step]')?.getAttribute('data-fr-current-step') || '1');
+        if (currentStep === 10) {
+            return;
+        }
+        
+        clearTimeout(autoSaveTimeout);
+        autoSaveTimeout = setTimeout(() => {
+            const formData = new FormData(form);
+            formData.append('auto_save', '1');
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Sauvegarde automatique réussie');
+                }
+            })
+            .catch(error => {
+                console.log('Erreur sauvegarde automatique:', error);
+            });
+        }, 3000); // 3 secondes d'inactivité
+    }
+
+    // Activer la sauvegarde automatique sur les changements de champs
+    form.addEventListener('input', autoSave);
+    form.addEventListener('change', autoSave);
+    
+    // Confirmation avant de quitter la page à l'étape 10
+    window.addEventListener('beforeunload', function(e) {
+        const currentStep = parseInt(document.querySelector('[data-fr-current-step]')?.getAttribute('data-fr-current-step') || '1');
+        if (currentStep === 10) {
+            const confirmationMessage = 'Vous êtes sur le point de quitter la page. Vos données non sauvegardées seront perdues.';
+            e.returnValue = confirmationMessage;
+            return confirmationMessage;
+        }
+    });
+});
+</script>
+{% endblock %}

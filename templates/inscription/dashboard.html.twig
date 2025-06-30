@@ -1,0 +1,1032 @@
+{% extends 'base.html.twig' %} 
+
+{% block title %}Tableau de bord - E-Inscription{% endblock %}
+
+{% block body %}
+
+<div class="fr-container">
+    <!-- En-tête avec statut -->
+    <div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-col-12">
+            <div class="fr-mb-4w">
+                <h1 class="fr-h1">
+                    <span class="fr-icon-dashboard-3-line fr-icon--lg" aria-hidden="true"></span>
+                    Tableau de bord
+                </h1>
+                <div class="fr-badge-group">
+                    {% if inscription.isComplete %}
+                        <p class="fr-badge fr-badge--success fr-badge--sm">
+                            <span class="fr-icon-checkbox-circle-line fr-icon--sm" aria-hidden="true"></span>
+                            Dossier complet
+                        </p>
+                    {% else %}
+                        <p class="fr-badge fr-badge--warning fr-badge--sm">
+                            <span class="fr-icon-warning-line fr-icon--sm" aria-hidden="true"></span>
+                            Dossier incomplet
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fr-container completion-section">
+        <h2 class="fr-h2 fr-mb-3w">Complétude du dossier</h2>
+        
+        <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--reverse-mobile">
+            <div class="fr-col-12 fr-col-md-7">
+                <div class="progress my-2" style="height: 25px;">
+                    <div class="progress-bar
+                        {% if completion.completion_percentage >= 80 %}
+                            bg-success
+                        {% elseif completion.completion_percentage >= 50 %}
+                            bg-warning
+                        {% else %}
+                            bg-danger
+                        {% endif %}"
+                        role="progressbar"
+                        style="width: {{ completion.completion_percentage }}%;"
+                        aria-valuenow="{{ completion.completion_percentage }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100">
+                        {{ completion.completion_percentage }}%
+                    </div>
+                </div>
+                {% if completion.missing_fields is not empty %}
+                    <p class="mt-2"><strong>Champs manquants :</strong></p>
+                    <ul class="list-group mb-4">
+                        {% for field in completion.missing_fields %}
+                            <li class="list-group-item">
+                                <strong>{{ field.section|capitalize }}</strong> : {{ field.field }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-success mt-3">Toutes les informations requises sont complètes ✅</p>
+                {% endif %}
+            </div>
+            
+            <div class="fr-col-12 fr-col-md-5">
+                <div class="chart-container">
+                    <h3 class="fr-h6 fr-mb-2w fr-text--center">
+                        <span class="fr-icon-pie-chart-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
+                        État de complétion
+                    </h3>
+                    <div id="completionChart" style="width: 100%; height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact et assistance -->
+    <div class="fr-container fr-container--border fr-container--shadow">
+        <div class="fr-container__body">
+            <div class="fr-container__content">
+                <h3 class="fr-container__title fr-mb-3w">
+                    <span class="fr-icon-customer-service-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
+                    Conseil ?
+                </h3>
+                <div class="fr-container__desc"> 
+                    <div class="fr-alert fr-alert--info fr-alert--sm">
+                        <p class="fr-alert__desc">
+                            Pensez à sauvegarder régulièrement vos informations en faisant "Etape Suivante" dans le form, pour éviter toute perte de données.
+                        </p>
+                    </div>
+                </div>
+                <div><p></p></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fr-grid-row fr-grid-row--gutters">
+        <!-- Colonne principale -->
+        <div class="fr-col-12 fr-col-lg-8">
+            
+            <!-- Informations personnelles -->
+            <div class="fr-container--fluid fr-py-4w fr-px-3w fr-mb-4w" style="border: 1px solid var(--border-default-grey); border-radius: 8px; background-color: var(--background-default-grey);">
+                <h3 class="fr-h3 fr-mb-3w">
+                    <span class="fr-icon-user-line fr-icon--sm" aria-hidden="true"></span>
+                    Informations personnelles
+                </h3>
+                {% if inscription.nom is defined and inscription.prenom is defined %}
+                    <dl class="fr-dl fr-dl--inline">
+                        <dt>Nom :</dt>
+                        <dd><strong>{{ inscription.nom }} {{ inscription.prenom }}</strong></dd>
+                        
+                        {% if inscription.dateNaissance %}
+                            <dt>Date de naissance :</dt>
+                            <dd>{{ inscription.dateNaissance|date('d/m/Y') }}</dd>
+                        {% endif %}
+                        
+                        {% if inscription.email %}
+                            <dt>Email :</dt>
+                            <dd><a href="mailto:{{ inscription.email }}" class="fr-link">{{ inscription.email }}</a></dd>
+                        {% endif %}
+                        
+                        {% if inscription.numeroMobile %}
+                            <dt>Téléphone mobile :</dt>
+                            <dd><a href="tel:{{ inscription.numeroMobile }}" class="fr-link">{{ inscription.numeroMobile }}</a></dd>
+                        {% endif %}
+                        
+                        {% if inscription.classe and inscription.classe.label %}
+                            <dt>Classe :</dt>
+                            <dd><span class="fr-badge fr-badge--blue-cumulus">{{ inscription.classe.label }}</span></dd>
+                        {% else %}
+                            <dt>Classe :</dt>
+                            <dd><span class="fr-text--muted">
+                                <span class="fr-icon-warning-line fr-icon--sm" aria-hidden="true"></span>
+                                Non renseignée
+                            </span></dd>
+                        {% endif %}
+                        
+                        {% if inscription.promotion %}
+                            <dt>Promotion :</dt>
+                            <dd>{{ inscription.promotion }}</dd>
+                        {% endif %}
+                        
+                        {% if inscription.nationalite %}
+                            <dt>Nationalité :</dt>
+                            <dd>{{ inscription.nationalite }}</dd>
+                        {% endif %}
+                        
+                        {% if inscription.departement %}
+                            <dt>Département :</dt>
+                            <dd>{{ inscription.departement }}</dd>
+                        {% endif %}
+                        
+                        {% if inscription.communeNaissance %}
+                            <dt>Commune de naissance :</dt>
+                            <dd>{{ inscription.communeNaissance }}</dd>
+                        {% endif %}
+                        
+                        {% if inscription.sexe %}
+                            <dt>Sexe :</dt>
+                            <dd>{{ inscription.sexe }}</dd>
+                        {% endif %}
+                        
+                        {% if inscription.regime %}
+                            <dt>Régime :</dt>
+                            <dd>{{ inscription.regime }}</dd>
+                        {% endif %}
+                    </dl>
+                {% else %}
+                    <div class="fr-alert fr-alert--info fr-alert--sm">
+                        <p>Informations personnelles non renseignées</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Représentants légaux -->
+            <div class="fr-container--fluid fr-py-4w fr-px-3w fr-mb-4w" style="border: 1px solid var(--border-default-grey); border-radius: 8px; background-color: var(--background-default-grey);">
+                <h3 class="fr-h3 fr-mb-3w">
+                    <span class="fr-icon-group-line fr-icon--sm" aria-hidden="true"></span>
+                    Représentants légaux
+                </h3>
+                {% if inscription.representantLegal1Nom is defined %}
+                    <div class="fr-mb-3w">
+                        <h4 class="fr-h6">Représentant légal 1</h4>
+                        <dl class="fr-dl fr-dl--inline">
+                            <dt>Nom :</dt>
+                            <dd><strong>{{ inscription.representantLegal1Nom }} {{ inscription.representantLegal1Prenom }}</strong></dd>
+                            
+                            {% if inscription.representantLegal1Courriel %}
+                                <dt>Email :</dt>
+                                <dd><a href="mailto:{{ inscription.representantLegal1Courriel }}" class="fr-link">{{ inscription.representantLegal1Courriel }}</a></dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal1Telephone %}
+                                <dt>Tél. personnel :</dt>
+                                <dd><a href="tel:{{ inscription.representantLegal1Telephone }}" class="fr-link">{{ inscription.representantLegal1Telephone }}</a></dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal1TelephoneFixe %}
+                                <dt>Tél. fixe :</dt>
+                                <dd><a href="tel:{{ inscription.representantLegal1TelephoneFixe }}" class="fr-link">{{ inscription.representantLegal1TelephoneFixe }}</a></dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal1TelephonePro %}
+                                <dt>Tél. professionnel :</dt>
+                                <dd><a href="tel:{{ inscription.representantLegal1TelephonePro }}" class="fr-link">{{ inscription.representantLegal1TelephonePro }}</a></dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal1Adresse %}
+                                <dt>Adresse :</dt>
+                                <dd>{{ inscription.representantLegal1Adresse }}, {{ inscription.representantLegal1CodePostal }} {{ inscription.representantLegal1Commune }}</dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal1LienEleve %}
+                                <dt>Lien avec l'élève :</dt>
+                                <dd>{{ inscription.representantLegal1LienEleve }}</dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal1Poste %}
+                                <dt>Poste :</dt>
+                                <dd>{{ inscription.representantLegal1Poste }}</dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal1NomEmployeur %}
+                                <dt>Employeur :</dt>
+                                <dd>{{ inscription.representantLegal1NomEmployeur }}</dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal1AdresseEmployeur %}
+                                <dt>Adresse employeur :</dt>
+                                <dd>{{ inscription.representantLegal1AdresseEmployeur }}</dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                {% endif %}
+                
+                {% if inscription.representantLegal2Nom is defined %}
+                    <div class="fr-mb-3w">
+                        <h4 class="fr-h6">Représentant légal 2</h4>
+                        <dl class="fr-dl fr-dl--inline">
+                            <dt>Nom :</dt>
+                            <dd><strong>{{ inscription.representantLegal2Nom }} {{ inscription.representantLegal2Prenom }}</strong></dd>
+                            
+                            {% if inscription.representantLegal2Courriel %}
+                                <dt>Email :</dt>
+                                <dd><a href="mailto:{{ inscription.representantLegal2Courriel }}" class="fr-link">{{ inscription.representantLegal2Courriel }}</a></dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal2Telephone %}
+                                <dt>Tél. personnel :</dt>
+                                <dd><a href="tel:{{ inscription.representantLegal2Telephone }}" class="fr-link">{{ inscription.representantLegal2Telephone }}</a></dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal2TelephoneFixe %}
+                                <dt>Tél. fixe :</dt>
+                                <dd><a href="tel:{{ inscription.representantLegal2TelephoneFixe }}" class="fr-link">{{ inscription.representantLegal2TelephoneFixe }}</a></dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal2TelephonePro %}
+                                <dt>Tél. professionnel :</dt>
+                                <dd><a href="tel:{{ inscription.representantLegal2TelephonePro }}" class="fr-link">{{ inscription.representantLegal2TelephonePro }}</a></dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal2Adresse %}
+                                <dt>Adresse :</dt>
+                                <dd>{{ inscription.representantLegal2Adresse }}, {{ inscription.representantLegal2CodePostal }} {{ inscription.representantLegal2Commune }}</dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal2LienEleve %}
+                                <dt>Lien avec l'élève :</dt>
+                                <dd>{{ inscription.representantLegal2LienEleve }}</dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal2Poste %}
+                                <dt>Poste :</dt>
+                                <dd>{{ inscription.representantLegal2Poste }}</dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal2NomEmployeur %}
+                                <dt>Employeur :</dt>
+                                <dd>{{ inscription.representantLegal2NomEmployeur }}</dd>
+                            {% endif %}
+                            
+                            {% if inscription.representantLegal2AdresseEmployeur %}
+                                <dt>Adresse employeur :</dt>
+                                <dd>{{ inscription.representantLegal2AdresseEmployeur }}</dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                {% endif %}
+
+                {% if not inscription.representantLegal1Nom is defined and not inscription.representantLegal2Nom is defined %}
+                    <div class="fr-alert fr-alert--info fr-alert--sm">
+                        <p>Informations des représentants légaux non renseignées</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Scolarité précédente -->
+            <div class="fr-container--fluid fr-py-4w fr-px-3w fr-mb-4w" style="border: 1px solid var(--border-default-grey); border-radius: 8px; background-color: var(--background-default-grey);">
+                <h3 class="fr-h3 fr-mb-3w">
+                    <span class="fr-icon-information-line fr-icon--sm" aria-hidden="true"></span>
+                    Scolarité précédente
+                </h3>
+                {% if inscription.etablissementPrecedent1 is defined %}
+                    <div class="fr-mb-3w">
+                        <h4 class="fr-h6">Année scolaire précédente 1 (N-1)</h4>
+                        <dl class="fr-dl fr-dl--inline">
+                            <dt>Établissement :</dt>
+                            <dd>{{ inscription.etablissementPrecedent1 }}</dd>
+                            <dt>Classe :</dt>
+                            <dd>{{ inscription.classePrecedente1 }}</dd>
+                            <dt>Option :</dt>
+                            <dd>{{ inscription.optionPrecedente1 }}</dd>
+                            <dt>Langue vivante 1 :</dt>
+                            <dd>{{ inscription.lvUnPrecedente1 }}</dd>
+                            <dt>Langue vivante 2 :</dt>
+                            <dd>{{ inscription.lvDeuxPrecedente1 }}</dd>
+                            <dt>Année scolaire :</dt>
+                            <dd>{{ inscription.anneeScolairePrecedente1 }}</dd>
+                        </dl>
+                    </div>
+                {% else %}
+                    <div class="fr-alert fr-alert--info fr-alert--sm fr-mb-3w">
+                        <p>Aucune scolarité précédente renseignée pour l'année N-1</p>
+                    </div>
+                {% endif %}
+                
+                {% if inscription.etablissementPrecedent2 is defined %}
+                    <div class="fr-mb-3w">
+                        <h4 class="fr-h6">Année scolaire précédente 2 (N-2)</h4>
+                        <dl class="fr-dl fr-dl--inline">
+                            <dt>Établissement :</dt>
+                            <dd>{{ inscription.etablissementPrecedent2 }}</dd>
+                            <dt>Classe :</dt>
+                            <dd>{{ inscription.classePrecedente2 }}</dd>
+                            <dt>Option :</dt>
+                            <dd>{{ inscription.optionPrecedente2 }}</dd>
+                            <dt>Langue vivante 1 :</dt>
+                            <dd>{{ inscription.lvUnPrecedente2 }}</dd>
+                            <dt>Langue vivante 2 :</dt>
+                            <dd>{{ inscription.lvDeuxPrecedente2 }}</dd>
+                            <dt>Année scolaire :</dt>
+                            <dd>{{ inscription.anneeScolairePrecedente2 }}</dd>
+                        </dl>
+                    </div>
+                {% else %}
+                    <div class="fr-alert fr-alert--info fr-alert--sm">
+                        <p>Aucune scolarité précédente renseignée pour l'année N-2</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Informations médicales -->
+            <div class="fr-container--fluid fr-py-4w fr-px-3w fr-mb-4w" style="border: 1px solid var(--border-default-grey); border-radius: 8px; background-color: var(--background-default-grey);">
+                <h3 class="fr-h3 fr-mb-3w">
+                    <span class="fr-icon-heart-pulse-line fr-icon--sm" aria-hidden="true"></span>
+                    Informations médicales
+                </h3>
+                {% if inscription.medecinTraitantNom is defined %}
+                    <div class="fr-mb-3w">
+                        <h4 class="fr-h6">Médecin traitant</h4>
+                        <dl class="fr-dl fr-dl--inline">
+                            <dt>Nom :</dt>
+                            <dd>{{ inscription.medecinTraitantNom }}</dd>
+                            {% if inscription.medecinTraitantTelephone %}
+                                <dt>Téléphone :</dt>
+                                <dd><a href="tel:{{ inscription.medecinTraitantTelephone }}" class="fr-link">{{ inscription.medecinTraitantTelephone }}</a></dd>
+                            {% endif %}
+                            {% if inscription.medecinTraitantAdresse %}
+                                <dt>Adresse :</dt>
+                                <dd>{{ inscription.medecinTraitantAdresse }}</dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                {% endif %}
+                
+                {% if inscription.dernierRappelAntitetanique is defined and inscription.dernierRappelAntitetanique %}
+                    <dl class="fr-dl fr-dl--inline fr-mb-2w">
+                        <dt>Dernier rappel antitétanique :</dt>
+                        <dd>{{ inscription.dernierRappelAntitetanique|date('d/m/Y') }}</dd>
+                    </dl>
+                {% endif %}
+
+                {% if inscription.observations is defined and inscription.observations %}
+                    <dl class="fr-dl fr-dl--inline fr-mb-2w">
+                        <dt>Observations médicales</dt>
+                        <dd>{{ inscription.observations }}</dd>
+                    </dl>
+                {% endif %}
+                
+                {% if inscription.numSecuSocial is defined %}
+                    <dl class="fr-dl fr-dl--inline fr-mb-2w">
+                        <dt>Numéro de sécurité sociale :</dt>
+                        <dd>{{ inscription.numSecuSocial }}</dd>
+                    </dl>
+                {% endif %}
+                
+                {% if inscription.secuSocialeNom is defined %}
+                    <div class="fr-mb-3w">
+                        <h4 class="fr-h6">Sécurité sociale</h4>
+                        <dl class="fr-dl fr-dl--inline">
+                            <dt>Nom :</dt>
+                            <dd>{{ inscription.secuSocialeNom }}</dd>
+                            {% if inscription.secuSocialeAdresse %}
+                                <dt>Adresse :</dt>
+                                <dd>{{ inscription.secuSocialeAdresse }}</dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                {% endif %}
+                
+                {% if inscription.assureurNom is defined %}
+                    <div class="fr-mb-3w">
+                        <h4 class="fr-h6">Assureur</h4>
+                        <dl class="fr-dl fr-dl--inline">
+                            <dt>Nom :</dt>
+                            <dd>{{ inscription.assureurNom }}</dd>
+                            {% if inscription.assureurNumeroAssurance %}
+                                <dt>Numéro d'assurance :</dt>
+                                <dd>{{ inscription.assureurNumeroAssurance }}</dd>
+                            {% endif %}
+                            {% if inscription.assureurAdresse %}
+                                <dt>Adresse :</dt>
+                                <dd>{{ inscription.assureurAdresse }}</dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                {% endif %}
+                
+                {% if inscription.medecinTraitantNom is not defined and inscription.secuSocialeNom is not defined and inscription.assureurNom is not defined %}
+                    <div class="fr-alert fr-alert--info fr-alert--sm">
+                        <p>Informations médicales non renseignées</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Informations financières -->
+            <div class="fr-container--fluid fr-py-4w fr-px-3w fr-mb-4w" style="border: 1px solid var(--border-default-grey); border-radius: 8px; background-color: var(--background-default-grey);">
+                <h3 class="fr-h3 fr-mb-3w">
+                    <span class="fr-icon-money-euro-circle-line fr-icon--sm" aria-hidden="true"></span>
+                    Informations financières
+                </h3>
+                {% if inscription.responsableFinancierNom is defined %}
+                    <dl class="fr-dl fr-dl--inline">
+                        <dt>Responsable financier :</dt>
+                        <dd><strong>{{ inscription.responsableFinancierNom }} {{ inscription.responsableFinancierPrenom }}</strong></dd>
+                        {% if inscription.responsableFinancierNomEmployeur %}
+                            <dt>Employeur :</dt>
+                            <dd>{{ inscription.responsableFinancierNomEmployeur }}</dd>
+                        {% endif %}
+                        {% if inscription.responsableFinancierAdresseEmployeur %}
+                            <dt>Adresse employeur :</dt>
+                            <dd>{{ inscription.responsableFinancierAdresseEmployeur }}</dd>
+                        {% endif %}
+                    </dl>
+                {% else %}
+                    <div class="fr-alert fr-alert--info fr-alert--sm">
+                        <p>Informations financières non renseignées</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Documents à fournir - Récapitulatif -->
+            {% if document %}
+            <div class="fr-container--fluid fr-py-4w fr-px-3w fr-mb-4w" style="border: 1px solid var(--border-default-grey); border-radius: 8px; background-color: var(--background-default-grey);">
+                <h3 class="fr-h3 fr-mb-3w">
+                    <span class="fr-icon-file-text-line fr-icon--sm" aria-hidden="true"></span>
+                    Documents fournis
+                </h3>
+                <div class="fr-grid-row fr-grid-row--gutters">
+                    <div class="fr-col-12 fr-col-md-6">
+                        <!-- Carte Vitale -->
+                        <div class="fr-checkbox-group">
+                            <input type="checkbox" id="carte-vitale" name="carte-vitale" disabled 
+                                {{ documentManager.hasDocument(document, 'carte_vitale') ? 'checked' : '' }}>
+                            <label class="fr-label" for="carte-vitale">
+                                <span class="document-label">
+                                    Carte Vitale
+                                    {% if documentManager.hasDocument(document, 'carte_vitale') %}
+                                        <span class="fr-badge fr-badge--success fr-badge--sm fr-ml-1w">Fourni</span>
+                                    {% else %}
+                                        <span class="fr-badge fr-badge--error fr-badge--sm fr-ml-1w">Manquant</span>
+                                    {% endif %}
+                                </span>
+                                {% if documentManager.hasDocument(document, 'carte_vitale') %}
+                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-ml-1w" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                    <a href="{{ path('download_document', {eleveId: document.id, documentType: 'carte_vitale'}) }}" 
+                                    class="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-download-line fr-btn--icon-left fr-ml-2w"
+                                    title="Télécharger le document">
+                                        Télécharger
+                                    </a>
+                                {% endif %}
+                            </label>
+                        </div>
+
+                        <!-- Photo d'identité -->
+                        <div class="fr-checkbox-group">
+                            <input type="checkbox" id="photo-identite" name="photo-identite" disabled 
+                                {{ documentManager.hasDocument(document, 'photo_identite') ? 'checked' : '' }}>
+                            <label class="fr-label" for="photo-identite">
+                                <span class="document-label">
+                                    Photo d'identité
+                                    {% if documentManager.hasDocument(document, 'photo_identite') %}
+                                        <span class="fr-badge fr-badge--success fr-badge--sm fr-ml-1w">Fourni</span>
+                                    {% else %}
+                                        <span class="fr-badge fr-badge--error fr-badge--sm fr-ml-1w">Manquant</span>
+                                    {% endif %}
+                                </span>
+                                {% if documentManager.hasDocument(document, 'photo_identite') %}
+                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-ml-1w" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                    <a href="{{ path('download_document', {eleveId: document.id, documentType: 'photo_identite'}) }}" 
+                                    class="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-download-line fr-btn--icon-left fr-ml-2w"
+                                    title="Télécharger le document">
+                                        Télécharger
+                                    </a>
+                                {% endif %}
+                            </label>
+                        </div>
+
+                        <!-- Attestation d'identité -->
+                        <div class="fr-checkbox-group">
+                            <input type="checkbox" id="attestation-identite" name="attestation-identite" disabled 
+                                {{ documentManager.hasDocument(document, 'attestation_identite') ? 'checked' : '' }}>
+                            <label class="fr-label" for="attestation-identite">
+                                <span class="document-label">
+                                    Attestation d'identité
+                                    {% if documentManager.hasDocument(document, 'attestation_identite') %}
+                                        <span class="fr-badge fr-badge--success fr-badge--sm fr-ml-1w">Fourni</span>
+                                    {% else %}
+                                        <span class="fr-badge fr-badge--error fr-badge--sm fr-ml-1w">Manquant</span>
+                                    {% endif %}
+                                </span>
+                                {% if documentManager.hasDocument(document, 'attestation_identite') %}
+                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-ml-1w" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                    <a href="{{ path('download_document', {eleveId: document.id, documentType: 'attestation_identite'}) }}" 
+                                    class="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-download-line fr-btn--icon-left fr-ml-2w"
+                                    title="Télécharger le document">
+                                        Télécharger
+                                    </a>
+                                {% endif %}
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="fr-col-12 fr-col-md-6">
+                        <!-- Bourse -->
+                        <div class="fr-checkbox-group">
+                            <input type="checkbox" id="bourse" name="bourse" disabled 
+                                {{ documentManager.hasDocument(document, 'bourse') ? 'checked' : '' }}>
+                            <label class="fr-label" for="bourse">
+                                <span class="document-label">
+                                    Justificatif de bourse
+                                    <span class="fr-text--xs" style="color: var(--text-mention-grey);">(optionnel)</span>
+                                    {% if documentManager.hasDocument(document, 'bourse') %}
+                                        <span class="fr-badge fr-badge--success fr-badge--sm fr-ml-1w">Fourni</span>
+                                    {% else %}
+                                        <span class="fr-badge fr-badge--info fr-badge--sm fr-ml-1w">Non fourni</span>
+                                    {% endif %}
+                                </span>
+                                {% if documentManager.hasDocument(document, 'bourse') %}
+                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-ml-1w" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                    <a href="{{ path('download_document', {eleveId: document.id, documentType: 'bourse'}) }}" 
+                                    class="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-download-line fr-btn--icon-left fr-ml-2w"
+                                    title="Télécharger le document">
+                                        Télécharger
+                                    </a>
+                                {% endif %}
+                            </label>
+                        </div>
+
+                        <!-- Attestation JDC -->
+                        <div class="fr-checkbox-group">
+                            <input type="checkbox" id="attestation-jdc" name="attestation-jdc" disabled 
+                                {{ documentManager.hasDocument(document, 'attestation_jdc') ? 'checked' : '' }}>
+                            <label class="fr-label" for="attestation-jdc">
+                                <span class="document-label">
+                                    Attestation JDC
+                                    <span class="fr-text--xs" style="color: var(--text-mention-grey);">(optionnel)</span>
+                                    {% if documentManager.hasDocument(document, 'attestation_jdc') %}
+                                        <span class="fr-badge fr-badge--success fr-badge--sm fr-ml-1w">Fourni</span>
+                                    {% else %}
+                                        <span class="fr-badge fr-badge--info fr-badge--sm fr-ml-1w">Non fourni</span>
+                                    {% endif %}
+                                </span>
+                                {% if documentManager.hasDocument(document, 'attestation_jdc') %}
+                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-ml-1w" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                    <a href="{{ path('download_document', {eleveId: document.id, documentType: 'attestation_jdc'}) }}" 
+                                    class="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-download-line fr-btn--icon-left fr-ml-2w"
+                                    title="Télécharger le document">
+                                        Télécharger
+                                    </a>
+                                {% endif %}
+                            </label>
+                        </div>
+
+                        <!-- Attestation de réussite -->
+                        <div class="fr-checkbox-group">
+                            <input type="checkbox" id="attestation-reussite" name="attestation-reussite" disabled 
+                                {{ documentManager.hasDocument(document, 'attestation_reusite') ? 'checked' : '' }}>
+                            <label class="fr-label" for="attestation-reussite">
+                                <span class="document-label">
+                                    Attestation de réussite
+                                    <span class="fr-text--xs" style="color: var(--text-mention-grey);">(optionnel)</span>
+                                    {% if documentManager.hasDocument(document, 'attestation_reusite') %}
+                                        <span class="fr-badge fr-badge--success fr-badge--sm fr-ml-1w">Fourni</span>
+                                    {% else %}
+                                        <span class="fr-badge fr-badge--info fr-badge--sm fr-ml-1w">Non fourni</span>
+                                    {% endif %}
+                                </span>
+                                {% if documentManager.hasDocument(document, 'attestation_reusite') %}
+                                    <span class="fr-icon-checkbox-circle-fill fr-icon--sm fr-ml-1w" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                    <a href="{{ path('download_document', {eleveId: document.id, documentType: 'attestation_reusite'}) }}" 
+                                    class="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-download-line fr-btn--icon-left fr-ml-2w"
+                                    title="Télécharger le document">
+                                        Télécharger
+                                    </a>
+                                {% endif %}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Résumé des documents -->
+                <div class="fr-mt-3w fr-pt-3w" style="border-top: 1px solid var(--border-default-grey);">
+                    {% if documentsStatus is defined and documentsStatus %}
+                        {% set totalDocuments = documentsStatus|length %}
+                        {% set uploadedDocuments = 0 %}
+                        {% set requiredDocuments = 0 %}
+                        {% set uploadedRequiredDocuments = 0 %}
+                        
+                        {% for type, status in documentsStatus %}
+                            {% if status.uploaded %}
+                                {% set uploadedDocuments = uploadedDocuments + 1 %}
+                            {% endif %}
+                            {% if status.required %}
+                                {% set requiredDocuments = requiredDocuments + 1 %}
+                                {% if status.uploaded %}
+                                    {% set uploadedRequiredDocuments = uploadedRequiredDocuments + 1 %}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <div class="fr-grid-row fr-grid-row--gutters">
+                            <div class="fr-col-12 fr-col-md-4">
+                                <div class="fr-text--sm">
+                                    <strong>Documents obligatoires :</strong>
+                                    <span class="fr-badge {{ uploadedRequiredDocuments == requiredDocuments ? 'fr-badge--success' : 'fr-badge--warning' }} fr-badge--sm fr-ml-1w">
+                                        {{ uploadedRequiredDocuments }}/{{ requiredDocuments }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="fr-col-12 fr-col-md-4">
+                                <div class="fr-text--sm">
+                                    <strong>Total des documents :</strong>
+                                    <span class="fr-badge fr-badge--info fr-badge--sm fr-ml-1w">
+                                        {{ uploadedDocuments }}/{{ totalDocuments }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="fr-col-12 fr-col-md-4">
+                                {% if hasAllRequiredDocuments is defined and hasAllRequiredDocuments %}
+                                    <div class="fr-text--sm">
+                                        <span class="fr-icon-checkbox-circle-fill fr-icon--sm" style="color: var(--success-425-625);" aria-hidden="true"></span>
+                                        <strong style="color: var(--success-425-625);">Dossier complet</strong>
+                                    </div>
+                                {% else %}
+                                    <div class="fr-text--sm">
+                                        <span class="fr-icon-warning-fill fr-icon--sm" style="color: var(--warning-425-625);" aria-hidden="true"></span>
+                                        <strong style="color: var(--warning-425-625);">Documents manquants</strong>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <!-- Message si aucune inscription -->
+            <div class="fr-container--fluid fr-py-4w fr-px-3w fr-mb-4w" style="border: 1px solid var(--border-default-grey); border-radius: 8px; background-color: var(--background-alt-grey);">
+                <h3 class="fr-h3 fr-mb-3w">
+                    <span class="fr-icon-file-text-line fr-icon--sm" aria-hidden="true"></span>
+                    Documents à fournir
+                </h3>
+                <div class="fr-alert fr-alert--info">
+                    <p>Aucune inscription trouvée. Veuillez d'abord compléter votre inscription pour accéder à la gestion des documents.</p>
+                </div>
+            </div>
+            {% endif %}
+            
+            <style>
+            .document-label {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .fr-checkbox-group .fr-label {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+
+            @media (max-width: 768px) {
+                .fr-checkbox-group .fr-label {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                
+                .document-label {
+                    margin-bottom: 0.5rem;
+                }
+            }
+            </style>
+        </div>
+
+        <!-- Colonne latérale -->
+        <div class="fr-col-12 fr-col-lg-4">
+            
+            <!-- Actions rapides -->
+            <div class="fr-container--fluid fr-py-4w fr-px-3w fr-mb-4w" style="border: 1px solid var(--border-default-grey); border-radius: 8px; background-color: var(--background-default-grey);">
+                <h3 class="fr-h3 fr-mb-3w">
+                    <span class="fr-icon-settings-5-line fr-icon--sm" aria-hidden="true"></span>
+                    Actions rapides
+                </h3>
+                <ul class="fr-btns-group fr-btns-group--vertical fr-btns-group--icon-left">
+                    {% if inscription %}
+                        <li>
+                            <a class="fr-btn fr-btn--primary fr-icon-edit-line" href="{{ path('app_inscription_form', {'step': 1}) }}">
+                                Modifier mon inscription
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <a class="fr-btn fr-btn--secondary fr-icon-refresh-line" 
+                           href="{{ path('app_inscription_form', {'step': 1}) }}" 
+                           onclick="return confirm('Êtes-vous sûr ? Vous allez recommencer votre inscription depuis le début.')">
+                            Recommencer l'inscription
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Informations complémentaires -->
+            <div class="fr-container--fluid fr-py-4w fr-px-3w fr-mb-4w" style="border: 1px solid var(--border-default-grey); border-radius: 8px; background-color: var(--background-default-grey); box-shadow: var(--shadow-lifted);">
+                <h3 class="fr-h3 fr-mb-3w">
+                    <span class="fr-icon-information-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
+                    Informations complémentaires
+                </h3>
+                {% set hasComplementaryInfo = inscription.numeroContacteUrgence is defined or 
+                                             inscription.transportScolaire is defined or 
+                                             inscription.lvUn is defined or 
+                                             inscription.lvDeux is defined or 
+                                             inscription.dernierDiplome is defined %}
+                
+                {% if hasComplementaryInfo %}
+                    <div class="fr-grid-row fr-grid-row--gutters">
+                        {% if inscription.numeroContacteUrgence is defined %}
+                            <div class="fr-col-12">
+                                <div class="fr-notice fr-notice--info fr-mb-2w">
+                                    <div class="fr-container">
+                                        <div class="fr-notice__body">
+                                            <p class="fr-notice__title">
+                                                <span class="fr-icon-phone-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
+                                                Contact d'urgence
+                                            </p>
+                                            <div class="fr-notice__desc">
+                                                <strong>{{ inscription.nomContacteUrgence }}</strong><br>
+                                                <a href="tel:{{ inscription.numeroContacteUrgence }}" 
+                                                   class="fr-link fr-link--icon-left fr-icon-phone-line">
+                                                    {{ inscription.numeroContacteUrgence }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="fr-col-12 fr-col-md-6">
+                            {% if inscription.transportScolaire is defined %}
+                                <div class="fr-py-2w fr-px-3w fr-mb-2w" style="border: 1px solid var(--border-default-grey); border-radius: 4px;">
+                                    <h4 class="fr-h6">
+                                        <span class="fr-icon-bus-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
+                                        Transport scolaire
+                                    </h4>
+                                    <p class="fr-text--sm">{{ inscription.transportScolaire }}</p>
+                                </div>
+                            {% endif %}
+                            
+                            {% if inscription.immatriculationVeic is defined %}
+                                <div class="fr-py-2w fr-px-3w fr-mb-2w" style="border: 1px solid var(--border-default-grey); border-radius: 4px;">
+                                    <h4 class="fr-h6">
+                                        Numéro d'immatriculation
+                                    </h4>
+                                    <p class="fr-text--sm">{{ inscription.immatriculationVeic }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="fr-col-12 fr-col-md-6">
+                            {% if inscription.lvUn is defined or inscription.lvDeux is defined %}
+                                <div class="fr-py-2w fr-px-3w fr-mb-2w" style="border: 1px solid var(--border-default-grey); border-radius: 4px;">
+                                    <div class="fr-container__body">
+                                        <div class="fr-container__content">
+                                            <h4 class="fr-container__title">
+                                                <span class="fr-icon-global-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
+                                                Langues vivantes
+                                            </h4>
+                                            <div class="fr-container__desc">
+                                                {% if inscription.lvUn is defined %}
+                                                    <div class="fr-mb-1v">
+                                                        <span class="fr-badge fr-badge--blue-cumulus fr-badge--sm">LV1</span>
+                                                        <span class="fr-ml-1w">{{ inscription.lvUn }}</span>
+                                                    </div>
+                                                {% endif %}
+                                                {% if inscription.lvDeux is defined %}
+                                                    <div>
+                                                        <span class="fr-badge fr-badge--purple-glycine fr-badge--sm">LV2</span>
+                                                        <span class="fr-ml-1w">{{ inscription.lvDeux }}</span>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="fr-alert fr-alert--info fr-alert--sm">
+                                    <h4 class="fr-alert__title">Aucune information complémentaire</h4>
+                                    <p>Vous pourrez ajouter ces informations en modifiant votre inscription.</p>
+                                </div>
+                            {% endif %}
+                            {% if inscription.dernierDiplome is defined %}
+                                <div class="fr-py-2w fr-px-3w fr-mb-2w" style="border: 1px solid var(--border-default-grey); border-radius: 4px;">
+                                    <h4 class="fr-h6">
+                                        <span class="fr-icon-award-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>
+                                        Dernier diplôme
+                                    </h4>
+                                    <p class="fr-text--sm">{{ inscription.dernierDiplome }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fonction pour ajuster les graphiques à la taille de l'écran
+        function createResponsiveCharts() {
+            // Graphique de complétion du profil utilisateur
+            var completionOptions = {
+                series: [{{ completionData.completion.complete }}, {{ completionData.completion.incomplete }}],
+                chart: {
+                    type: 'pie',
+                    height: 350,
+                    width: '100%',
+                    redrawOnWindowResize: true
+                },
+                labels: ['Données complètes', 'Données manquantes'],
+                colors: ['#4CAF50', '#F44336'],
+                title: {
+                    text: 'Complétion du profil',
+                    align: 'center',
+                    style: {
+                        fontSize: '16px',
+                        fontWeight: 600
+                    }
+                },
+                legend: {
+                    position: 'bottom'
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return val + ' données';
+                        }
+                    }
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            height: 300
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            };
+            
+            var completionChart = new ApexCharts(document.querySelector("#completionChart"), completionOptions);
+            completionChart.render();
+            
+            // Graphique de comparaison avec la moyenne des élèves
+            var comparisonOptions = {
+                series: [{
+                    name: 'Profil de l\'élève',
+                    data: [{{ globalComparison.user_percentage }}]
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 250,
+                    toolbar: {
+                        show: false
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '55%',
+                        endingShape: 'rounded'
+                    },
+                },
+                dataLabels: {
+                    enabled: true,
+                    formatter: function(val) {
+                        return val + '%';
+                    }
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
+                xaxis: {
+                    categories: ['Taux de complétion'],
+                },
+                yaxis: {
+                    title: {
+                        text: 'Pourcentage (%)'
+                    },
+                    min: 0,
+                    max: 100
+                },
+                fill: {
+                    opacity: 1,
+                    colors: ['#2196F3', '#9E9E9E']
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return val + "%";
+                        }
+                    }
+                }
+            };
+
+            var comparisonChart = new ApexCharts(document.querySelector("#comparisonChart"), comparisonOptions);
+            comparisonChart.render();
+            
+            
+            
+            var sectionsOptions = {
+                series: [{
+                    name: 'Complétion',
+                    data: sectionsData.map(function(item) { return item.value; })
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 400
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: 4,
+                        horizontal: true,
+                        distributed: true,
+                        dataLabels: {
+                            position: 'bottom'
+                        },
+                    }
+                },
+                colors: ['#33b2df', '#546E7A', '#d4526e', '#13d8aa', '#A5978B', '#4ecdc4', '#c7f464', '#81D4FA'],
+                dataLabels: {
+                    enabled: true,
+                    textAnchor: 'start',
+                    style: {
+                        colors: ['#fff']
+                    },
+                    formatter: function(val) {
+                        return val + '%';
+                    },
+                    offsetX: 0
+                },
+                stroke: {
+                    width: 1,
+                    colors: ['#fff']
+                },
+                xaxis: {
+                    categories: sectionsData.map(function(item) { return item.section; })
+                },
+                yaxis: {
+                    labels: {
+                        show: false
+                    }
+                },
+                tooltip: {
+                    theme: 'dark',
+                    y: {
+                        formatter: function(val) {
+                            return val + '%';
+                        }
+                    }
+                }
+            };
+
+            var sectionsChart = new ApexCharts(document.querySelector("#sectionsChart"), sectionsOptions);
+            sectionsChart.render();
+        }
+        
+        // Appeler la fonction pour créer les graphiques
+        createResponsiveCharts();
+        
+        // Redimensionner les graphiques lors du redimensionnement de la fenêtre
+        window.addEventListener('resize', function() {
+            // Redessiner les graphiques si nécessaire
+            if (typeof completionChart !== 'undefined') completionChart.render();
+            if (typeof comparisonChart !== 'undefined') comparisonChart.render();
+            if (typeof sectionsChart !== 'undefined') sectionsChart.render();
+        });
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.44.0/apexcharts.min.js"></script>
+{% endblock %}

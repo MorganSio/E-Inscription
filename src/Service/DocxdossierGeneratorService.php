@@ -54,8 +54,8 @@ class DocxdossierGeneratorService
         $templateProcessor->setValue('etudiant.nationalite', $etudiant->getNationalite() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.dep_nais', $etudiant->getDepartement() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.com_nais', $etudiant?->getCommuneNaissance() ?? 'Non renseigné');
-        $templateProcessor->setValue('etudiant.tel', $user instanceof Humain ? $user->getTelephonePerso() ?? 'Non renseigné' : 'Non renseigné');
-        $templateProcessor->setValue('etudiant.courriel', $user instanceof Humain ? $user->getCourriel() ?? 'Non renseigné' : 'Non renseigné');
+        $templateProcessor->setValue('etudiant.tel', $etudiant?->getNumeroMobile() ?? 'Non renseigné');
+        $templateProcessor->setValue('etudiant.courriel', $user?->getEmail() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.immatri', $etudiant->getImmattriculationVeic() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.redoublement', $etudiant->isRedoublant() ? 'Oui' : 'Non');
         $templateProcessor->setValue('etudiant.type_transport', $etudiant->getTransportScolaire() ?? 'Non renseigné');
@@ -71,7 +71,7 @@ class DocxdossierGeneratorService
             $templateProcessor->setValue('etudiant.regime', '☐ Tickets   ☐ Externe');
         }
 
-        $templateProcessor->setValue('etudiant.classe', $etudiant->getClasse() ?? 'Non renseigné');
+        $templateProcessor->setValue('etudiant.classe', $etudiant->getClasse()?->getLabel() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.specialite', $etudiant->getClasse()?->getLabel() ?? 'Non renseigné'); // À adapter
         $templateProcessor->setValue('etudiant.lv1', $etudiant->getLVUn() ?? 'Non renseigné');
         $templateProcessor->setValue('etudiant.lv2', $etudiant->getLVDeux() ?? 'Non renseigné');
@@ -157,14 +157,13 @@ class DocxdossierGeneratorService
             $templateProcessor->setValue("{$prefix}.tuteur", '☐ Mère   ☐ Père   ☑ Autres');
         }
 
-        // Case à cocher pour SMS : ☑ Oui ☐ Non
         $sms = $source->getSmsSend();
         if ($sms === true) {
             $templateProcessor->setValue("{$prefix}.sms", '☑');
         } elseif ($sms === false) {
             $templateProcessor->setValue("{$prefix}.sms", '☐');
         } else {
-            $templateProcessor->setValue("{$prefix}.sms", 'Non renseigné'); // Ou 'Non renseigné' si tu préfères
+            $templateProcessor->setValue("{$prefix}.sms", 'Non renseigné');
         }
     }
 
