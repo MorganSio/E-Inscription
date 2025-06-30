@@ -234,16 +234,27 @@ class InscriptionType extends AbstractType
             ])
             ->add('lvUn', TextType::class, [
                 'label' => 'Langue vivante 1 *',
-                'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: Anglais, Espagnol, Allemand...'],
+                'attr' => [
+                    'class' => 'fr-input',
+                    'placeholder' => 'Anglais',
+                    'readonly' => true // optionnel, pour l’accessibilité
+                ],
+                'data' => 'Anglais',
+                'disabled' => true,
                 'constraints' => [
                     new NotBlank(['message' => 'La langue vivante 1 est obligatoire']),
                     new Length(['max' => 50])
                 ]
             ])
-            ->add('lvDeux', TextType::class, [
+            ->add('lvDeux', ChoiceType::class, [
                 'label' => 'Langue vivante 2',
                 'required' => false,
-                'attr' => ['class' => 'fr-input', 'placeholder' => 'Ex: Allemand, Italien...'],
+                'choices' => [
+                    'Aucune (pas de LV2)' => 'Aucune (pas de LV2)',
+                    'Espagnol' => 'Espagnol',
+                ],
+                'placeholder' => 'Sélectionnez une LV2',
+                'attr' => ['class' => 'fr-select'],
                 'constraints' => [new Length(['max' => 50])]
             ])
             ->add('dernierDiplome', TextType::class, [

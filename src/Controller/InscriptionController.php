@@ -326,12 +326,15 @@ class InscriptionController extends AbstractController
         $data = $this->convertEntityToArray($user, $infoEleve);
         $this->prepareInscriptionData($infoEleve, $data);
     
-        // Assurez-vous que la classe est un objet et non un tableau
-        if ($infoEleve->getClasse()) {
-            $data['classe'] = $infoEleve->getClasse(); // Assurez-vous que c'est un objet Classe
-        } else {
-            $data['classe'] = null; // Ou une instance vide si nécessaire
-        }
+        // if ($infoEleve->getClasse()) {
+        //     $data['classe'] = $infoEleve->getClasse(); 
+        // } else {
+        //     $data['classe'] = null; 
+        // }
+
+        // Pour le formulaire, on passe l'entité Classe (ou null)
+        $data['classe'] = $infoEleve->getClasse() ?: null;
+
         return $data;
     }
 
@@ -463,11 +466,8 @@ class InscriptionController extends AbstractController
             if (isset($data['redoublant'])) $infoEleve->setRedoublant((bool)$data['redoublant']);
             if (isset($data['dernierDiplome']) && !empty($data['dernierDiplome'])) $infoEleve->setDernierDiplome($data['dernierDiplome']);
             if (isset($data['immatriculationVeic']) && !empty($data['immatriculationVeic'])) $infoEleve->setImmattriculationVeic($data['immatriculationVeic']);
-            if (isset($data['classe']) && !empty($data['classe'])) {
-                $classe = $this->findClasse($data['classe']);
-                if ($classe) {
-                    $infoEleve->setClasse($classe);
-                }
+            if (isset($data['classe']) && $data['classe'] instanceof \App\Entity\Classe) {
+                $infoEleve->setClasse($data['classe']);
             }
             if (isset($data['transportScolaire'])) {
                 $infoEleve->setTransportScolaire($data['transportScolaire']);
@@ -1028,7 +1028,7 @@ class InscriptionController extends AbstractController
 
             
             // Scolarité
-            'classe' => $infoEleve->getClasse(), // Assurez-vous que c'est un objet Classe
+            // 'classe' => $infoEleve->getClasse() ? $infoEleve->getClasse()->getId() : null, // Assurez-vous que c'est un objet Classe
             'promotion' => $infoEleve->getPromotion(),
             'regime' => $infoEleve->getRegime(),
             'lvUn' => $infoEleve->getLVUn(),
@@ -1147,11 +1147,17 @@ class InscriptionController extends AbstractController
         }
 
         // Classe
+        // if ($infoEleve->getClasse()) {
+        //     $data['classe'] = [
+        //         'id' => $infoEleve->getClasse()->getId(),
+        //         'label' => $infoEleve->getClasse()->getLabel()
+        //     ];
+        // } else {
+        //     $data['classe'] = null;
+        // }
+
         if ($infoEleve->getClasse()) {
-            $data['classe'] = [
-                'id' => $infoEleve->getClasse()->getId(),
-                'label' => $infoEleve->getClasse()->getLabel()
-            ];
+            $data['classe'] = $infoEleve->getClasse()->getId();
         } else {
             $data['classe'] = null;
         }
