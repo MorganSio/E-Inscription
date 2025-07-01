@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminDashboardController extends AbstractDashboardController
 {
-    private const CC_EMAIL = 'morgan.joncart@lyceefulbert.fr';
+    private const CC_EMAIL = 'aurelie.lepretre@ac-orleans-tours.fr';
 
     public function __construct(
         private readonly UserRepository $userRepository,
@@ -214,23 +214,6 @@ class AdminDashboardController extends AbstractDashboardController
             $relanceStats['relances'],
             $relanceStats['complets']
         ));
-
-        return $this->redirectToRoute('admin_dashboard');
-    }
-
-    #[Route('/admin/test-email', name: 'admin_test_email')]
-    public function testEmail(): Response
-    {
-        if (!$this->graphMailer->sendMail(
-            'hugo.rouff@lyceefulbert.fr',
-            'Test de configuration du mailer',
-            'Ceci est un email de test pour vérifier la configuration OAuth2.',
-            self::CC_EMAIL
-        )) {
-            $this->addFlash('error', 'Échec lors de l’envoi de l’email de test.');
-        } else {
-            $this->addFlash('success', 'L\'email de test a été envoyé avec succès.');
-        }
 
         return $this->redirectToRoute('admin_dashboard');
     }

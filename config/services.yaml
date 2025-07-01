@@ -19,7 +19,7 @@ services:
     App\Service\CloudService:
         arguments:
             $sofficePath: '%app.soffice_path%'
-    
+
     App\Infrastructure\Email\Office365OAuthTokenProvider:
         arguments:
             $tenantId: '%env(resolve:EMAIL_TENANT)%'
@@ -38,13 +38,16 @@ services:
         arguments:
             $fromAddress: 'inscription@lyceefulbert.fr'
 
+    # CORRECTION ICI : Utilisez les variables d'environnement directement
     App\Service\GraphMailer:
         arguments:
-            $clientId: '%email_client_id%'
-            $clientSecret: '%email_client_secret%'
-            $tenantId: '%email_tenant%'
+            $httpClient: '@http_client'
+            $logger: '@logger'
+            $clientId: '%env(resolve:EMAIL_CLIENT_ID)%'
+            $clientSecret: '%env(resolve:EMAIL_CLIENT_SECRET)%'
+            $tenantId: '%env(resolve:EMAIL_TENANT)%'
             $fromEmail: '%email_from%'
-            
+
     App\Service\DocumentManager:
         arguments:
             $documentsDirectory: '%documents_directory%'
@@ -58,7 +61,6 @@ services:
     Psr\Http\Message\UploadedFileFactoryInterface: '@Nyholm\Psr7\Factory\Psr17Factory'
     Psr\Http\Message\UriFactoryInterface: '@Nyholm\Psr7\Factory\Psr17Factory'
 
-    
 parameters:
     upload_directory: '%kernel.project_dir%/public/uploads'
     app.soffice_path: 'C:\\Program Files\\LibreOffice\\program\\soffice.exe'
