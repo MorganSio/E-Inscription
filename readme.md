@@ -467,14 +467,15 @@ Pour que l’application puisse interagir avec l’API de Microsoft, vous devez 
 #### Environnement à configurer
 
 ```env
-AZURE_CLIENT_ID="votre-client-id"  # déjà présent dans le .env
-AZURE_TENANT_ID="votre-tenant-id"  # déjà présent dans le .env
-AZURE_CLIENT_SECRET="votre-secret"   # à modifier tout les 6 mois dans le .env
+MAILER_DSN=smtp://votre-lien #à ajouter dans un .env.local
+EMAIL_TENANT=votre-client-id #à ajouter dans un .env.local
+EMAIL_CLIENT_ID=votre-tenant-id #à ajouter dans un .env.local
+EMAIL_CLIENT_SECRET=votre-secret #à modifier tout les 6 mois dans azure et à ajouter dans un .env.local
 ```
 
 ### Ajout des informations clients sur le .env
 
-les informations se trouvent dans notre équipe teams : Master Corp, les informations pour l'envoie de mail se trouve dans la publication, la publication se trouve epinglé
+### les informations se trouvent dans notre équipe teams : Master Corp, les informations pour l'envoie de mail se trouve dans la publication, la publication se trouve epinglé
 
 ## 📦 Autres commandes utiles
 
