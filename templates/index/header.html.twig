@@ -76,7 +76,7 @@
                     <li class="fr-nav__item">
                         <a class="fr-nav__link" href="{{path('index')}}" target="_self">Acceuil</a>
                     </li>
-                    {% if is_granted('IS_AUTHENTICATED') %}
+                    {% if is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') %}
                         <li class="fr-nav__item">
                             <a class="fr-nav__link" href="{{ path('app_inscription_dashboard') }}" target="_self">
                                 Tableau de bord de {{ app.user.email }}

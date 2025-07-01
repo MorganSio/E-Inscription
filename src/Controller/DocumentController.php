@@ -15,6 +15,23 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class DocumentController extends AbstractController
 {
+    /**
+     * Vérifie si l'utilisateur connecté peut accéder aux données de l'élève
+     */
+    private function canAccessEleve(InfoEleve $infoEleve): bool
+    {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+        
+        // Vérifier si c'est un admin
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return true;
+        }
+        
+        // Vérifier si l'utilisateur connecté correspond à cet élève
+        return $user->getInfoEleve() && $user->getInfoEleve()->getId() === $infoEleve->getId();
+    }
+
     #[Route('/upload-document', name: 'upload_document', methods: ['POST'])]
     public function uploadDocument(
         Request $request,
@@ -36,10 +53,8 @@ class DocumentController extends AbstractController
             return $this->json(['error' => 'Élève non trouvé'], 404);
         }
         
-        /** @var \App\Entity\User $user */
-        $user = $this->getUser();
-
-        if ($user->getId() !== $infoEleve->getId()) {
+        // Vérification d'accès corrigée
+        if (!$this->canAccessEleve($infoEleve)) {
             return $this->json(['error' => 'Accès non autorisé'], 403);
         }
         
@@ -77,10 +92,8 @@ class DocumentController extends AbstractController
             return $this->json(['error' => 'Élève non trouvé'], 404);
         }
         
-        /** @var \App\Entity\User $user */
-        $user = $this->getUser();
-
-        if ($user->getId() !== $infoEleve->getId()) {
+        // Vérification d'accès corrigée
+        if (!$this->canAccessEleve($infoEleve)) {
             return $this->json(['error' => 'Accès non autorisé'], 403);
         }
         
@@ -110,10 +123,8 @@ class DocumentController extends AbstractController
             throw $this->createNotFoundException('Élève non trouvé');
         }
         
-        /** @var \App\Entity\User $user */
-        $user = $this->getUser();
-
-        if ($user->getId() !== $infoEleve->getId()) {
+        // Vérification d'accès corrigée
+        if (!$this->canAccessEleve($infoEleve)) {
             throw $this->createAccessDeniedException('Accès non autorisé');
         }
         
@@ -141,10 +152,8 @@ class DocumentController extends AbstractController
             return $this->json(['error' => 'Élève non trouvé'], 404);
         }
         
-        /** @var \App\Entity\User $user */
-        $user = $this->getUser();
-
-        if ($user->getId() !== $infoEleve->getId()) {
+        // Vérification d'accès corrigée
+        if (!$this->canAccessEleve($infoEleve)) {
             return $this->json(['error' => 'Accès non autorisé'], 403);
         }
         
